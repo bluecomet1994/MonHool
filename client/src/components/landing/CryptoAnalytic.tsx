@@ -1,10 +1,16 @@
-import { CryptoAnalyticProps } from "@/types/props";
 import Image from "next/image";
+import { motion } from 'framer-motion';
+
+import { CryptoAnalyticProps } from "@/types/props";
+import { fadeSmallUpVariant } from "@/utils/animations";
 
 const CryptoAnalytic = (props: CryptoAnalyticProps) => {
   return (
     <div className="w-full md:w-1/4 h-44 p-2">
-      <div className="flex flex-col justify-between w-full h-full p-6 rounded-md bg-white text-black">
+      <motion.div
+        initial="hide" whileInView="show" exit="hide" variants={fadeSmallUpVariant(0.75)}
+        className="flex flex-col justify-between w-full h-full p-6 rounded-md bg-white text-black"
+      >
         <div className="flex justify-between items-center">
           <h1 className="text-2xl">{props.name}</h1>
           <Image alt="logo" src={props.image} width={36} height={36} />
@@ -25,7 +31,7 @@ const CryptoAnalytic = (props: CryptoAnalyticProps) => {
             )
           }
         </div>
-      </div>
+      </motion.div>
     </div>
   )
 }

@@ -119,3 +119,23 @@ body {
     --_c: var(--c);
   }
 }
+
+
+/*  animations  */
+.fade-up {
+  animation: fade_up_anim .5s;
+}
+
+.fade-down {
+  animation: fade_down_anim .5s;
+}
+
+@keyframes fade_up_anim {
+  from { opacity: 0; transform: translateY(32px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade_down_anim {
+  from { opacity: 0; transform: translateY(-32px); }
+  to { opacity: 1; transform: translateY(0); }
+}

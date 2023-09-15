@@ -1,34 +1,60 @@
 import Image from "next/image";
+import { useState } from "react";
+import { motion } from 'framer-motion';
 
 import Navbar from "@/layouts/Navbar";
 import Footer from "@/layouts/Footer";
 import { tradingCryptos, venderImages } from "@/utils/mockData";
 import { TradingCryptoType } from "@/types/components";
 import CryptoAnalytic from "@/components/landing/CryptoAnalytic";
+import DropDown from "@/components/landing/DropDown";
 import Slider from "@/components/shared/Slider";
-import { useState } from "react";
+import { expandVariant, fadeSmallDownVariant, fadeSmallLeftVariant, fadeSmallUpVariant } from "@/utils/animations";
 
 export default function Home() {
+  const feeCurrency = 0.4;
+  const stakeCurrency = 20;
+
+  const [sendCoin, setSendCoin] = useState('BTC');
+  const [getCoin, setGetCoin] = useState('ETH');
+
   const [fees, setFees] = useState(2345);
+  const [feeResult, setFeeResult] = useState(fees * (feeCurrency / 100));
   const [stake, setStake] = useState(2345);
+  const [stakeResult, setStakeResult] = useState(0);
+
+  const handleFeesChange = (value: number) => {
+    setFees(value);
+    setFeeResult(value * (feeCurrency / 100));
+  }
+
+  const handleStakeChange = (value: number) => {
+    setStake(value);
+    setStakeResult(value * (stakeCurrency / 100));
+  }
 
   return (
-    <div>
+    <main>
       <div className="flex justify-center">
-
         <div className="container">
           <Navbar />
 
           <main className="p-2 md:p-8">
             <section className="flex justify-center md:justify-start">
-              <h1 className="w-2/3 md:w-[600px] text-xl text-center md:text-left md:text-5xl [&>span]:text-green-400 [&>span]:font-bold tracking-wider">
+              <motion.h1
+                initial="hide" whileInView="show" exit="hide" variants={fadeSmallLeftVariant(1)}
+                className="w-2/3 md:w-[600px] text-xl text-center md:text-left md:text-5xl [&>span]:text-green-400 [&>span]:font-bold tracking-wider"
+              >
                 Earn <span>massive</span> commissions using our <span>staking</span> program & <span>more.</span>
-              </h1>
+              </motion.h1>
             </section>
 
             <section className="flex flex-wrap w-full my-12">
               <div className="md:w-full lg:w-1/3 h-96 p-1">
-                <div className="flex flex-col w-full h-full rounded-md p-4 bg-primary">
+                <motion.div
+                  initial="hide" whileInView="show" exit="hide" variants={expandVariant(0.5)}
+                  className="flex flex-col w-full h-full rounded-md p-4 bg-primary"
+                >
                   <div className="flex justify-center items-center text-xs px-2 py-4 rounded-2xl bg-black">
                     <Image alt="safety-icon" src={'/assets/icons/safety-outlined.svg'} width={24} height={24} />
                     <p className="text-primary">&nbsp;Pay securely - </p>&nbsp;
@@ -44,12 +70,15 @@ export default function Home() {
                       <Image alt="safety-icon" src={'/assets/icons/arrow-circle-fill.svg'} width={36} height={36} className="-rotate-45" />
                     </button>
                   </div>
-                </div>
+                </motion.div>
               </div>
 
               <div className="md:w-full lg:w-1/3 h-96 p-1">
                 <div className="flex flex-col w-full h-full">
-                  <div className="relative w-full h-full p-6 mb-1 bg-white text-black rounded-lg">
+                  <motion.div
+                    initial="hide" whileInView="show" exit="hide" variants={expandVariant(0.5, 0.25)}
+                    className="relative w-full h-full p-6 mb-1 bg-white text-black rounded-lg"
+                  >
                     <h1 className="font-bold text-3xl">AI Trading Bot</h1>
                     <p className="text-base text-[#686161]">Get into trading with the best Trading bot out here</p>
 
@@ -60,21 +89,27 @@ export default function Home() {
                     <button className="absolute bottom-0 right-0 m-4">
                       <Image alt="safety-icon" src={'/assets/icons/arrow-circle-light.svg'} width={48} height={48} className="rotate-45" />
                     </button>
-                  </div>
+                  </motion.div>
 
-                  <div className="relative w-full h-full p-6 mt-1 bg-black border-[1px] border-gray-500 rounded-lg">
+                  <motion.div
+                    initial="hide" whileInView="show" exit="hide" variants={expandVariant(0.5, 0.5)}
+                    className="relative w-full h-full p-6 mt-1 bg-black border-[1px] border-gray-500 rounded-lg"
+                  >
                     <h1 className="font-bold text-3xl">25 USD Bonus</h1>
                     <p className="text-base text-[#909090]">Sign In and deposit more than 100 USD to get a 25 USD bonus.</p>
 
                     <button className="absolute bottom-0 right-0 m-4">
                       <Image alt="safety-icon" src={'/assets/icons/arrow-circle-dark.svg'} width={48} height={48} className="-rotate-45" />
                     </button>
-                  </div>
+                  </motion.div>
                 </div>
               </div>
 
               <div className="md:w-full lg:w-1/3 h-96 p-1">
-                <div className="flex flex-col w-full h-full p-6 bg-[#4D4D4D] rounded-md">
+                <motion.div
+                  initial="hide" whileInView="show" exit="hide" variants={expandVariant(0.5, 0.75)}
+                  className="flex flex-col w-full h-full p-6 bg-[#4D4D4D] rounded-md"
+                >
                   <div className="flex justify-between items-center">
                     <h1 className="font-bold text-2xl md:text-3xl">Exchange</h1>
                     <div className="flex justify-center items-center text-sm w-44 h-10 rounded-full bg-[#A9A9A9]">Balance $24 066.09</div>
@@ -85,8 +120,8 @@ export default function Home() {
                       <h1 className="w-1/4 text-lg md:text-xl">Send</h1>
                       <h1 className="w-1/4 font-bold text-2xl md:text-3xl">0.079</h1>
 
-                      <div className="w-1/2 text-right text-lg md:text-xl">
-                        BTC
+                      <div className="flex justify-end w-1/2 text-lg md:text-xl">
+                        <DropDown value={sendCoin} setter={setSendCoin} />
                       </div>
                     </div>
 
@@ -101,8 +136,8 @@ export default function Home() {
                       <h1 className="w-1/4 text-lg md:text-xl">Get</h1>
                       <h1 className="w-1/4 font-bold text-2xl md:text-3xl">0.498</h1>
 
-                      <div className="w-1/2 text-right text-lg md:text-xl">
-                        ETH
+                      <div className="flex justify-end w-1/2 text-lg md:text-xl">
+                        <DropDown value={getCoin} setter={setGetCoin} />
                       </div>
                     </div>
                   </div>
@@ -112,7 +147,7 @@ export default function Home() {
                   </p>
 
                   <button className="w-full h-full rounded-full mt-2 text-black text-xl bg-primary">Change</button>
-                </div>
+                </motion.div>
               </div>
             </section>
 
@@ -154,20 +189,26 @@ export default function Home() {
             <section>
               <div className="flex flex-col md:flex-row justify-between items-center my-12">
                 <div className="flex justify-center items-center w-full px-16">
-                  <h1 className="font-bold text-xl text-center md:text-left md:text-4xl my-4 md:my-0 leading-snug [&>span]:bg-green-400 [&>span]:p-1 [&>span]:rounded-md">
+                  <motion.h1
+                    initial="hide" whileInView="show" exit="hide" variants={fadeSmallUpVariant(0.75, 0.25)}
+                    className="font-bold text-xl text-center md:text-left md:text-4xl my-4 md:my-0 [&>span]:bg-green-400 [&>span]:p-1 [&>span]:rounded-md"
+                  >
                     <span>Extremely</span> Low fees for any transaction
-                  </h1>
+                  </motion.h1>
                 </div>
 
-                <div className="w-full px-8 py-12 rounded-md bg-[#575757]">
+                <motion.div
+                  initial="hide" whileInView="show" exit="hide" variants={fadeSmallDownVariant(0.75, 0.25)}
+                  className="w-full px-8 py-12 rounded-md bg-[#575757]"
+                >
                   <h1 className="font-semibold text-3xl md:text-4xl">Fees Calculator</h1>
 
-                  <Slider startValue={0} endValue={11000} value={fees} handler={setFees} />
+                  <Slider startValue={0} endValue={11000} value={fees} handler={handleFeesChange} />
 
                   <div className="flex justify-between items-center w-full">
                     <div>
                       <p className="text-xl md:text-2xl text-gray-400">For</p>
-                      <p className="font-semibold text-3xl md:text-5xl my-2">$2345</p>
+                      <p className="font-semibold text-3xl md:text-5xl my-2">${fees}</p>
                     </div>
 
                     <svg xmlns="http://www.w3.org/2000/svg" width="127" height="24" viewBox="0 0 127 24" fill="none">
@@ -176,32 +217,38 @@ export default function Home() {
 
                     <div>
                       <p className="text-xl md:text-2xl text-gray-400">Fees</p>
-                      <p className="font-semibold text-3xl md:text-5xl my-2">$9.38</p>
+                      <p className="font-semibold text-3xl md:text-5xl my-2">${feeResult.toFixed(2)}</p>
                     </div>
                   </div>
 
                   <p className="text-base text-gray-400 my-4 [&>span]:text-green-400">
-                    The average fee percentage is <span>0.4%</span> per transaction
+                    The average fee percentage is <span>{feeCurrency}%</span> per transaction
                   </p>
-                </div>
+                </motion.div>
               </div>
 
               <div className="flex flex-col md:flex-row justify-between items-center my-12">
                 <div className="flex justify-center items-center w-full px-16">
-                  <h1 className="font-bold  text-xl text-center md:text-left md:text-4xl my-4 md:my-0 leading-snug [&>span]:bg-orange-400 [&>span]:p-1 [&>span]:rounded-md">
+                  <motion.h1
+                    initial="hide" whileInView="show" exit="hide" variants={fadeSmallUpVariant(0.75, 0.25)}
+                    className="font-bold  text-xl text-center md:text-left md:text-4xl my-4 md:my-0 [&>span]:bg-orange-400 [&>span]:p-1 [&>span]:rounded-md"
+                  >
                     Discover the <span>earnings</span> with our staking program
-                  </h1>
+                  </motion.h1>
                 </div>
 
-                <div className="w-full px-8 py-12 rounded-md bg-[#575757]">
+                <motion.div
+                  initial="hide" whileInView="show" exit="hide" variants={fadeSmallDownVariant(0.75, 0.25)}
+                  className="w-full px-8 py-12 rounded-md bg-[#575757]"
+                >
                   <h1 className="font-bold text-3xl md:text-4xl">Staking earnings</h1>
 
-                  <Slider startValue={0} endValue={11000} value={stake} handler={setStake} />
+                  <Slider startValue={0} endValue={11000} value={stake} handler={handleStakeChange} />
 
                   <div className="flex justify-between items-center w-full">
                     <div>
                       <p className="text-xl md:text-2xl text-gray-400">For</p>
-                      <p className="font-semibold text-3xl md:text-5xl my-2">$2345</p>
+                      <p className="font-semibold text-3xl md:text-5xl my-2">${stake}</p>
                     </div>
 
                     <svg xmlns="http://www.w3.org/2000/svg" width="127" height="24" viewBox="0 0 127 24" fill="none">
@@ -210,14 +257,14 @@ export default function Home() {
 
                     <div>
                       <p className="text-xl md:text-2xl text-gray-400">Estimated</p>
-                      <p className="font-semibold text-3xl md:text-5xl my-2">$469</p>
+                      <p className="font-semibold text-3xl md:text-5xl my-2">${stakeResult.toFixed(2)}</p>
                     </div>
                   </div>
 
                   <p className="text-base text-gray-400 my-4 [&>span]:text-green-400">
-                    You will earn approximately <span>20%</span> of your balance with staking
+                    You will earn approximately <span>{stakeCurrency}%</span> of your balance with staking
                   </p>
-                </div>
+                </motion.div>
               </div>
             </section>
           </main>
@@ -267,6 +314,6 @@ export default function Home() {
           to { transform: translateX(-101%) }
         }
       `}</style>
-    </div>
+    </main>
   )
 }

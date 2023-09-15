@@ -5,18 +5,18 @@ export const navbarConfig: NavbarItem[] = [
     id: 1,
     title: "Wallet",
     isNew: false,
-    path: "/"
+    path: "/wallet"
   },
   {
     id: 2,
     title: "Staking",
     isNew: true,
-    path: "/"
+    path: "/staking"
   },
   {
     id: 3,
     title: "Trading Bot",
     isNew: false,
-    path: "/"
+    path: "/trading-bot"
   },
 ];

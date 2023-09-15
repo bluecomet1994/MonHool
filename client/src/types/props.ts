@@ -1,3 +1,5 @@
+import { CoinHistoryType } from "./components";
+
 export interface NavbarLinkProps {
   new: boolean;
   path: string;
@@ -16,4 +18,16 @@ export interface SliderProps {
   endValue: number;
   value: number;
   handler: any;
+}
+
+export interface InputProps {
+  type: string;
+  placeholder?: string;
+  operator: any;
+  error?: string;
+}
+
+export interface TableProps {
+  headCols: Array<string>;
+  bodyCols: CoinHistoryType[];
 }
