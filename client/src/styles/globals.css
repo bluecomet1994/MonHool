@@ -3,25 +3,119 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --primary: #62E076;
+  --secondary: #EA7D7D;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('./font/SpaceGrotesk-VariableFont_wght.ttf') format('truetype');
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  font-family: 'Space Grotesk';
+  background-color: #181818;
+  color: white;
+}
+
+.bg-primary {
+  background-color: var(--primary);
+}
+
+.text-primary {
+  color: var(--primary);
+}
+
+.bg-secondary {
+  background-color: var(--secondary);
+}
+
+.text-secondary {
+  color: var(--secondary);
+}
+
+
+/*  Custome slider  */
+
+.custom-slider {
+  --c: var(--primary);
+  --g: 8px;
+  --l: 5px;
+  --s: 20px;
+
+  width: 100%;
+  height: var(--s);
+  
+  /* needed for Firefox*/
+  --_c: color-mix(in srgb, var(--c), #000 var(--p, 0%));
+  width: 100%;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: none;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.custom-slider:focus-visible,
+.custom-slider:hover {
+  --p: 25%;
+}
+
+.custom-slider:active,
+.custom-slider:focus-visible {
+  --_b: var(--s)
+}
+
+/* chromium */
+.custom-slider[type="range" i]::-webkit-slider-thumb {
+  height: var(--s);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: white;
+  border-image: linear-gradient(90deg, var(--_c) 50%, #ababab 0) 1/0 100vw/0 calc(100vw + var(--g));
+  clip-path:
+    polygon(0 calc(50% + var(--l)/2),
+      -100vw calc(50% + var(--l)/2),
+      -100vw calc(50% - var(--l)/2),
+      0 calc(50% - var(--l)/2),
+      0 0, 100% 0,
+      100% calc(50% - var(--l)/2),
+      100vw calc(50% - var(--l)/2),
+      100vw calc(50% + var(--l)/2),
+      100% calc(50% + var(--l)/2),
+      100% 100%, 0 100%);
+  -webkit-appearance: none;
+  appearance: none;
+  transition: .3s;
+}
+
+/* Firefox */
+.custom-slider[type="range"]::-moz-range-thumb {
+  height: var(--s);
+  width: var(--s);
+  background: none;
+  border-radius: 50%;
+  box-shadow: 0 0 0 var(--_b, var(--l)) inset var(--_c);
+  border-image: linear-gradient(90deg, var(--_c) 50%, #ababab 0) 1/0 100vw/0 calc(100vw + var(--g));
+  clip-path:
+    polygon(0 calc(50% + var(--l)/2),
+      -100vw calc(50% + var(--l)/2),
+      -100vw calc(50% - var(--l)/2),
+      0 calc(50% - var(--l)/2),
+      0 0, 100% 0,
+      100% calc(50% - var(--l)/2),
+      100vw calc(50% - var(--l)/2),
+      100vw calc(50% + var(--l)/2),
+      100% calc(50% + var(--l)/2),
+      100% 100%, 0 100%);
+  -moz-appearance: none;
+  appearance: none;
+  transition: .3s;
+}
+
+@supports not (color: color-mix(in srgb, red, red)) {
+  .custom-slider {
+    --_c: var(--c);
+  }
 }

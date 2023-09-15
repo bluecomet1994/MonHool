@@ -1,0 +1,22 @@
+{
+  "name": "monhool",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "client:dev": "cd client && npm run dev",
+    "client:build": "cd client && npm run build",
+    "client:start": "cd client && npm run start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bluecomet1994/MonHool.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bluecomet1994/MonHool/issues"
+  },
+  "homepage": "https://github.com/bluecomet1994/MonHool#readme"
+}
