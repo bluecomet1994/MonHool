@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { motion } from 'framer-motion';
 
@@ -7,21 +8,21 @@ import Footer from "@/layouts/Footer";
 import { tradingCryptos, venderImages } from "@/utils/mockData";
 import { TradingCryptoType } from "@/types/components";
 import CryptoAnalytic from "@/components/landing/CryptoAnalytic";
-import DropDown from "@/components/landing/DropDown";
 import Slider from "@/components/shared/Slider";
 import { expandVariant, fadeSmallDownVariant, fadeSmallLeftVariant, fadeSmallUpVariant } from "@/utils/animations";
+import ExchangeCard from "@/components/shared/ExchangeCard";
+import LongArrowIcon from "@/components/shared/icons/LongArrowIcon";
 
 export default function Home() {
   const feeCurrency = 0.4;
   const stakeCurrency = 20;
 
-  const [sendCoin, setSendCoin] = useState('BTC');
-  const [getCoin, setGetCoin] = useState('ETH');
+  const router = useRouter();
 
   const [fees, setFees] = useState(2345);
   const [feeResult, setFeeResult] = useState(fees * (feeCurrency / 100));
   const [stake, setStake] = useState(2345);
-  const [stakeResult, setStakeResult] = useState(0);
+  const [stakeResult, setStakeResult] = useState(stake * (stakeCurrency / 100));
 
   const handleFeesChange = (value: number) => {
     setFees(value);
@@ -65,7 +66,10 @@ export default function Home() {
                   <p className="text-lg text-black tracking-wide">Freeze your money for a period of time you decide and earn a commission</p>
 
                   <div className="flex justify-end items-end w-full h-full">
-                    <button className="flex justify-between items-center text-black w-36 h-10 px-3 border-2 border-black rounded-full">
+                    <button
+                      onClick={() => router.push('/staking')}
+                      className="flex justify-between items-center text-black w-36 h-10 px-3 border-2 border-black rounded-full transition-all hover:bg-black hover:text-white"
+                    >
                       Try it out
                       <Image alt="safety-icon" src={'/assets/icons/arrow-circle-fill.svg'} width={36} height={36} className="-rotate-45" />
                     </button>
@@ -86,7 +90,7 @@ export default function Home() {
                       <Image alt="safety-icon" src={'/assets/images/badges/chart-line-up.png'} width={24} height={24} />
                     </div>
 
-                    <button className="absolute bottom-0 right-0 m-4">
+                    <button onClick={() => router.push('/trading-bot')} className="absolute bottom-0 right-0 m-4">
                       <Image alt="safety-icon" src={'/assets/icons/arrow-circle-light.svg'} width={48} height={48} className="rotate-45" />
                     </button>
                   </motion.div>
@@ -106,48 +110,7 @@ export default function Home() {
               </div>
 
               <div className="md:w-full lg:w-1/3 h-96 p-1">
-                <motion.div
-                  initial="hide" whileInView="show" exit="hide" variants={expandVariant(0.5, 0.75)}
-                  className="flex flex-col w-full h-full p-6 bg-[#4D4D4D] rounded-md"
-                >
-                  <div className="flex justify-between items-center">
-                    <h1 className="font-bold text-2xl md:text-3xl">Exchange</h1>
-                    <div className="flex justify-center items-center text-sm w-44 h-10 rounded-full bg-[#A9A9A9]">Balance $24 066.09</div>
-                  </div>
-
-                  <div className="w-full my-2 rounded-2xl bg-white bg-opacity-20">
-                    <div className="flex justify-center items-center p-5">
-                      <h1 className="w-1/4 text-lg md:text-xl">Send</h1>
-                      <h1 className="w-1/4 font-bold text-2xl md:text-3xl">0.079</h1>
-
-                      <div className="flex justify-end w-1/2 text-lg md:text-xl">
-                        <DropDown value={sendCoin} setter={setSendCoin} />
-                      </div>
-                    </div>
-
-                    <div className="relative">
-                      <hr />
-                      <div className="absolute top-0 right-1/3 p-2 bg-primary rounded-full -translate-y-1/2">
-                        <Image alt="safety-icon" src={'/assets/icons/exchange-fill.png'} width={36} height={36} />
-                      </div>
-                    </div>
-
-                    <div className="flex justify-center items-center p-5">
-                      <h1 className="w-1/4 text-lg md:text-xl">Get</h1>
-                      <h1 className="w-1/4 font-bold text-2xl md:text-3xl">0.498</h1>
-
-                      <div className="flex justify-end w-1/2 text-lg md:text-xl">
-                        <DropDown value={getCoin} setter={setGetCoin} />
-                      </div>
-                    </div>
-                  </div>
-
-                  <p className="[&>span]:text-green-400 text-center text-lg">
-                    <span>NO fees</span> will be applied in the process. Read <span>Terms & Conditions</span>
-                  </p>
-
-                  <button className="w-full h-full rounded-full mt-2 text-black text-xl bg-primary">Change</button>
-                </motion.div>
+                <ExchangeCard />
               </div>
             </section>
 
@@ -211,9 +174,7 @@ export default function Home() {
                       <p className="font-semibold text-3xl md:text-5xl my-2">${fees}</p>
                     </div>
 
-                    <svg xmlns="http://www.w3.org/2000/svg" width="127" height="24" viewBox="0 0 127 24" fill="none">
-                      <path d="M126.069 13.0607C126.655 12.4749 126.655 11.5251 126.069 10.9393L116.523 1.3934C115.937 0.807611 114.987 0.807611 114.401 1.3934C113.816 1.97919 113.816 2.92893 114.401 3.51472L122.887 12L114.401 20.4853C113.816 21.0711 113.816 22.0208 114.401 22.6066C114.987 23.1924 115.937 23.1924 116.523 22.6066L126.069 13.0607ZM0.991943 13.5H125.008V10.5H0.991943V13.5Z" fill="#A4A4A4" />
-                    </svg>
+                    <LongArrowIcon />
 
                     <div>
                       <p className="text-xl md:text-2xl text-gray-400">Fees</p>
@@ -251,9 +212,7 @@ export default function Home() {
                       <p className="font-semibold text-3xl md:text-5xl my-2">${stake}</p>
                     </div>
 
-                    <svg xmlns="http://www.w3.org/2000/svg" width="127" height="24" viewBox="0 0 127 24" fill="none">
-                      <path d="M126.069 13.0607C126.655 12.4749 126.655 11.5251 126.069 10.9393L116.523 1.3934C115.937 0.807611 114.987 0.807611 114.401 1.3934C113.816 1.97919 113.816 2.92893 114.401 3.51472L122.887 12L114.401 20.4853C113.816 21.0711 113.816 22.0208 114.401 22.6066C114.987 23.1924 115.937 23.1924 116.523 22.6066L126.069 13.0607ZM0.991943 13.5H125.008V10.5H0.991943V13.5Z" fill="#A4A4A4" />
-                    </svg>
+                    <LongArrowIcon />
 
                     <div>
                       <p className="text-xl md:text-2xl text-gray-400">Estimated</p>

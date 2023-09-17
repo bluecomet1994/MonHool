@@ -28,6 +28,22 @@ export interface InputProps {
 }
 
 export interface TableProps {
-  headCols: Array<string>;
+  headCols: string[];
   bodyCols: CoinHistoryType[];
+}
+
+export interface AddPositionProps {
+  isOpen: boolean;
+}
+
+export interface IconProps {
+  color?: string;
+}
+
+export interface TransactionInputProp {
+  type: string;
+  placeholder?: string;
+  editable: boolean;
+  value?: string;
+  onChange?: any;
 }

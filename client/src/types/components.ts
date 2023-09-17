@@ -35,3 +35,26 @@ export interface CoinHistoryType {
   amount: number | string | any;
   total: number;
 }
+
+export interface StakingType {
+  id: number;
+  coin: string;
+  amount: number;
+  rate: number;
+  earning: number;
+  time: number;
+}
+
+export interface TransactionHistoryType {
+  id: number;
+  coin: string;
+  crypto: string;
+  date: Date;
+  currency: number;
+  status: string;
+}
+
+export interface HistoryListType {
+  title: string;
+  data: TransactionHistoryType[];
+}

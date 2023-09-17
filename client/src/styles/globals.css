@@ -122,12 +122,21 @@ body {
 
 
 /*  animations  */
+.fade {
+  animation: fade_anim 1s;
+}
+
 .fade-up {
   animation: fade_up_anim .5s;
 }
 
 .fade-down {
   animation: fade_down_anim .5s;
+}
+
+@keyframes fade_anim {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes fade_up_anim {
@@ -138,4 +147,10 @@ body {
 @keyframes fade_down_anim {
   from { opacity: 0; transform: translateY(-32px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes popup_anim {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.07); }
+  100% { transform: scale(1); }
 }

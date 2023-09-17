@@ -1,4 +1,7 @@
 import { motion } from 'framer-motion';
+
+import GreenTrendingIcon from '@/components/shared/icons/GreenTrendingIcon';
+import RedTrendingIcon from '@/components/shared/icons/RedTrendingIcon';
 import { EarningsType } from "@/types/components";
 import { fadeSmallUpVariant } from '@/utils/animations';
 
@@ -17,18 +20,7 @@ const EarningCard = (props: EarningsType) => {
           <h1 className="text-[40px]">{amount.toLocaleString()}</h1>
 
           <div className={`flex -translate-y-2 mx-2 ${increase > 0 ? 'text-primary' : 'text-red-400'}`}>
-            {
-              increase > 0 ? (
-                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
-                  <path d="M5.61 6.035L8.5 0L11.475 6.035L17 17H0L5.61 6.035Z" fill="#62E076" />
-                </svg>
-              ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
-                  <path d="M11.39 10.965L8.5 17L5.525 10.965L0 0L17 0L11.39 10.965Z" fill="#E06262" />
-                </svg>
-              )
-            }
-
+            { increase > 0 ? <GreenTrendingIcon /> : <RedTrendingIcon /> }
             {increase * 100}%
           </div>
         </div>

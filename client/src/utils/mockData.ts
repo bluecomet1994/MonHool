@@ -1,18 +1,26 @@
-import { CoinHistoryType, EarningsType, TradingCryptoType, UserBalanceType } from "@/types/components";
+import { CoinHistoryType, EarningsType, StakingType, TradingCryptoType, UserBalanceType } from "@/types/components";
+
+export const cryptoCurrency: any = {
+  "BTC": 26403.92,
+  "ETH": 1620.82,
+  "USDT": 1.00,
+  "XRP": 0.50,
+  "SOL": 18.70
+}
 
 export const tradingCryptos: TradingCryptoType[] = [
   {
     id: 1,
     name: "Bitcoin",
     amount: 26311.77,
-    image: "/assets/images/badges/bitcoin.png",
+    image: "/assets/images/badges/btc.png",
     trending: true
   },
   {
     id: 2,
     name: "Ethereum",
     amount: 1645.65,
-    image: "/assets/images/badges/ethereum.png",
+    image: "/assets/images/badges/eth.png",
     trending: false
   },
   {
@@ -26,7 +34,7 @@ export const tradingCryptos: TradingCryptoType[] = [
     id: 4,
     name: "USDT",
     amount: 1.05,
-    image: "/assets/images/badges/bitcoin.png",
+    image: "/assets/images/badges/usdt.png",
     trending: true
   },
 ];
@@ -157,5 +165,24 @@ export const coinHistory: CoinHistoryType[] = [
     isExchange: false,
     amount: 3153.79,
     total: 167.094
+  },
+];
+
+export const stakings: StakingType[] = [
+  {
+    id: 1,
+    coin: "BTC",
+    amount: 1.12,
+    earning: 0.24,
+    rate: 0.2,
+    time: 2456
+  },
+  {
+    id: 2,
+    coin: "SOL",
+    amount: 520.1,
+    earning: 93.3,
+    rate: 0.18,
+    time: 0
   },
 ];
