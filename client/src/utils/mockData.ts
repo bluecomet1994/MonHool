@@ -78,14 +78,14 @@ export const userBalance: UserBalanceType[] = [
     id: 1,
     title: "Bitcoin",
     name: "BTC",
-    image: '/assets/images/badges/bitcoin.png',
+    image: '/assets/images/badges/btc.png',
     amount: 0.7723
   },
   {
     id: 2,
     title: "Ethereum",
     name: "ETH",
-    image: '/assets/images/badges/ethereum.png',
+    image: '/assets/images/badges/eth.png',
     amount: 0
   },
   {
@@ -106,7 +106,7 @@ export const userBalance: UserBalanceType[] = [
     id: 5,
     title: "Solana",
     name: "SOL",
-    image: '/assets/images/badges/solana.png',
+    image: '/assets/images/badges/sol.png',
     amount: 167.094
   },
 ];
