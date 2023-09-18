@@ -8,4 +8,5 @@ export interface StakingAction {
 export interface CurrencyAction {
   type: string;
   payload?: CurrencyType;
+  error?: Error;
 }

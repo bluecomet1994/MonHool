@@ -9,6 +9,7 @@ const Input = (props: InputProps) => {
         type={type}
         {...operator}
         className="w-full p-2 text-xl border-none outline-none bg-opacity-0 [&~span]:focus:bg-black"
+        min={0}
         required
       />
       <label className="input-label">{placeholder}</label>

@@ -19,7 +19,7 @@ const CryptoAnalytic = (props: CryptoAnalyticProps) => {
         </div>
 
         <div className="flex items-center">
-          <p className={`text-3xl mr-4 ${props.trending ? 'text-green-400' : 'text-red-400'}`}>{props.amount.toLocaleString()}</p>
+          <p className={`text-3xl mr-4 ${props.trending ? 'text-green-400' : 'text-red-400'}`}>{props.amount.toFixed(2)}</p>
           { props.trending ? <GreenTrendingIcon /> : <RedTrendingIcon /> }
         </div>
       </motion.div>

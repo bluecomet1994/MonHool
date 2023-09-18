@@ -33,7 +33,7 @@ const AdminTable = (props: AdminTableProps) => {
                 <td>{row.date.toDateString()}</td>
                 <td>{row.coin}</td>
                 <td>{row.amount} {row.coin}</td>
-                <td className="text-clip">{row.address}</td>
+                <td><p className='w-36 truncate'>{row.address}</p></td>
                 <td className="flex">
                   <button className="flex justify-center items-center w-10 h-10 mx-2 rounded-full bg-green-400 transition-all hover:bg-green-500"><ConfirmIcon /></button>
                   <button className="flex justify-center items-center w-10 h-10 mx-2 rounded-full bg-red-400 transition-all hover:bg-red-500"><DeclineIcon /></button>

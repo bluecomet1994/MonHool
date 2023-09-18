@@ -1,42 +1,34 @@
-import { CurrencyAction } from "@/types/redux"
+import { CurrencyAction } from "@/types/redux";
+import * as ActionTypes from '@/store/actions/constants';
 
 const initialState = {
-  trading: [
-    {
-      id: 1,
-      coin: "Bitcoin",
-      unit: "BTC",
-      currency: 26403.92
-    },
-    {
-      id: 2,
-      coin: "Ethereum",
-      unit: "ETH",
-      currency: 1620.82
-    },
-    {
-      id: 3,
-      coin: "Theter",
-      unit: "USDT",
-      currency: 1
-    },
-    {
-      id: 4,
-      coin: "Ripple",
-      unit: "XRP",
-      currency: 0.5
-    },
-    {
-      id: 5,
-      coin: "Solana",
-      unit: "SOL",
-      currency: 18.7
-    },
-  ]
+  isLoading: false,
+  error: null,
+  trading: []
 }
 
 const currency = (state = initialState, action: CurrencyAction) => {
   switch (action.type) {
+    case ActionTypes.GET_CURRENCY_TRADING_REQUEST: {
+      return {
+        ...state,
+        isLoading: true
+      }
+    }
+    case ActionTypes.GET_CURRENCY_TRADING_SUCCESS: {
+      return {
+        ...state,
+        isLoading: false,
+        trading: action.payload
+      }
+    }
+    case ActionTypes.GET_CURRENCY_TRADING_FAILURE: {
+      return {
+        ...state,
+        isLoading: false,
+        error: action.error
+      }
+    }
     default: {
       return state;
     }

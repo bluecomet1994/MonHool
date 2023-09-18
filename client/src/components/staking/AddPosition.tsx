@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import CoinDropDown from "@/components/shared/CoinDropDown";
+
+import CoinDropDown from "@/components/staking/CoinDropDown";
 import TimeDropDown from "@/components/staking/TimeDropDown";
 import { AddPositionProps } from "@/types/props";
 import { CurrencyType, TimeListType } from "@/types/components";
@@ -41,7 +42,8 @@ const AddPosition = (props: AddPositionProps) => {
     id: 0,
     coin: '',
     unit: '',
-    currency: 0
+    image: '',
+    lastPrice: '0'
   });
   const [amount, setAmount] = useState(0);
   const [rate, setRate] = useState(timeList[0].rate);
@@ -83,7 +85,7 @@ const AddPosition = (props: AddPositionProps) => {
                   min={0}
                 />
               </span>
-              {currency.unit}
+              {currency && currency.unit}
             </h1>
           </div>
 
@@ -94,7 +96,7 @@ const AddPosition = (props: AddPositionProps) => {
 
           <div>
             <p className="text-sm md:text-2xl">Earning</p>
-            <h1 className="font-bold text-2xl md:text-5xl my-2 md:my-4">{earning.toFixed(2)} {currency.unit}</h1>
+            <h1 className="font-bold text-2xl md:text-5xl my-2 md:my-4">{earning.toFixed(2)} {currency && currency.unit}</h1>
           </div>
         </div>
 

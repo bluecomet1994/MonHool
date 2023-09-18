@@ -14,14 +14,16 @@ const ExchangeCard = () => {
     id: 0,
     coin: '',
     unit: '',
-    currency: 0
+    image: '',
+    lastPrice: '0'
   });
   
   const [getCurrency, setGetCurrency] = useState<CurrencyType>({
     id: 0,
     coin: '',
     unit: '',
-    currency: 0
+    image: '',
+    lastPrice: '0'
   });
 
   const [sendAmount, setSendAmount] = useState(0.079);
@@ -29,12 +31,12 @@ const ExchangeCard = () => {
 
   const handleSendCurrencyChange = (value: CurrencyType) => {
     setSendCurrency(value);
-    setGetAmount((sendAmount * value.currency) / getCurrency.currency);
+    setGetAmount((sendAmount * Number(value.lastPrice)) / Number(getCurrency.lastPrice));
   }
 
   const handleGetCurrencyChange = (value: CurrencyType) => {
     setGetCurrency(value);
-    setGetAmount((sendAmount * sendCurrency.currency) / value.currency);
+    setGetAmount((sendAmount * Number(sendCurrency.lastPrice)) / Number(value.lastPrice));
   }
 
   useEffect(() => {

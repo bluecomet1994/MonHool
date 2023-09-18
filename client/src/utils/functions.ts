@@ -5,3 +5,7 @@ export function convertTime(time: number) {
 
   return `${hour}h ${minute}m ${second}s`;
 }
+
+export function concatObjects(obj1: any, obj2: any) {
+  return { ...obj1, ...obj2 }
+}

@@ -1,12 +1,13 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { motion } from 'framer-motion';
 
 import Navbar from "@/layouts/Navbar";
 import Footer from "@/layouts/Footer";
 import { tradingCryptos, venderImages } from "@/utils/mockData";
-import { TradingCryptoType } from "@/types/components";
+import { CurrencyType, TradingCryptoType } from "@/types/components";
 import CryptoAnalytic from "@/components/landing/CryptoAnalytic";
 import Slider from "@/components/shared/Slider";
 import { expandVariant, fadeSmallDownVariant, fadeSmallLeftVariant, fadeSmallUpVariant } from "@/utils/animations";
@@ -18,6 +19,7 @@ export default function Home() {
   const stakeCurrency = 20;
 
   const router = useRouter();
+  const { trading } = useSelector(({ currency }) => currency);
 
   const [fees, setFees] = useState(2345);
   const [feeResult, setFeeResult] = useState(fees * (feeCurrency / 100));
@@ -122,13 +124,13 @@ export default function Home() {
 
               <div className="flex flex-wrap">
                 {
-                  tradingCryptos.map((item: TradingCryptoType) => (
+                  trading && trading.map((item: CurrencyType) => !(item.unit==="SOL") && (
                     <CryptoAnalytic
                       key={item.id}
-                      name={item.name}
+                      name={item.coin}
                       image={item.image}
-                      amount={item.amount}
-                      trending={item.trending}
+                      amount={Number(item.lastPrice)}
+                      trending={(Number(item.priceChangePercent) > 0)}
                     />
                   ))
                 }

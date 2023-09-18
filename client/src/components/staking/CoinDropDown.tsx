@@ -18,7 +18,7 @@ const CoinDropDown = (props: DropDownProps) => {
         onClick={() => setOpen(!open)}
         className="flex justify-between items-center w-full cursor-pointer"
       >
-        <p>{value.coin} ({value.unit})</p>
+        <p>{value && value.coin} ({value && value.unit})</p>
         <ArrowDownIcon color="black" />
       </div>
 

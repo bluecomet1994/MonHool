@@ -72,7 +72,22 @@ export interface CurrencyType {
   id: number;
   coin: string;
   unit: string;
-  currency: number;
+  image: string;
+  closeTime?: number;
+  count?: number;
+  firstId?: number;
+  highPrice?: string;
+  lastId?: number;
+  lastPrice: string;
+  lowPrice?: string;
+  openPrice?: string;
+  openTime?: number;
+  priceChange?: string;
+  priceChangePercent?: string;
+  quoteVolume?: string;
+  symbol?: string;
+  volume?: string;
+  weightedAvgPrice?: string;
 }
 
 export interface TimeListType {

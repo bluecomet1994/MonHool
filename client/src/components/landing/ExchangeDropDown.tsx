@@ -18,15 +18,15 @@ const ExchangeDropDown = (props: DropDownProps) => {
   }
 
   return (
-    <div className=" relative cursor-pointer">
+    <div className="relative cursor-pointer">
       <div className="flex justify-center items-center" onClick={toggleDropDown}>
-        {value.unit}
+        {value && value.unit}
         <ArrowDownIcon />
       </div>
 
       <div className={`${open ? 'flex' : 'hidden'} flex-col absolute top-full left-0 w-full bg-gray-500 border-[1px] border-gray-400 rounded-md p-2 z-10`}>
         {
-          list.map((item: CurrencyType) => (
+          list && list.map((item: CurrencyType) => (
             <h1
               key={item.id}
               className="hover:text-green-300 transition-all duration-300"

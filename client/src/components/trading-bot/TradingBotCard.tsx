@@ -9,6 +9,7 @@ import { TradingProps } from "@/types/props";
 const TradingBotCard = (props: TradingProps) => {
   const { list, value, setter } = props;
 
+  const [isPositionOpen, setIsPositionOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [amount, setAmount] = useState(0);
   const [rate, setRate] = useState(0);
@@ -21,6 +22,10 @@ const TradingBotCard = (props: TradingProps) => {
 
   const handleAmountChange = ({ target: { value } }: any) => {
     setAmount(Number(value));
+  }
+
+  const openPosition = () => {
+    setIsPositionOpen(true);
   }
 
   useEffect(() => {
@@ -75,7 +80,7 @@ const TradingBotCard = (props: TradingProps) => {
             <p className='flex items-center font-bold text-3xl md:text-[40px] my-4'>
               $<span className="relative text-[#252525]">
                 {amount.toFixed(2)}
-                <input type="number" className="absolute top-0 left-0 w-[calc(100%+24px)] h-full font-bold bg-[#252525] text-white text-3xl md:text-[40px] outline-none border-none" value={amount.toFixed(2)} onChange={handleAmountChange} />
+                <input type="number" className="absolute top-0 left-0 w-[calc(100%+24px)] h-full font-bold bg-[#252525] text-white text-3xl md:text-[40px] outline-none border-none" value={amount.toFixed(2)} min={0} onChange={handleAmountChange} />
               </span>
             </p>
           </div>
@@ -95,16 +100,16 @@ const TradingBotCard = (props: TradingProps) => {
       </div>
 
       <div className='flex flex-col md:flex-row items-center my-4'>
-        <button className='flex justify-center items-center w-full md:w-auto font-bold px-4 py-3 rounded-lg bg-primary text-xl text-black transition-all hover:bg-green-500'>
+        <button className={`${isPositionOpen ? 'hidden' : 'flex'} justify-center items-center w-full md:w-auto font-bold px-4 py-3 rounded-lg bg-primary text-xl text-black transition-all hover:bg-green-500`} onClick={openPosition}>
           Open position&nbsp;<ExternalIcon />
         </button>
 
-        <div className='hidden justify-start w-full my-2'>
+        <div className={`${isPositionOpen ? 'flex' : 'hidden'} justify-start w-full my-2`}>
           <h1 className='text-xl'>Time left</h1>
           <p className='text-xl text-primary mx-4'>23h 22m 5s</p>
         </div>
 
-        <div className='hidden justify-end w-full my-2'>
+        <div className={`${isPositionOpen ? 'flex' : 'hidden'} justify-end w-full my-2`}>
           <button className='font-bold px-4 py-2 rounded-lg bg-primary text-black transition-all hover:bg-green-500'>
             Get earning
           </button>
