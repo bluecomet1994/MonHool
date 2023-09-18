@@ -1,4 +1,4 @@
-import { CoinHistoryType } from "./components";
+import { CoinHistoryType, CurrencyType, TimeListType, TransactionRequestType } from "./components";
 
 export interface NavbarLinkProps {
   new: boolean;
@@ -40,10 +40,33 @@ export interface IconProps {
   color?: string;
 }
 
+export interface DropDownProps {
+  color?: string;
+  list: CurrencyType[];
+  value: CurrencyType;
+  setter: any;
+}
+
+export interface TimeDropDownProps {
+  list: TimeListType[];
+  value: TimeListType;
+  setter: any;
+}
+
+export interface TradingProps {
+  list: string[][];
+  value: string[];
+  setter: any;
+}
+
 export interface TransactionInputProp {
   type: string;
   placeholder?: string;
   editable: boolean;
   value?: string;
   onChange?: any;
+}
+
+export interface AdminTableProps {
+  data: TransactionRequestType[];
 }

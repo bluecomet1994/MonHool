@@ -1,24 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from 'framer-motion';
 
 import ArrowDownIcon from "@/components/shared/icons/ArrowDownIcon";
 import ExternalIcon from "@/components/shared/icons/ExternalIcon";
 import { fadeSmallLeftVariant } from "@/utils/animations";
+import { TradingProps } from "@/types/props";
 
-const dropdownCoins = ["USDT/ETH", "USDT/BTC", "USDT/SOL", "USDT/XRP"];
+const TradingBotCard = (props: TradingProps) => {
+  const { list, value, setter } = props;
 
-const TradingBotCard = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [value, setValue] = useState(dropdownCoins[0]);
+  const [amount, setAmount] = useState(0);
+  const [rate, setRate] = useState(0);
+  const [time, setTime] = useState(0);
 
-  const handleChange = (coin: string) => {
-    setValue(coin);
+  const handleChange = (coin: string[]) => {
+    setter(coin);
     setDropdownOpen(false);
   }
 
+  const handleAmountChange = ({ target: { value } }: any) => {
+    setAmount(Number(value));
+  }
+
+  useEffect(() => {
+    setRate(Math.floor(Math.random() * (62 - 55 + 1) + 55));
+    setTime(Math.floor(Math.random() * (25 - 20 + 1) + 20));
+  }, []);
+
   return (
     <motion.div
-      initial="hide" whileInView="show" exit="hide" variants={fadeSmallLeftVariant(0.5)}
+      initial="hide" whileInView="show" viewport={{ once: true }} variants={fadeSmallLeftVariant(0.5)}
       className='w-full md:w-2/3 p-6 md:p-10 my-1 md:m-1 rounded-lg bg-[#252525]'
     >
       <div className='flex w-full'>
@@ -33,7 +45,7 @@ const TradingBotCard = () => {
 
             <div className={`${dropdownOpen ? 'flex' : 'hidden'} flex-col w-full`}>
               {
-                dropdownCoins.map((coin: string, index: number) => (
+                list.map((coin: string[], index: number) => (
                   <div key={index} className='py-2 cursor-pointer' onClick={() => handleChange(coin)}>{coin}</div>
                 ))
               }
@@ -44,12 +56,12 @@ const TradingBotCard = () => {
         <div className='hidden md:flex items-center w-2/3 text-base'>
           <div className='flex'>
             {
-              dropdownCoins.map((coin: string, index: number) => (
+              list.map((coin: string[], index: number) => (
                 <button
                   key={index}
                   onClick={() => handleChange(coin)}
                   className={`${coin === value && 'text-primary'} mx-3 transition-all hover:font-bold`}
-                >{coin}</button>
+                >{coin[0]}</button>
               ))
             }
           </div>
@@ -60,19 +72,24 @@ const TradingBotCard = () => {
         <div className='flex w-full md:w-2/3'>
           <div className='flex flex-col w-full'>
             <h1 className='text-sm md:text-xl text-[#BBBBBB]'>Amount</h1>
-            <p className='font-bold text-3xl md:text-[40px] my-4'>$0.00</p>
+            <p className='flex items-center font-bold text-3xl md:text-[40px] my-4'>
+              $<span className="relative text-[#252525]">
+                {amount.toFixed(2)}
+                <input type="number" className="absolute top-0 left-0 w-[calc(100%+24px)] h-full font-bold bg-[#252525] text-white text-3xl md:text-[40px] outline-none border-none" value={amount.toFixed(2)} onChange={handleAmountChange} />
+              </span>
+            </p>
           </div>
 
           <div className='flex flex-col items-end md:items-start w-full'>
             <h1 className='text-sm md:text-xl text-[#BBBBBB]'>Earning possibility</h1>
-            <p className='font-bold text-3xl md:text-[40px] my-4'>0%</p>
+            <p className='font-bold text-3xl md:text-[40px] my-4'>{rate}%</p>
           </div>
         </div>
 
         <div className='w-full md:w-1/3'>
           <div className='flex flex-col items-center md:items-start w-full'>
             <h1 className='text-sm md:text-xl text-[#BBBBBB]'>Time needed</h1>
-            <p className='font-bold text-3xl md:text-[40px] my-4'>0 hours</p>
+            <p className='font-bold text-3xl md:text-[40px] my-4'>{time} hours</p>
           </div>
         </div>
       </div>

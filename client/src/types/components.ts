@@ -58,3 +58,25 @@ export interface HistoryListType {
   title: string;
   data: TransactionHistoryType[];
 }
+
+export interface TransactionRequestType {
+  id: number;
+  username: string;
+  date: Date;
+  coin: string;
+  amount: number;
+  address: string;
+}
+
+export interface CurrencyType {
+  id: number;
+  coin: string;
+  unit: string;
+  currency: number;
+}
+
+export interface TimeListType {
+  id: number;
+  time: number;
+  rate: number;
+}

@@ -10,7 +10,7 @@ const CryptoAnalytic = (props: CryptoAnalyticProps) => {
   return (
     <div className="w-full md:w-1/4 h-44 p-2">
       <motion.div
-        initial="hide" whileInView="show" exit="hide" variants={fadeSmallUpVariant(0.75)}
+        initial="hide" whileInView="show" viewport={{ once: true }} variants={fadeSmallUpVariant(0.75)}
         className="flex flex-col justify-between w-full h-full p-6 rounded-md bg-white text-black"
       >
         <div className="flex justify-between items-center">

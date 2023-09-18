@@ -8,7 +8,7 @@ const CoinList = (props: UserBalanceType) => {
 
   return (
     <motion.div
-      initial="hide" whileInView="show" exit="hide" variants={fadeSmallUpVariant(0.5,0.25+id*0.1)}
+      initial="hide" whileInView="show" viewport={{ once: true }} variants={fadeSmallUpVariant(0.5, 0.25 + id * 0.1)}
       className="flex justify-between items-center w-full px-4 py-2 my-2 md:m-2 rounded-lg bg-white text-black"
     >
       <div className="flex items-center">

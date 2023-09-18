@@ -43,7 +43,7 @@ export default function Home() {
           <main className="p-2 md:p-8">
             <section className="flex justify-center md:justify-start">
               <motion.h1
-                initial="hide" whileInView="show" exit="hide" variants={fadeSmallLeftVariant(1)}
+                initial="hide" whileInView="show" viewport={{ once: true }} variants={fadeSmallLeftVariant(1)}
                 className="w-2/3 md:w-[600px] text-xl text-center md:text-left md:text-5xl [&>span]:text-green-400 [&>span]:font-bold tracking-wider"
               >
                 Earn <span>massive</span> commissions using our <span>staking</span> program & <span>more.</span>
@@ -53,7 +53,7 @@ export default function Home() {
             <section className="flex flex-wrap w-full my-12">
               <div className="md:w-full lg:w-1/3 h-96 p-1">
                 <motion.div
-                  initial="hide" whileInView="show" exit="hide" variants={expandVariant(0.5)}
+                  initial="hide" whileInView="show" viewport={{ once: true }} variants={expandVariant(0.5)}
                   className="flex flex-col w-full h-full rounded-md p-4 bg-primary"
                 >
                   <div className="flex justify-center items-center text-xs px-2 py-4 rounded-2xl bg-black">
@@ -80,7 +80,7 @@ export default function Home() {
               <div className="md:w-full lg:w-1/3 h-96 p-1">
                 <div className="flex flex-col w-full h-full">
                   <motion.div
-                    initial="hide" whileInView="show" exit="hide" variants={expandVariant(0.5, 0.25)}
+                    initial="hide" whileInView="show" viewport={{ once: true }} variants={expandVariant(0.5, 0.25)}
                     className="relative w-full h-full p-6 mb-1 bg-white text-black rounded-lg"
                   >
                     <h1 className="font-bold text-3xl">AI Trading Bot</h1>
@@ -96,7 +96,7 @@ export default function Home() {
                   </motion.div>
 
                   <motion.div
-                    initial="hide" whileInView="show" exit="hide" variants={expandVariant(0.5, 0.5)}
+                    initial="hide" whileInView="show" viewport={{ once: true }} variants={expandVariant(0.5, 0.5)}
                     className="relative w-full h-full p-6 mt-1 bg-black border-[1px] border-gray-500 rounded-lg"
                   >
                     <h1 className="font-bold text-3xl">25 USD Bonus</h1>
@@ -153,7 +153,7 @@ export default function Home() {
               <div className="flex flex-col md:flex-row justify-between items-center my-12">
                 <div className="flex justify-center items-center w-full px-16">
                   <motion.h1
-                    initial="hide" whileInView="show" exit="hide" variants={fadeSmallUpVariant(0.75, 0.25)}
+                    initial="hide" whileInView="show" viewport={{ once: true }} variants={fadeSmallUpVariant(0.75, 0.25)}
                     className="font-bold text-xl text-center md:text-left md:text-4xl my-4 md:my-0 [&>span]:bg-green-400 [&>span]:p-1 [&>span]:rounded-md"
                   >
                     <span>Extremely</span> Low fees for any transaction
@@ -161,12 +161,12 @@ export default function Home() {
                 </div>
 
                 <motion.div
-                  initial="hide" whileInView="show" exit="hide" variants={fadeSmallDownVariant(0.75, 0.25)}
+                  initial="hide" whileInView="show" viewport={{ once: true }} variants={fadeSmallDownVariant(0.75, 0.25)}
                   className="w-full px-8 py-12 rounded-md bg-[#575757]"
                 >
                   <h1 className="font-semibold text-3xl md:text-4xl">Fees Calculator</h1>
 
-                  <Slider startValue={0} endValue={11000} value={fees} handler={handleFeesChange} />
+                  <Slider startValue={0} endValue={100000} value={fees} handler={handleFeesChange} />
 
                   <div className="flex justify-between items-center w-full">
                     <div>
@@ -191,7 +191,7 @@ export default function Home() {
               <div className="flex flex-col md:flex-row justify-between items-center my-12">
                 <div className="flex justify-center items-center w-full px-16">
                   <motion.h1
-                    initial="hide" whileInView="show" exit="hide" variants={fadeSmallUpVariant(0.75, 0.25)}
+                    initial="hide" whileInView="show" viewport={{ once: true }} variants={fadeSmallUpVariant(0.75, 0.25)}
                     className="font-bold  text-xl text-center md:text-left md:text-4xl my-4 md:my-0 [&>span]:bg-orange-400 [&>span]:p-1 [&>span]:rounded-md"
                   >
                     Discover the <span>earnings</span> with our staking program
@@ -199,7 +199,7 @@ export default function Home() {
                 </div>
 
                 <motion.div
-                  initial="hide" whileInView="show" exit="hide" variants={fadeSmallDownVariant(0.75, 0.25)}
+                  initial="hide" whileInView="show" viewport={{ once: true }} variants={fadeSmallDownVariant(0.75, 0.25)}
                   className="w-full px-8 py-12 rounded-md bg-[#575757]"
                 >
                   <h1 className="font-bold text-3xl md:text-4xl">Staking earnings</h1>
@@ -215,7 +215,7 @@ export default function Home() {
                     <LongArrowIcon />
 
                     <div>
-                      <p className="text-xl md:text-2xl text-gray-400">Estimated</p>
+                      <p className="text-xl md:text-2xl text-gray-400">Earnings</p>
                       <p className="font-semibold text-3xl md:text-5xl my-2">${stakeResult.toFixed(2)}</p>
                     </div>
                   </div>

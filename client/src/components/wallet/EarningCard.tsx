@@ -11,7 +11,7 @@ const EarningCard = (props: EarningsType) => {
   return (
     <div className="w-full md:min-w-[400px] p-2">
       <motion.div
-        initial="hide" whileInView="show" exit="hide" variants={fadeSmallUpVariant(0.5,0.5+id*0.2)}
+        initial="hide" whileInView="show" viewport={{ once: true }} variants={fadeSmallUpVariant(0.5,0.5+id*0.2)}
         className="w-full p-6 rounded-lg bg-white text-black"
       >
         <h1 className="text-xl">{title}</h1>

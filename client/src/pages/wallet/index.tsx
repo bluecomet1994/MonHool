@@ -6,11 +6,12 @@ import Navbar from "@/layouts/Navbar";
 import TimeTab from "@/components/wallet/TimeTab";
 import EarningCard from "@/components/wallet/EarningCard";
 import CoinList from "@/components/wallet/CoinList";
-import Table from "@/components/shared/Table";
+import WalletTable from "@/components/wallet/WalletTable";
+import GreetingTitle from "@/components/shared/GreetingTitle";
 import ExchangeCard from "@/components/shared/ExchangeCard";
 import { coinHistory, earnings, userBalance } from "@/utils/mockData";
 import { EarningsType, UserBalanceType } from "@/types/components";
-import { expandVariant, fadeSmallUpVariant, fadeVariant } from "@/utils/animations";
+import { expandVariant, fadeVariant } from "@/utils/animations";
 
 export default function Wallet() {
   const router = useRouter();
@@ -23,16 +24,11 @@ export default function Wallet() {
       <div className="container">
         <Navbar />
 
-        <motion.h1
-          initial="hide" whileInView="show" exit="hide" variants={fadeSmallUpVariant(0.5)}
-          className="font-bold text-2xl md:text-4xl p-2 my-16 [&>span]:text-green-400"
-        >
-          Good Evening, <span>Sculbio!</span>
-        </motion.h1>
+        <GreetingTitle />
 
         <section className="p-2">
           <motion.h1
-            initial="hide" whileInView="show" exit="hide" variants={expandVariant(0.5, 0.25)}
+            initial="hide" whileInView="show" viewport={{ once: true }} variants={expandVariant(0.5, 0.25)}
             className="flex items-center text-xl md:text-2xl"
           >
             Earnings:
@@ -50,7 +46,7 @@ export default function Wallet() {
 
         <section className="p-2 my-12 md:my-32">
           <motion.h1
-            initial="hide" whileInView="show" exit="hide" variants={fadeVariant(0.5)}
+            initial="hide" whileInView="show" viewport={{ once: true }} variants={fadeVariant(0.5)}
             className="flex items-center text-2xl"
           >
             Balance
@@ -58,13 +54,13 @@ export default function Wallet() {
 
           <div className="flex items-center my-4">
             <motion.h1
-              initial="hide" whileInView="show" exit="hide" variants={expandVariant(0.5, 0.25)}
+              initial="hide" whileInView="show" viewport={{ once: true }} variants={expandVariant(0.5, 0.25)}
               className="text-3xl md:text-7xl mr-12"
             >{'$21,809.88'}</motion.h1>
 
             <motion.button
               onClick={() => router.push('/wallet/deposit')}
-              initial="hide" whileInView="show" exit="hide" variants={expandVariant(0.5, 0.5)}
+              initial="hide" whileInView="show" viewport={{ once: true }} variants={expandVariant(0.5, 0.5)}
               className="flex justify-center items-center relative text-4xl w-12 h-12 bg-[#6C6C6C] rounded-full mx-2 md:mx-8 transition-all hover:bg-gray-400">
               +
               <span className="absolute top-full left-1/2 mt-1 -translate-x-1/2 text-center text-xs text-gray-500">Deposit</span>
@@ -72,7 +68,7 @@ export default function Wallet() {
 
             <motion.button
               onClick={() => router.push('/wallet/withdrawal')}
-              initial="hide" whileInView="show" exit="hide" variants={expandVariant(0.5, 0.75)}
+              initial="hide" whileInView="show" viewport={{ once: true }} variants={expandVariant(0.5, 0.75)}
               className="flex justify-center items-center relative text-4xl w-12 h-12 bg-[#6C6C6C] rounded-full mx-2 md:mx-8 transition-all hover:bg-gray-400">
               -
               <span className="absolute top-full left-1/2 mt-1 -translate-x-1/2 text-xs text-gray-500">Withdrawal</span>
@@ -96,11 +92,11 @@ export default function Wallet() {
 
         <section className="p-2">
           <motion.h1
-            initial="hide" whileInView="show" exit="hide" variants={fadeVariant(0.5)}
+            initial="hide" whileInView="show" viewport={{ once: true }} variants={fadeVariant(0.5)}
             className="flex items-center text-2xl"
           >History</motion.h1>
 
-          <Table headCols={tableHeader} bodyCols={coinHistory} />
+          <WalletTable headCols={tableHeader} bodyCols={coinHistory} />
         </section>
       </div>
     </main>

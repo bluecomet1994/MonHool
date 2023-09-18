@@ -15,7 +15,7 @@ const HistoryList = (props: HistoryListType) => {
 
   return (
     <motion.div
-      initial="hide" whileInView="show" exit="hide" variants={fadeSmallUpVariant(0.5)}
+      initial="hide" whileInView="show" viewport={{ once: true }} variants={fadeSmallUpVariant(0.5)}
       className="flex flex-col max-w-[680px] p-2 md:p-6 rounded-lg bg-white text-black"
     >
       <h1 className="text-sm md:text-xl">{title}</h1>

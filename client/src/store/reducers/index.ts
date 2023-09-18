@@ -1,20 +1,9 @@
-import * as ActionTypes from '@/store/constants';
-import { StakingAction } from "@/types/redux";
-import { stakings } from "@/utils/mockData";
+import currency from "./currency.reducer";
+import staking from "./staking.reducer"
 
-const initialState = {
-  data: stakings
+const reducers = {
+  currency,
+  staking
 }
 
-const staking = (state = initialState, action: StakingAction) => {
-  switch (action.type) {
-    case ActionTypes.GET_STAKINGS: {
-      return state;
-    }
-    default: {
-      return state;
-    }
-  }
-}
-
-export default staking;
+export default reducers;

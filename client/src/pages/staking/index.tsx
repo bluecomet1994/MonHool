@@ -19,12 +19,12 @@ export default function Staking() {
 
         <section className="my-12">
           <motion.h1
-            initial="hide" whileInView="show" exit="hide" variants={fadeVariant(1)}
+            initial="hide" whileInView="show" viewport={{once: true}} variants={fadeVariant(1)}
             className="text-3xl text-center md:text-left"
           >Staking</motion.h1>
 
           <motion.div
-            initial="hide" whileInView="show" exit="hide" variants={fadeSmallUpVariant(0.5)}
+            initial="hide" whileInView="show" viewport={{once: true}} variants={fadeSmallUpVariant(0.5)}
             className="px-6 py-16 my-8 rounded-xl bg-[#3D3D3D]"
           >
             {

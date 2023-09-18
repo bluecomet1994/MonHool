@@ -1,8 +1,11 @@
-import { combineReducers, createStore } from "redux";
-import staking from "./reducers";
+import { combineReducers, createStore, applyMiddleware } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
+import thunk from 'redux-thunk';
+import reducers from "./reducers";
 
 const store = createStore(
-  combineReducers({ staking })
+  combineReducers(reducers),
+  composeWithDevTools(applyMiddleware(thunk))
 );
 
 export default store;

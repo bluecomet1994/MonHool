@@ -1,31 +1,30 @@
+import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 
 import Navbar from "@/layouts/Navbar";
-import { fadeSmallLeftVariant, fadeSmallUpVariant } from '@/utils/animations';
+import { fadeSmallUpVariant, fadeVariant } from '@/utils/animations';
+import GreetingTitle from '@/components/shared/GreetingTitle';
 import ManageIcon from '@/components/shared/icons/ManageIcon';
 
 export default function AdminHome() {
+  const router = useRouter();
+
   return (
     <main className="flex justify-center">
       <div className="container">
         <Navbar />
 
-        <motion.h1
-          initial="hide" whileInView="show" exit="hide" variants={fadeSmallUpVariant(0.5)}
-          className="font-bold text-2xl md:text-4xl p-2 my-16 [&>span]:text-green-400"
-        >
-          Good Evening, <span>Sculbio!</span>
-        </motion.h1>
+        <GreetingTitle />
 
         <section>
           <motion.h1
-            initial="hide" whileInView="show" exit="hide" variants={fadeSmallLeftVariant(0.5)}
-            className='text-2xl'
+            initial="hide" whileInView="show" viewport={{ once: true }} variants={fadeVariant(0.5)}
+            className='text-2xl mx-2 md:mx-0'
           >Stats</motion.h1>
 
           <motion.div
-            initial="hide" whileInView="show" exit="hide" variants={fadeSmallUpVariant(0.5,0.25)}
-            className='flex my-4'
+            initial="hide" whileInView="show" viewport={{ once: true }} variants={fadeSmallUpVariant(0.5,0.25)}
+            className='flex flex-col md:flex-row my-4'
           >
             <div className='flex flex-col min-w-[320px] p-8 m-2 rounded-xl bg-white text-black'>
               <h1 className='text-3xl'>Total users</h1>
@@ -44,15 +43,15 @@ export default function AdminHome() {
           </motion.div>
 
           <motion.div
-            initial="hide" whileInView="show" exit="hide" variants={fadeSmallUpVariant(0.5,0.5)}
-            className='flex my-4'
+            initial="hide" whileInView="show" viewport={{ once: true }} variants={fadeSmallUpVariant(0.5,0.5)}
+            className='flex flex-col md:flex-row my-4'
           >
             <div className='flex flex-col min-w-[320px] p-8 m-2 rounded-xl bg-[#2F2F2F] text-white'>
               <h1 className='text-2xl'>Pending Withdrawals</h1>
               <p className='text-lg text-[#989898]'>22 requests</p>
 
               <div className='flex justify-end mt-8'>
-                <button className='flex justify-center items-center px-6 py-2 rounded-lg bg-primary text-black transition-all hover:bg-green-500'>Manage <ManageIcon /></button>
+                <button className='flex justify-center items-center px-6 py-2 rounded-lg bg-primary text-black transition-all hover:bg-green-500' onClick={() => router.push('/admin/withdrawals')}>Manage <ManageIcon /></button>
               </div>
             </div>
 
@@ -61,7 +60,7 @@ export default function AdminHome() {
               <p className='text-lg text-[#989898]'>22 requests</p>
 
               <div className='flex justify-end mt-8'>
-                <button className='flex justify-center items-center px-6 py-2 rounded-lg bg-primary text-black transition-all hover:bg-green-500'>Manage <ManageIcon /></button>
+                <button className='flex justify-center items-center px-6 py-2 rounded-lg bg-primary text-black transition-all hover:bg-green-500' onClick={() => router.push('/admin/deposits')}>Manage <ManageIcon /></button>
               </div>
             </div>
           </motion.div>

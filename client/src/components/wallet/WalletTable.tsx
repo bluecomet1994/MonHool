@@ -5,10 +5,10 @@ import { CoinHistoryType } from "@/types/components";
 import { TableProps } from "@/types/props";
 import { fadeSmallUpVariant } from "@/utils/animations";
 
-const Table = ({headCols, bodyCols}: TableProps) => {
+const WalletTable = ({headCols, bodyCols}: TableProps) => {
   return (
     <motion.div
-      initial="hide" whileInView="show" exit="hide" variants={fadeSmallUpVariant(0.5,0.25)}
+      initial="hide" whileInView="show" viewport={{ once: true }} variants={fadeSmallUpVariant(0.5,0.25)}
       className="w-full overflow-auto my-24 text-xl"
     >
       <table>
@@ -69,4 +69,4 @@ const Table = ({headCols, bodyCols}: TableProps) => {
   )
 }
 
-export default Table;
+export default WalletTable;
