@@ -6,7 +6,9 @@
   "scripts": {
     "client:dev": "cd client && npm run dev",
     "client:build": "cd client && npm run build",
-    "client:start": "cd client && npm run start"
+    "client:start": "cd client && npm start",
+    "server:watch": "cd server && npm run watch",
+    "server:start": "cd server && npm start"
   },
   "repository": {
     "type": "git",

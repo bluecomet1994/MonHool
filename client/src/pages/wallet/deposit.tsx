@@ -111,7 +111,7 @@ export default function Deposit() {
         <section className="m-0 md:my-8 p-4 md:p-0">
           <motion.h1
             initial="hide" whileInView="show" viewport={{ once: true }} variants={fadeSmallDownVariant(0.5)}
-            className="text-[40px] text-center md:text-left mt-4"
+            className="text-2xl md:text-[40px] text-center md:text-left mt-4"
           >Deposit</motion.h1>
 
           <CoinSelection list={trading} value={currency} setter={handleCurrencyChange} />
@@ -193,9 +193,9 @@ export default function Deposit() {
               <div className="flex flex-col w-full md:w-[480px] p-1 md:p-0">
                 <div className="flex flex-col justify-center items-center px-4 py-8 mb-8 rounded-lg bg-white text-black">
                   <Image alt="qr_code" src={cryptoInfo.qrCode} width={256} height={256} priority />
-                  <div className="flex items-center text-xs md:text-base">
-                    <p className="whitespace-pre divide-x">{cryptoInfo.address}</p>
-                    <button onClick={copyAddress} className="ml-2">
+                  <div className="flex items-center text-[10px] md:text-base">
+                    <p>{cryptoInfo.address}</p>
+                    <button onClick={copyAddress} className="md:ml-2 scale-50 md:scale-100">
                       {isCopied ? <CopiedIcon /> : <ClipboardIcon />}
                     </button>
                   </div>

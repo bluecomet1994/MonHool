@@ -46,12 +46,12 @@ const TradingBotCard = (props: TradingProps) => {
             <div
               onClick={() => setDropdownOpen(!dropdownOpen)}
               className='flex items-center text-primary cursor-pointer'
-            >{value} <ArrowDownIcon /></div>
+            >{value[0]} <ArrowDownIcon /></div>
 
             <div className={`${dropdownOpen ? 'flex' : 'hidden'} flex-col w-full`}>
               {
                 list.map((coin: string[], index: number) => (
-                  <div key={index} className='py-2 cursor-pointer' onClick={() => handleChange(coin)}>{coin}</div>
+                  <div key={index} className='py-2 cursor-pointer' onClick={() => handleChange(coin)}>{coin[0]}</div>
                 ))
               }
             </div>

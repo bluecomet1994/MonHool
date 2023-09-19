@@ -13,6 +13,7 @@ import Slider from "@/components/shared/Slider";
 import { expandVariant, fadeSmallDownVariant, fadeSmallLeftVariant, fadeSmallUpVariant } from "@/utils/animations";
 import ExchangeCard from "@/components/shared/ExchangeCard";
 import LongArrowIcon from "@/components/shared/icons/LongArrowIcon";
+import ShortArrowIcon from "@/components/shared/icons/ShortArrowIcon";
 
 export default function Home() {
   const feeCurrency = 0.4;
@@ -58,14 +59,14 @@ export default function Home() {
                   initial="hide" whileInView="show" viewport={{ once: true }} variants={expandVariant(0.5)}
                   className="flex flex-col w-full h-full rounded-md p-4 bg-primary"
                 >
-                  <div className="flex justify-center items-center text-xs px-2 py-4 rounded-2xl bg-black">
+                  <div className="flex justify-center items-center text-[10px] md:text-xs px-2 py-4 rounded-2xl bg-black">
                     <Image alt="safety-icon" src={'/assets/icons/safety-outlined.svg'} width={24} height={24} />
                     <p className="text-primary">&nbsp;Pay securely - </p>&nbsp;
                     <p>Protected by our payment systems</p>
                   </div>
 
-                  <h1 className="font-bold text-[40px] text-black my-4 leading-tight">The best staking program out here</h1>
-                  <p className="text-lg text-black tracking-wide">Freeze your money for a period of time you decide and earn a commission</p>
+                  <h1 className="font-bold text-3xl md:text-[40px] text-black my-4 leading-tight">The best staking program out here</h1>
+                  <p className="text-sm md:text-lg text-black tracking-wide">Freeze your money for a period of time you decide and earn a commission</p>
 
                   <div className="flex justify-end items-end w-full h-full">
                     <button
@@ -124,7 +125,7 @@ export default function Home() {
 
               <div className="flex flex-wrap">
                 {
-                  trading && trading.map((item: CurrencyType) => !(item.unit==="SOL") && (
+                  trading && trading.map((item: CurrencyType) => !(item.unit === "SOL") && (
                     <CryptoAnalytic
                       key={item.id}
                       name={item.coin}
@@ -156,7 +157,7 @@ export default function Home() {
                 <div className="flex justify-center items-center w-full px-16">
                   <motion.h1
                     initial="hide" whileInView="show" viewport={{ once: true }} variants={fadeSmallUpVariant(0.75, 0.25)}
-                    className="font-bold text-xl text-center md:text-left md:text-4xl my-4 md:my-0 [&>span]:bg-green-400 [&>span]:p-1 [&>span]:rounded-md"
+                    className="font-bold text-lg text-center md:text-left md:text-4xl my-4 md:my-0 [&>span]:bg-green-400 [&>span]:p-1 [&>span]:rounded-md"
                   >
                     <span>Extremely</span> Low fees for any transaction
                   </motion.h1>
@@ -166,25 +167,31 @@ export default function Home() {
                   initial="hide" whileInView="show" viewport={{ once: true }} variants={fadeSmallDownVariant(0.75, 0.25)}
                   className="w-full px-8 py-12 rounded-md bg-[#575757]"
                 >
-                  <h1 className="font-semibold text-3xl md:text-4xl">Fees Calculator</h1>
+                  <h1 className="font-semibold text-2xl md:text-4xl">Fees Calculator</h1>
 
                   <Slider startValue={0} endValue={100000} value={fees} handler={handleFeesChange} />
 
                   <div className="flex justify-between items-center w-full">
                     <div>
-                      <p className="text-xl md:text-2xl text-gray-400">For</p>
-                      <p className="font-semibold text-3xl md:text-5xl my-2">${fees}</p>
+                      <p className="text-lg md:text-2xl text-gray-400">For</p>
+                      <p className="font-semibold text-2xl md:text-5xl my-2">${fees}</p>
                     </div>
 
-                    <LongArrowIcon />
+                    <div className="hidden md:block">
+                      <LongArrowIcon />
+                    </div>
+
+                    <div className="block md:hidden">
+                      <ShortArrowIcon color="gray" />
+                    </div>
 
                     <div>
-                      <p className="text-xl md:text-2xl text-gray-400">Fees</p>
-                      <p className="font-semibold text-3xl md:text-5xl my-2">${feeResult.toFixed(2)}</p>
+                      <p className="text-lg md:text-2xl text-gray-400">Fees</p>
+                      <p className="font-semibold text-2xl md:text-5xl my-2">${feeResult.toFixed(2)}</p>
                     </div>
                   </div>
 
-                  <p className="text-base text-gray-400 my-4 [&>span]:text-green-400">
+                  <p className="text-sm md:text-base text-gray-400 my-4 [&>span]:text-green-400">
                     The average fee percentage is <span>{feeCurrency}%</span> per transaction
                   </p>
                 </motion.div>
@@ -194,7 +201,7 @@ export default function Home() {
                 <div className="flex justify-center items-center w-full px-16">
                   <motion.h1
                     initial="hide" whileInView="show" viewport={{ once: true }} variants={fadeSmallUpVariant(0.75, 0.25)}
-                    className="font-bold  text-xl text-center md:text-left md:text-4xl my-4 md:my-0 [&>span]:bg-orange-400 [&>span]:p-1 [&>span]:rounded-md"
+                    className="font-bold text-lg text-center md:text-left md:text-4xl my-4 md:my-0 [&>span]:bg-orange-400 [&>span]:p-1 [&>span]:rounded-md"
                   >
                     Discover the <span>earnings</span> with our staking program
                   </motion.h1>
@@ -204,25 +211,31 @@ export default function Home() {
                   initial="hide" whileInView="show" viewport={{ once: true }} variants={fadeSmallDownVariant(0.75, 0.25)}
                   className="w-full px-8 py-12 rounded-md bg-[#575757]"
                 >
-                  <h1 className="font-bold text-3xl md:text-4xl">Staking earnings</h1>
+                  <h1 className="font-bold text-2xl md:text-4xl">Staking earnings</h1>
 
                   <Slider startValue={0} endValue={11000} value={stake} handler={handleStakeChange} />
 
                   <div className="flex justify-between items-center w-full">
                     <div>
-                      <p className="text-xl md:text-2xl text-gray-400">For</p>
-                      <p className="font-semibold text-3xl md:text-5xl my-2">${stake}</p>
+                      <p className="text-lg md:text-2xl text-gray-400">For</p>
+                      <p className="font-semibold text-2xl md:text-5xl my-2">${stake}</p>
                     </div>
 
-                    <LongArrowIcon />
+                    <div className="hidden md:block">
+                      <LongArrowIcon />
+                    </div>
+
+                    <div className="block md:hidden">
+                      <ShortArrowIcon color="gray" />
+                    </div>
 
                     <div>
-                      <p className="text-xl md:text-2xl text-gray-400">Earnings</p>
-                      <p className="font-semibold text-3xl md:text-5xl my-2">${stakeResult.toFixed(2)}</p>
+                      <p className="text-lg md:text-2xl text-gray-400">Earnings</p>
+                      <p className="font-semibold text-2xl md:text-5xl my-2">${stakeResult.toFixed(2)}</p>
                     </div>
                   </div>
 
-                  <p className="text-base text-gray-400 my-4 [&>span]:text-green-400">
+                  <p className="text-sm md:text-base text-gray-400 my-4 [&>span]:text-green-400">
                     You will earn approximately <span>{stakeCurrency}%</span> of your balance with staking
                   </p>
                 </motion.div>
