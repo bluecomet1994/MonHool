@@ -1,9 +1,9 @@
 import Image from "next/image";
 import { motion } from 'framer-motion';
-import { UserBalanceType } from "@/types/components";
 import { fadeSmallUpVariant } from "@/utils/animations";
+import { formatNumber } from "@/utils/functions";
 
-const CoinList = (props: UserBalanceType) => {
+const CoinList = (props: any) => {
   const { id, title, name, image, amount } = props;
 
   return (
@@ -19,7 +19,7 @@ const CoinList = (props: UserBalanceType) => {
         </div>
       </div>
 
-      <h1 className="text-2xl">{amount}</h1>
+      <h1 className="text-2xl">{formatNumber(amount)}</h1>
     </motion.div>
   );
 }

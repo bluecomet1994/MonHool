@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { motion } from 'framer-motion';
 
 import Navbar from "@/layouts/Navbar";
@@ -12,19 +13,28 @@ import ExchangeCard from "@/components/shared/ExchangeCard";
 import { coinHistory, earnings, userBalance } from "@/utils/mockData";
 import { EarningsType, UserBalanceType } from "@/types/components";
 import { expandVariant, fadeVariant } from "@/utils/animations";
+import { calculateBalance } from "@/utils/functions";
 
 export default function Wallet() {
   const router = useRouter();
+  const { isLogin, userInfo } = useSelector(({ user }) => user);
+  const { trading } = useSelector(({ currency }) => currency);
   const tableHeader = ['Status', 'Date', 'Coin', '', '', 'Coin Amount'];
 
   const [timeRange, setTimeRange] = useState('24h');
+
+  useEffect(() => {
+    if (!isLogin) {
+      router.push('/');
+    }
+  }, []);
 
   return (
     <main className="flex justify-center">
       <div className="container">
         <Navbar />
 
-        <GreetingTitle />
+        <GreetingTitle name={userInfo.username} />
 
         <section className="p-2">
           <motion.h1
@@ -56,7 +66,7 @@ export default function Wallet() {
             <motion.h1
               initial="hide" whileInView="show" viewport={{ once: true }} variants={expandVariant(0.5, 0.25)}
               className="text-3xl md:text-7xl mr-12"
-            >{'$21,809.88'}</motion.h1>
+            >{`$${trading && calculateBalance(trading, userInfo.wallet)}`}</motion.h1>
 
             <motion.button
               onClick={() => router.push('/wallet/deposit')}
@@ -79,7 +89,7 @@ export default function Wallet() {
             <div className="flex flex-col w-full md:w-2/3 p-2 md:mr-24">
               {
                 userBalance.map((data: UserBalanceType) => (
-                  <CoinList key={data.id} {...data} />
+                  <CoinList key={data.id} {...data} amount={userInfo.wallet[data.name.toLowerCase()]} />
                 ))
               }
             </div>

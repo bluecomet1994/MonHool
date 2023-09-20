@@ -6,6 +6,8 @@ import { TransactionRequestType } from "@/types/components";
 import { fadeSmallDownVariant } from '@/utils/animations';
 
 export default function Withdrawals() {
+  const tableHeadCols: string[] = ['User', 'Date', 'Coin', 'Amount', 'Address', ''];
+
   const requestList: TransactionRequestType[] = [
     {
       id: 1,
@@ -65,7 +67,7 @@ export default function Withdrawals() {
         <section>
           <motion.h1 initial="hide" whileInView="show" viewport={{ once: true }} variants={fadeSmallDownVariant(0.5)} className="text-[40px] my-12">Deposits</motion.h1>
 
-          <AdminTable data={requestList} />
+          <AdminTable headCols={tableHeadCols} data={requestList} />
         </section>
       </div>
     </main>

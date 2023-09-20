@@ -6,8 +6,8 @@ import { motion } from 'framer-motion';
 
 import Navbar from "@/layouts/Navbar";
 import Footer from "@/layouts/Footer";
-import { tradingCryptos, venderImages } from "@/utils/mockData";
-import { CurrencyType, TradingCryptoType } from "@/types/components";
+import { venderImages } from "@/utils/mockData";
+import { CurrencyType } from "@/types/components";
 import CryptoAnalytic from "@/components/landing/CryptoAnalytic";
 import Slider from "@/components/shared/Slider";
 import { expandVariant, fadeSmallDownVariant, fadeSmallLeftVariant, fadeSmallUpVariant } from "@/utils/animations";

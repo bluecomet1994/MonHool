@@ -1,0 +1,5 @@
+export enum TRANSACTION_TYPE {
+  EXCHANGE = 0,
+  DEPOSIT = 1,
+  WITHDRAWAL = 2
+}

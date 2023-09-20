@@ -1,3 +1,14 @@
+export interface RegisterUserType {
+  username: string;
+  email: string;
+  password: string;
+}
+
+export interface LoginUserType {
+  email: string;
+  password: string;
+}
+
 export interface TradingCryptoType {
   id: number;
   name: string;
@@ -23,7 +34,6 @@ export interface UserBalanceType {
   title: string;
   name: string;
   image: string;
-  amount: number;
 }
 
 export interface CoinHistoryType {

@@ -2,7 +2,7 @@ import { CurrencyAction } from "@/types/redux";
 import * as ActionTypes from '@/store/actions/constants';
 
 const initialState = {
-  isLoading: false,
+  isLoading: true,
   error: null,
   trading: []
 }

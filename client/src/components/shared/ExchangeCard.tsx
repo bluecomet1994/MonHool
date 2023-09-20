@@ -39,6 +39,11 @@ const ExchangeCard = () => {
     setGetAmount((sendAmount * Number(sendCurrency.lastPrice)) / Number(value.lastPrice));
   }
 
+  const handleSendAmountChange = ({target:{value}}: any) => {
+    setSendAmount(Number(value));
+    setGetAmount((sendAmount * Number(sendCurrency.lastPrice)) / Number(getCurrency.lastPrice));
+  }
+
   useEffect(() => {
     setSendCurrency(trading && trading[0]);
     setGetCurrency(trading && trading[1]);
@@ -54,10 +59,19 @@ const ExchangeCard = () => {
         <div className="flex justify-center items-center text-sm w-44 h-10 rounded-full bg-[#A9A9A9]">Balance $24 066.09</div>
       </div>
 
-      <div className="w-full my-2 rounded-2xl bg-white bg-opacity-20">
+      <div className="w-full my-2 rounded-2xl bg-[#777777]">
         <div className="flex justify-center items-center p-5">
           <h1 className="w-1/4 text-lg md:text-xl">Send</h1>
-          <h1 className="w-1/4 font-bold text-2xl md:text-3xl">{sendAmount}</h1>
+          <h1 className="relative w-1/4 font-bold text-[#777777] text-2xl md:text-3xl">
+            {sendAmount}
+            <input
+              type='number'
+              className='absolute top-0 left-0 w-[calc(100%+24px)] h-full outline-none border-none bg-[#777777] text-white text-2xl md:text-3xl'
+              value={sendAmount.toFixed(3)}
+              onChange={handleSendAmountChange}
+              min={0}
+            />
+          </h1>
 
           <div className="flex justify-end w-1/2 text-lg md:text-xl">
             <ExchangeDropDown list={trading} value={sendCurrency} setter={handleSendCurrencyChange} />

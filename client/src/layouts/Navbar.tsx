@@ -1,17 +1,26 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import Menubar from "@/components/navbar/Menubar";
 import NavbarLink from "@/components/navbar/NavbarLink";
 import { navbarConfig } from "@/configs/navbar";
 import { NavbarItem } from "@/types/configs";
+import { logoutUser } from "@/store/actions/user.action";
 
 export default function Navbar() {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const { isLogin } = useSelector(({ user }) => user);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
+  }
+
+  const logout = () => {
+    dispatch(logoutUser());
+    router.push('/');
   }
 
   return (
@@ -19,7 +28,7 @@ export default function Navbar() {
       <div className="flex justify-between items-center relative w-full p-4 md:p-8">
         <h1 className="text-2xl cursor-pointer" onClick={() => router.push('/')}>MonHool</h1>
 
-        <div className="hidden md:flex justify-between w-full">
+        <div className="hidden md:flex justify-between items-center w-full">
           <div className="flex justify-center w-full">
             {
               navbarConfig.map((item: NavbarItem) => (
@@ -30,21 +39,32 @@ export default function Navbar() {
             }
           </div>
 
-          <div className="flex">
-            <button
-              onClick={() => router.push('/auth/login')}
-              className="bg-transparent text-white w-28 h-10 text-xl rounded-xl mx-2 transition-all hover:bg-white hover:text-black"
-            >
-              Log In
-            </button>
+          {
+            !isLogin ? (
+              <div className="flex">
+                <button
+                  onClick={() => router.push('/auth/login')}
+                  className="bg-transparent text-white w-28 h-10 text-xl rounded-xl mx-2 transition-all hover:bg-white hover:text-black"
+                >
+                  Log In
+                </button>
 
-            <button
-              onClick={() => router.push('/auth/register')}
-              className="bg-white text-black w-28 h-10 text-xl rounded-xl mx-2 transition-all hover:bg-transparent hover:text-white"
-            >
-              Sign Up
-            </button>
-          </div>
+                <button
+                  onClick={() => router.push('/auth/register')}
+                  className="bg-white text-black w-28 h-10 text-xl rounded-xl mx-2 transition-all hover:bg-transparent hover:text-white"
+                >
+                  Sign Up
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={logout}
+                className="bg-transparent text-white w-28 h-10 text-xl rounded-xl mx-2 transition-all hover:bg-white hover:text-black"
+              >
+                Logout
+              </button>
+            )
+          }
         </div>
 
         <Menubar handler={toggleMenu} />

@@ -78,36 +78,31 @@ export const userBalance: UserBalanceType[] = [
     id: 1,
     title: "Bitcoin",
     name: "BTC",
-    image: '/assets/images/badges/btc.png',
-    amount: 0.7723
+    image: '/assets/images/badges/btc.png'
   },
   {
     id: 2,
     title: "Ethereum",
     name: "ETH",
-    image: '/assets/images/badges/eth.png',
-    amount: 0
+    image: '/assets/images/badges/eth.png'
   },
   {
     id: 3,
     title: "Ripple",
     name: "XRP",
-    image: '/assets/images/badges/xrp.png',
-    amount: 0
+    image: '/assets/images/badges/xrp.png'
   },
   {
     id: 4,
     title: "Thether",
     name: "USDT",
-    image: '/assets/images/badges/usdt.png',
-    amount: 0
+    image: '/assets/images/badges/usdt.png'
   },
   {
     id: 5,
     title: "Solana",
     name: "SOL",
-    image: '/assets/images/badges/sol.png',
-    amount: 167.094
+    image: '/assets/images/badges/sol.png'
   },
 ];
 

@@ -68,5 +68,6 @@ export interface TransactionInputProp {
 }
 
 export interface AdminTableProps {
+  headCols: string[];
   data: TransactionRequestType[];
 }

@@ -1,22 +1,45 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
 import { motion } from 'framer-motion';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
+import Swal from "sweetalert2";
 
 import Navbar from "@/layouts/Navbar";
 import Input from "@/components/shared/Input";
 import ChipIcon from "@/components/shared/icons/ChipIcon";
 import { registerValidationSchema } from "@/validations/authValidationSchema";
 import { fadeSmallLeftVariant, fadeSmallRightVariant } from "@/utils/animations";
+import { registerUser } from "@/store/actions/user.action";
+import { RegisterUserType } from "@/types/components";
 
 export default function Register() {
+  const router = useRouter();
+  const dispatch = useDispatch();
   const formOptions = { resolver: yupResolver(registerValidationSchema) };
   const { register, handleSubmit, reset, formState } = useForm(formOptions);
   const { errors } = formState;
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = (data: RegisterUserType) => {
+    dispatch(registerUser(data))
+      .then((response: any) => {
+        Swal.fire({
+          toast: true,
+          icon: response.success ? 'success' : 'warning',
+          position: 'top-right',
+          text: response.message,
+          timerProgressBar: true,
+          timer: 3000,
+          showConfirmButton: false
+        });
+
+        if(response.success) {
+          reset();
+          router.push('/auth/login');
+        }
+      });
   }
 
   return (

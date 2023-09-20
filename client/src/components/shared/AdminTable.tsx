@@ -7,9 +7,7 @@ import { AdminTableProps } from "@/types/props"
 import { fadeSmallUpVariant } from '@/utils/animations';
 
 const AdminTable = (props: AdminTableProps) => {
-  const { data: tableData } = props;
-
-  const headCols: string[] = ['User', 'Date', 'Coin', 'Amount', 'Address', ''];
+  const { headCols, data: tableData } = props;
 
   return (
     <motion.div
