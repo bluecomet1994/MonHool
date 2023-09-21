@@ -77,7 +77,7 @@ const AddPosition = (props: AddPositionProps) => {
 
     dispatch(addStakingPosition(positionRequest))
       .then((response: any) => {
-        if (response.valid) {
+        if (response && response.valid) {
           Swal.fire({
             toast: true,
             icon: response.success ? 'success' : 'warning',
@@ -88,7 +88,9 @@ const AddPosition = (props: AddPositionProps) => {
             showConfirmButton: false
           });
 
-          setter(false);
+          if (response && response.success) {
+            setter(false);
+          }
         } else {
           Swal.fire({
             toast: true,

@@ -40,7 +40,7 @@ export default function Wallet() {
   useEffect(() => {
     dispatch(fetchDashboard(timeRange))
       .then((response: any) => {
-        if (!response.valid) {
+        if (!response) {
           Swal.fire({
             toast: true,
             icon: "error",

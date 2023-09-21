@@ -54,7 +54,7 @@ export default function Deposit() {
     if (address) {
       dispatch(withdrawalCoin(withdrawalRequest))
         .then((response: any) => {
-          if (response.valid) {
+          if (response && response.valid) {
             Swal.fire({
               toast: true,
               icon: response.success ? 'success' : 'warning',

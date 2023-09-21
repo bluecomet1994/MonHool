@@ -9,11 +9,11 @@ import { fadeSmallLeftVariant } from "@/utils/animations";
 import { TradingProps } from "@/types/props";
 import { getTradeEarning, getTradingPosition, openTradingPosition } from "@/store/actions/trading.action";
 import { TRADING_STATUS } from "@/enums/status";
-import { convertTime, formatNumber } from "@/utils/functions";
+import { calculateCoinBalance, convertTime, formatNumber } from "@/utils/functions";
 import { OpenTradingRequestType } from "@/types/redux";
 
 const TradingBotCard = (props: TradingProps) => {
-  const { list, value, setter } = props;
+  const { list, value, setter, trading, wallet } = props;
 
   const dispatch = useDispatch();
   const { position } = useSelector(({ trading }) => trading);
@@ -37,12 +37,13 @@ const TradingBotCard = (props: TradingProps) => {
     const positionRequest: OpenTradingRequestType = {
       amount,
       hit: rate,
-      time
+      time,
+      balance: calculateCoinBalance(trading, wallet, amount)
     }
 
     dispatch(openTradingPosition(positionRequest))
       .then((response: any) => {
-        if (response.valid) {
+        if (response && response.valid) {
           Swal.fire({
             toast: true,
             icon: response.success ? 'success' : 'warning',
@@ -71,7 +72,7 @@ const TradingBotCard = (props: TradingProps) => {
   const getMoney = () => {
     dispatch(getTradeEarning(position._id))
       .then((response: any) => {
-        if (response.valid) {
+        if (response && response.valid) {
           Swal.fire({
             toast: true,
             icon: response.success ? 'success' : 'warning',
@@ -111,7 +112,7 @@ const TradingBotCard = (props: TradingProps) => {
   }, [position]);
 
   useEffect(() => {
-    setRate(Number((Math.floor(Math.random() * (62 - 55 + 1) + 55) / 100).toFixed(2)));
+    setRate(Number((Math.floor(Math.random() * (60 - 20 + 1) + 20) / 100).toFixed(2)));
     setTime(Math.floor(Math.random() * (25 - 20 + 1) + 20));
   }, []);
 

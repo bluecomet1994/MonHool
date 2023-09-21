@@ -31,28 +31,40 @@ export default class StakingController {
     const { coin, deposit, rate, earning, usd, time } = req.body;
 
     await UserModel.findOne({ email })
-      .then(user => {
+      .then((user: any) => {
         if (user) {
-          const newHistory: any = new StakingHistoryModel({
-            username,
-            email,
-            coin,
-            deposit,
-            rate,
-            earning,
-            usd,
-            endDate: calculateEndDate(time)
-          });
-
-          newHistory.save().then((history: any) => {
+          if (user.wallet[coin.toLowerCase()] < deposit) {
             res.status(200).json({
-              success: true,
+              success: false,
               valid: true,
-              message: "The position was added successfully.",
-              history
+              message: "You do not have enough coin to stake."
             });
-          })
-            .catch((error: Error) => console.log(error));
+          } else {
+            user.wallet[coin.toLowerCase()] -= deposit;
+
+            const newHistory: any = new StakingHistoryModel({
+              username,
+              email,
+              coin,
+              deposit,
+              rate,
+              earning,
+              usd,
+              endDate: calculateEndDate(time)
+            });
+  
+            user.save().then((user: any) => {
+              newHistory.save().then((history: any) => {
+                res.status(200).json({
+                  success: true,
+                  valid: true,
+                  message: "The position was added successfully.",
+                  history,
+                  user
+                });
+              }).catch((error: Error) => console.log(error));
+            })
+          }
         } else {
           res.status(404).json({
             success: false,

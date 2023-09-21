@@ -31,39 +31,56 @@ export default class TradingBotController {
 
   static async openPosition(req: Request, res: Response) {
     const { username, email }: any = req.user;
-    const { amount, hit, time } = req.body;
+    const { amount, hit, time, balance } = req.body;
 
-    await TradingHistoryModel.findOne({ email, status: TRADING_STATUS.OPENED })
-      .then(history => {
-        if (history) {
-          res.status(200).json({
-            success: false,
-            valid: true,
-            status: TRADING_STATUS.OPENED,
-            message: "There is already opened position."
-          });
-        } else {
-          const newTradingHistory: any = new TradingHistoryModel({
-            username,
-            email,
-            amount,
-            hit,
-            time,
-            endDate: calculateEndDate(time)
-          });
-
-          newTradingHistory.save()
-            .then((history: any) => {
+    await UserModel.findOne({ email })
+      .then(async (user: any) => {
+        await TradingHistoryModel.findOne({ email, status: TRADING_STATUS.OPENED })
+          .then(history => {
+            if (history) {
               res.status(200).json({
-                success: true,
+                success: false,
                 valid: true,
-                message: "You opened the position successfully!",
-                history
+                status: TRADING_STATUS.OPENED,
+                message: "There is already opened position."
               });
-            })
-            .catch((error: Error) => console.log(error));
-        }
-      });
+            } else {
+              if (balance === false) {
+                res.status(200).json({
+                  success: false,
+                  valid: true,
+                  message: "You do not have enough money in your wallet."
+                });
+              } else {
+                Object.keys(balance).map(key => {
+                  user.wallet[key.toLowerCase()] -= balance[key];
+                });
+    
+                const newTradingHistory: any = new TradingHistoryModel({
+                  username,
+                  email,
+                  amount,
+                  hit,
+                  time,
+                  endDate: calculateEndDate(time)
+                });
+    
+                user.save().then((user: any) => {
+                  newTradingHistory.save()
+                    .then((history: any) => {
+                      res.status(200).json({
+                        success: true,
+                        valid: true,
+                        message: "You opened the position successfully!",
+                        history,
+                        user
+                      });
+                    }).catch((error: Error) => console.log(error));
+                })
+              }
+            }
+          });
+      })
   }
 
   static async getEarning(req: Request, res: Response) {

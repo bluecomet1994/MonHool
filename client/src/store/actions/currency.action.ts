@@ -19,15 +19,15 @@ let cryptoCurrency = [
   },
   {
     id: 3,
-    coin: "Theter",
-    unit: "USDT",
-    image: "/assets/images/badges/usdt.png",
-  },
-  {
-    id: 4,
     coin: "Ripple",
     unit: "XRP",
     image: "/assets/images/badges/xrp.png",
+  },
+  {
+    id: 4,
+    coin: "Theter",
+    unit: "USDT",
+    image: "/assets/images/badges/usdt.png",
   },
   {
     id: 5,

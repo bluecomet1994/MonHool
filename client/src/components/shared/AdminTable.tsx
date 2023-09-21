@@ -9,15 +9,25 @@ import { fadeSmallUpVariant } from '@/utils/animations';
 import { formatDate, formatNumber } from '@/utils/functions';
 import { TRANSACTION_STATUS } from '@/enums/status';
 import { accessRequest } from '@/store/actions/admin.action';
+import ClipboardIcon from './icons/ClipboardIcon';
+import { useState } from 'react';
+import CopiedIcon from './icons/CopiedIcon';
 
 const AdminTable = (props: AdminTableProps) => {
   const { headCols, data: tableData } = props;
   const dispatch = useDispatch();
 
+  const [isCopied, setIsCopied] = useState(0);
+
+  const copyAddress = (address: string, index: number) => {
+    navigator.clipboard.writeText(address);
+    setIsCopied(index);
+  }
+
   const determine = (id: string, type: number, status: number) => {
     dispatch(accessRequest(id, type, status))
       .then((response: any) => {
-        if (response.valid) {
+        if (response && response.valid) {
           Swal.fire({
             toast: true,
             icon: response.success ? 'success' : 'warning',
@@ -48,33 +58,42 @@ const AdminTable = (props: AdminTableProps) => {
     >
       {
         tableData.length > 0 ? (
-      <table>
-        <tbody>
-          <tr>
-            {
-              headCols.map((header: string, index: number) => (
-                <td key={index}>{header}</td>
-              ))
-            }
-          </tr>
-
-          {
-            tableData.map((row: any) => (
-              <tr key={row._id}>
-                <td>{row.username}</td>
-                <td>{formatDate(row.date)}</td>
-                <td>{row.coin}</td>
-                <td>{formatNumber(row.amount)} {row.coin}</td>
-                <td><p className='w-36 truncate'>{row.address}</p></td>
-                <td className="flex">
-                  <button onClick={() => determine(row._id, row.type, TRANSACTION_STATUS.SUCCESS)} className="flex justify-center items-center w-10 h-10 mx-2 rounded-full bg-green-400 transition-all hover:bg-green-500"><ConfirmIcon /></button>
-                  <button onClick={() => determine(row._id, row.type, TRANSACTION_STATUS.DECLINED)} className="flex justify-center items-center w-10 h-10 mx-2 rounded-full bg-red-400 transition-all hover:bg-red-500"><DeclineIcon /></button>
-                </td>
+          <table>
+            <tbody>
+              <tr>
+                {
+                  headCols.map((header: string, index: number) => (
+                    <td key={index}>{header}</td>
+                  ))
+                }
               </tr>
-            ))
-          }
-        </tbody>
-      </table>
+
+              {
+                tableData.map((row: any, index: number) => (
+                  <tr key={row._id}>
+                    <td>{row.username}</td>
+                    <td>{formatDate(row.date)}</td>
+                    <td>{row.coin}</td>
+                    <td>{formatNumber(row.amount)} {row.coin}</td>
+                    <td>
+                      <div className='flex'>
+                        <p className='w-36 truncate'>{row.address}</p>
+                        {row.address && (
+                          <button onClick={() => copyAddress(row.address, index+1)} className="md:ml-2 scale-50 md:scale-100">
+                            {isCopied-1===index ? <CopiedIcon /> : <ClipboardIcon />}
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                    <td className="flex">
+                      <button onClick={() => determine(row._id, row.type, TRANSACTION_STATUS.SUCCESS)} className="flex justify-center items-center w-10 h-10 mx-2 rounded-full bg-green-400 transition-all hover:bg-green-500"><ConfirmIcon /></button>
+                      <button onClick={() => determine(row._id, row.type, TRANSACTION_STATUS.DECLINED)} className="flex justify-center items-center w-10 h-10 mx-2 rounded-full bg-red-400 transition-all hover:bg-red-500"><DeclineIcon /></button>
+                    </td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
         ) : (
           <div className='flex justify-center items-center w-full'>
             <h1 className='text-gray-500'>No pending requests</h1>

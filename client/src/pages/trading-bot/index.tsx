@@ -49,7 +49,7 @@ export default function TradingBot() {
                 <p className='font-bold text-[50px]'>${trading && calculateBalance(trading, userInfo.wallet)}</p>
 
                 <div className='flex items-end mt-4'>
-                  <h1 className='text-2xl text-[#DEDEDE]'>{dashboard.trading[0] > 0 ? '+' : '-'} {formatNumber(dashboard.trading[0])}</h1>
+                  <h1 className='text-2xl text-[#DEDEDE]'>{dashboard.trading[0] < 0 ? '-' : '+'} {formatNumber(dashboard.trading[0])}</h1>
                   <span className='text-xl text-[#9B9B9B] mx-2'>Last week</span>
                 </div>
 
@@ -59,7 +59,7 @@ export default function TradingBot() {
                 </div>
               </motion.div>
 
-              <TradingBotCard list={dropDownData} value={selectedCurrency} setter={setSelectedCurrency} />
+              <TradingBotCard list={dropDownData} value={selectedCurrency} setter={setSelectedCurrency} trading={trading} wallet={userInfo.wallet} />
             </div>
 
             <TradingDashboard list={dropDownData} value={selectedCurrency} setter={setSelectedCurrency} />

@@ -35,6 +35,10 @@ export const addStakingPosition: any = (data: OpenStakingRequestType) => (dispat
       if (response.data.success) {
         dispatch({ type: Actions.OPEN_STAKING_POSITION_SUCCESS });
         dispatch(getStakingList());
+        dispatch({
+          type: Actions.SET_USER_INFO_BY_TOKEN,
+          payload: response.data.user
+        })
       }
 
       return response.data;

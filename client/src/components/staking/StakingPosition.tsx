@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 
 import { getStakingMoney } from "@/store/actions/staking.action";
 import { StakingType } from "@/types/components";
-import { convertTime } from "@/utils/functions";
+import { convertTime, formatNumber } from "@/utils/functions";
 import { cryptoCurrency } from "@/utils/mockData";
 
 const StakingPosition = (props: StakingType) => {
@@ -15,7 +15,7 @@ const StakingPosition = (props: StakingType) => {
   const getMoney = () => {
     dispatch(getStakingMoney(_id))
       .then((response: any) => {
-        if (response.valid) {
+        if (response && response.valid) {
           Swal.fire({
             toast: true,
             icon: response.success ? 'success' : 'warning',
@@ -55,21 +55,21 @@ const StakingPosition = (props: StakingType) => {
 
       <div className="flex flex-wrap py-6">
         <div className="flex justify-between items-start w-full md:w-3/4">
-          <div className="w-5/12">
+          <div className="w-1/3">
             <p className="text-sm md:text-2xl">Your deposit</p>
             <h1 className="font-bold text-2xl md:text-5xl my-2 md:my-4">{deposit} {coin}</h1>
-            <span className="text-xs md:text-xl text-[#878787]">${(deposit * cryptoCurrency[coin]).toLocaleString()}</span>
+            <span className="text-xs md:text-xl text-[#878787]">${formatNumber(deposit * cryptoCurrency[coin])}</span>
           </div>
 
-          <div className="w-4/12">
+          <div className="w-1/3">
             <h1 className="text-sm md:text-2xl">Rate %</h1>
             <p className="text-[14px] md:text-3xl my-2 md:my-4">{rate * 100}%</p>
           </div>
 
-          <div className="w-3/12">
+          <div className="w-1/3">
             <p className="text-sm md:text-2xl">Earning</p>
             <h1 className="font-bold text-2xl md:text-5xl my-2 md:my-4">{earning} {coin}</h1>
-            <span className="text-xs md:text-xl text-[#878787]">${(earning * cryptoCurrency[coin]).toLocaleString()}</span>
+            <span className="text-xs md:text-xl text-[#878787]">${formatNumber(earning * cryptoCurrency[coin])}</span>
           </div>
         </div>
 

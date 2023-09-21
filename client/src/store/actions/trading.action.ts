@@ -41,6 +41,10 @@ export const openTradingPosition: any = (data: OpenTradingRequestType) => (dispa
       if (response.data.success) {
         dispatch({ type: Actions.ADD_TRADING_POSITION_SUCCESS });
         dispatch(getTradingPosition());
+        dispatch({
+          type: Actions.SET_USER_INFO_BY_TOKEN,
+          payload: response.data.user
+        })
       }
 
       return response.data;

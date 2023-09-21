@@ -63,7 +63,7 @@ const ExchangeCard = () => {
 
     dispatch(exchangeCoin(requestData))
       .then((response: any) => {
-        if (response.valid) {
+        if (response && response.valid) {
           Swal.fire({
             toast: true,
             icon: response.success ? 'success' : 'warning',

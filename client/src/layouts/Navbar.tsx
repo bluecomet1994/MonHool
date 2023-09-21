@@ -83,21 +83,45 @@ export default function Navbar() {
         <Menubar handler={toggleMenu} />
 
         <div className={`absolute top-full left-0 w-full ${menuOpen ? 'block' : 'hidden'} md:hidden p-4 bg-[#555] fade-down`}>
-          <div className="flex justify-center w-full my-4">
-            <button
-              onClick={() => router.push('/auth/login')}
-              className="bg-transparent text-white w-28 h-10 text-lg md:text-xl"
-            >
-              Log In
-            </button>
+          {
+            isLogin ? (
+              <div className="flex justify-center w-full my-4">
+                {
+                  userInfo.isAdmin && (
+                    <button
+                      onClick={() => router.push('/admin')}
+                      className="bg-white text-black w-28 h-10 text-xl rounded-xl mx-2 transition-all hover:bg-transparent hover:text-white"
+                    >
+                      Admin
+                    </button>
+                  )
+                }
 
-            <button
-              onClick={() => router.push('/auth/register')}
-              className="bg-white text-black w-28 h-10 text-lg md:text-xl rounded-xl"
-            >
-              Sign Up
-            </button>
-          </div>
+                <button
+                  onClick={logout}
+                  className="bg-transparent text-white w-28 h-10 text-xl rounded-xl mx-2 transition-all hover:bg-white hover:text-black"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <div className="flex justify-center w-full my-4">
+                <button
+                  onClick={() => router.push('/auth/login')}
+                  className="bg-transparent text-white w-28 h-10 text-lg md:text-xl"
+                >
+                  Log In
+                </button>
+
+                <button
+                  onClick={() => router.push('/auth/register')}
+                  className="bg-white text-black w-28 h-10 text-lg md:text-xl rounded-xl"
+                >
+                  Sign Up
+                </button>
+              </div>
+            )
+          }
 
           <div className="flex justify-center w-full my-4">
             {

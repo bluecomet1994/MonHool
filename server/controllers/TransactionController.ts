@@ -80,6 +80,7 @@ export default class TransactionController {
       .then((user: any) => {
         if (user) {
           let updatedCoin: number = 0;
+          let isAllowed: boolean = false;
 
           Object.keys(user.wallet).map(key => {
             if (key === sendCoin.toLowerCase()) {
@@ -92,6 +93,7 @@ export default class TransactionController {
               } else {
                 user.wallet[key] -= sendAmount;
                 updatedCoin = user.wallet[key];
+                isAllowed = true;
               }
             }
             if (key === getCoin.toLowerCase()) {
@@ -99,31 +101,33 @@ export default class TransactionController {
             }
           });
 
-          user.save()
-            .then((user: any) => {
-              const newHistory: any = new TransactionHistoryModel({
-                username,
-                email,
-                type: 0,
-                status: 1,
-                coin: sendCoin,
-                isExchange: true,
-                exchangeCoin: getCoin,
-                total: updatedCoin
-              });
-
-              newHistory.save().then(() => {
-                res.status(200).json({
-                  success: true,
-                  valid: true,
-                  message: "Successfully exchanged.",
-                  user: _.pick(user, ['username', 'email', 'wallet', 'date'])
+          if (isAllowed) {
+            user.save()
+              .then((user: any) => {
+                const newHistory: any = new TransactionHistoryModel({
+                  username,
+                  email,
+                  type: 0,
+                  status: 1,
+                  coin: sendCoin,
+                  isExchange: true,
+                  exchangeCoin: getCoin,
+                  total: updatedCoin
                 });
+
+                newHistory.save().then(() => {
+                  res.status(200).json({
+                    success: true,
+                    valid: true,
+                    message: "Successfully exchanged.",
+                    user: _.pick(user, ['username', 'email', 'wallet', 'date'])
+                  });
+                });
+              })
+              .catch((error: Error) => {
+                console.log(error);
               });
-            })
-            .catch((error: Error) => {
-              console.log(error);
-            });
+          }
         } else {
           res.status(404).json({
             success: false,

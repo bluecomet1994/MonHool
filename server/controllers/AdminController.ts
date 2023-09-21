@@ -12,7 +12,7 @@ export default class AdminController {
       .then(async user => {
         if (user) {
           if (isAdmin) {
-            await TransactionHistoryModel.find({ type: TRANSACTION_TYPE.DEPOSIT, status: TRANSACTION_STATUS.PENDING })
+            await TransactionHistoryModel.find({ type: TRANSACTION_TYPE.DEPOSIT, status: TRANSACTION_STATUS.PENDING }).sort({ date: -1 })
               .then(histories => {
                 res.status(200).json({
                   success: true,
@@ -45,7 +45,7 @@ export default class AdminController {
       .then(async user => {
         if (user) {
           if (isAdmin) {
-            await TransactionHistoryModel.find({ type: TRANSACTION_TYPE.WITHDRAWAL, status: TRANSACTION_STATUS.PENDING })
+            await TransactionHistoryModel.find({ type: TRANSACTION_TYPE.WITHDRAWAL, status: TRANSACTION_STATUS.PENDING }).sort({ date: -1 })
               .then(histories => {
                 res.status(200).json({
                   success: true,

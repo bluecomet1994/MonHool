@@ -35,3 +35,40 @@ export function calculateBalance(trading: CurrencyType[], wallet: any) {
 
   return formatNumber(balance);
 }
+
+export function calculateCoinBalance(trading: CurrencyType[], wallet: any, amount: number) {
+  let balanceFilled: boolean = false;
+  let tempAmount: number = amount;
+  let balance: any = {
+    BTC: 0,
+    ETH: 0,
+    USDT: 0,
+    XRP: 0,
+    SOL: 0
+  };
+  
+  trading.map((currency: CurrencyType) => {
+    if (!balanceFilled) {
+      const coinBalance: number = Number(currency.lastPrice) * wallet[currency.unit.toLowerCase()];
+      if (coinBalance < tempAmount) {
+        tempAmount -= coinBalance;
+        balance[currency.unit] = wallet[currency.unit.toLowerCase()];
+      } else {
+        balance[currency.unit] = tempAmount / Number(currency.lastPrice);
+        balanceFilled = true;
+      }
+    }
+  });
+
+  let totalAmount: number = 0;
+
+  trading.map((currency: CurrencyType) => {
+    totalAmount += (Number(currency.lastPrice) * balance[currency.unit]);
+  });
+
+  if (totalAmount < amount) {
+    return false;
+  } else {
+    return balance;
+  }
+}

@@ -59,6 +59,8 @@ export interface TradingProps {
   list: string[][];
   value: string[];
   setter: any;
+  trading?: any;
+  wallet?: any;
 }
 
 export interface TransactionInputProp {

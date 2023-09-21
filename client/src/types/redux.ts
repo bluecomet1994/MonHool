@@ -89,4 +89,11 @@ export interface OpenTradingRequestType {
   amount: number;
   hit: number;
   time: number;
+  balance: {
+    BTC: number;
+    ETH: number;
+    USDT: number;
+    XRP: number;
+    SOL: number;
+  };
 }
