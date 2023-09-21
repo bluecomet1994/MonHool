@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
-import { loginWithJWTToken } from "@/store/actions/user.action";
+import { loginWithJWTToken, logoutUser } from "@/store/actions/user.action";
 
 export default function AuthProvider(props: any) {
   const router = useRouter();
@@ -23,10 +23,12 @@ export default function AuthProvider(props: any) {
             timer: 3000,
             showConfirmButton: false
           });
+
+          dispatch(logoutUser());
         }
       });
     }
-  }, [router]);
+  }, []);
 
   return (
     <div>{props.children}</div>

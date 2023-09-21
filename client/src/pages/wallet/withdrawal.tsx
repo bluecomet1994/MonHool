@@ -1,69 +1,25 @@
-import Image from "next/image";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { motion } from 'framer-motion';
 
 import Navbar from "@/layouts/Navbar";
 import TransactionInput from "@/components/wallet/TransactionInput";
 import HistoryList from "@/components/wallet/HistoryList";
 import LongArrowIcon from "@/components/shared/icons/LongArrowIcon";
-import { fadeSmallDownVariant, fadeSmallLeftVariant, fadeSmallRightVariant, fadeSmallUpVariant } from "@/utils/animations";
-import { CurrencyType, TransactionHistoryType } from "@/types/components";
+import { fadeSmallDownVariant, fadeSmallLeftVariant, fadeSmallRightVariant } from "@/utils/animations";
+import { CurrencyType } from "@/types/components";
 import CoinSelection from "@/components/wallet/CoinSelection";
-import ClipboardIcon from "@/components/shared/icons/ClipboardIcon";
 import ShortArrowIcon from "@/components/shared/icons/ShortArrowIcon";
+import { getWithdrawalHistory, withdrawalCoin } from "@/store/actions/transaction.action";
+import { WithdrawalRequestType } from "@/types/redux";
+import Swal from "sweetalert2";
 
 export default function Deposit() {
-  const depositHistory: TransactionHistoryType[] = [
-    {
-      id: 1,
-      coin: 'btc',
-      crypto: 'Bitcoin',
-      date: new Date(),
-      currency: 0.083,
-      status: 'Pending'
-    },
-    {
-      id: 2,
-      coin: 'btc',
-      crypto: 'Bitcoin',
-      date: new Date(),
-      currency: 0.022,
-      status: 'Success'
-    },
-    {
-      id: 3,
-      coin: 'sol',
-      crypto: 'Solana',
-      date: new Date(),
-      currency: 100.6,
-      status: 'Declined'
-    }
-  ];
-
-  const cryptoAddress: any = {
-    BTC: {
-      address: "bc1qkndg8vue39fhusfgzrzruh25x5c6n6zchwnffz",
-      qrCode: "/assets/images/qr_code/btc.jpg"
-    },
-    ETH: {
-      address: "0xBe140d656915Daf5f0119cb781e7dBdd5C2e587F",
-      qrCode: "/assets/images/qr_code/eth.jpg"
-    },
-    USDT: {
-      address: "TCRxGGYNo63SHrNM2rezPBRNRqEtnWtiD1",
-      qrCode: "/assets/images/qr_code/usdt.jpg"
-    },
-    XRP: {
-      address: "rhQyS8CXFKzitUeK52tDVQX6a6oFLpe5R9",
-      qrCode: "/assets/images/qr_code/xrp.jpg"
-    },
-    SOL: {
-      address: "8pqGHUw7K7xYdzRGirpdZ8xmu2mz1j9nsjevqt4yWHUa",
-      qrCode: "/assets/images/qr_code/sol.jpg"
-    },
-  };
-
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const { isLogin } = useSelector(({ user }) => user);
+  const { isLoading, withdrawal } = useSelector(({ transaction }) => transaction);
   const { trading } = useSelector(({ currency }) => currency);
 
   const [currency, setCurrency] = useState<CurrencyType>({
@@ -73,14 +29,13 @@ export default function Deposit() {
     image: '',
     lastPrice: '0'
   });
-  const [usdAmount, setUsdAmount] = useState(356);
+  const [usdAmount, setUsdAmount] = useState(0);
   const [coinAmount, setCoinAmount] = useState(0);
-  const [cryptoInfo, setCryptoInfo] = useState(cryptoAddress.BTC);
+  const [address, setAddress] = useState('');
 
   const handleCurrencyChange = (currency: CurrencyType) => {
     setCurrency(currency);
     setCoinAmount(usdAmount / Number(currency.lastPrice));
-    setCryptoInfo(cryptoAddress[currency.unit]);
   }
 
   const handleAmountChange = ({ target: { value } }: any) => {
@@ -88,9 +43,66 @@ export default function Deposit() {
     setCoinAmount(Number(value) / Number(currency.lastPrice));
   }
 
+  const confirmWithdrawal = () => {
+    const withdrawalRequest: WithdrawalRequestType = {
+      coin: currency.unit,
+      amount: coinAmount,
+      address,
+      usd: usdAmount
+    }
+
+    if (address) {
+      dispatch(withdrawalCoin(withdrawalRequest))
+        .then((response: any) => {
+          if (response.valid) {
+            Swal.fire({
+              toast: true,
+              icon: response.success ? 'success' : 'warning',
+              position: 'top-right',
+              text: response.message,
+              timerProgressBar: true,
+              timer: 3000,
+              showConfirmButton: false
+            });
+
+            setAddress('');
+          } else {
+            Swal.fire({
+              toast: true,
+              icon: "error",
+              position: 'top-right',
+              text: "The token has expired. Please refresh the page.",
+              timerProgressBar: true,
+              timer: 3000,
+              showConfirmButton: false
+            });
+          }
+        })
+    } else {
+      Swal.fire({
+        toast: true,
+        icon: 'warning',
+        position: 'top-right',
+        text: 'Please enter the wallet address.',
+        timerProgressBar: true,
+        timer: 3000,
+        showConfirmButton: false
+      });
+    }
+
+  }
+
   useEffect(() => {
     setCurrency(trading && trading[0]);
   }, [trading]);
+
+  useEffect(() => {
+    dispatch(getWithdrawalHistory());
+
+    if (!isLogin) {
+      router.push('/');
+    }
+  }, []);
 
   return (
     <main className="flex justify-center">
@@ -179,8 +191,8 @@ export default function Deposit() {
 
                 <h1 className="text-3xl my-8">Your informations</h1>
 
-                <TransactionInput type="text" placeholder="Wallet Address" editable={true} />
-                <button className="w-full px-4 py-2 rounded-lg text-black bg-primary transition-all hover:bg-green-500">Confirm</button>
+                <TransactionInput type="text" placeholder="Wallet Address" editable={true} value={address} onChange={setAddress} />
+                <button onClick={confirmWithdrawal} className="w-full px-4 py-2 rounded-lg text-black bg-primary transition-all hover:bg-green-500">Confirm</button>
 
                 <p className="mt-8 mb-12 text-[#807C7C] [&>span]:text-green-400 text-xs md:text-base">
                   * After you click on <span>confirm</span> your request will appear in the section below
@@ -191,7 +203,7 @@ export default function Deposit() {
         </section>
 
         <section className="py-4 px-2 md:pb-20">
-          <HistoryList title="Last Withdrawals" data={depositHistory} />
+          <HistoryList isLoading={isLoading} title="Last Withdrawals" data={withdrawal} />
         </section>
       </div>
     </main>

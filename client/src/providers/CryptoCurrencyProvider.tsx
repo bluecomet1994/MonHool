@@ -1,12 +1,11 @@
-import { useRouter } from "next/router";
-import Swal from "sweetalert2";
 import { useEffect } from "react";
+import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import { getCurrencyTrading } from "@/store/actions/currency.action";
+import LoadingSplash from "@/components/shared/LoadingSplash";
 
 export default function CryptoCurrencyProvider({ children }: any) {
   const dispatch = useDispatch();
-  const router = useRouter();
   const { isLoading } = useSelector(({ currency }) => currency);
 
   useEffect(() => {
@@ -21,13 +20,7 @@ export default function CryptoCurrencyProvider({ children }: any) {
         showConfirmButton: false
       });
     });
-  }, [router]);
+  }, []);
 
-  return isLoading ? (
-    <div className="flex justify-center items-center w-full h-screen bg-[#181818]">
-      <div className="spinner"></div>
-    </div>
-  ) : (
-    <div>{children}</div>
-  );
+  return isLoading ? <LoadingSplash /> : <div>{children}</div>;
 }

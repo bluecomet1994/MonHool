@@ -28,12 +28,14 @@ export interface InputProps {
 }
 
 export interface TableProps {
+  isLoading: boolean;
   headCols: string[];
-  bodyCols: CoinHistoryType[];
+  bodyCols: Array<any>;
 }
 
 export interface AddPositionProps {
   isOpen: boolean;
+  setter: any;
 }
 
 export interface IconProps {
@@ -69,5 +71,5 @@ export interface TransactionInputProp {
 
 export interface AdminTableProps {
   headCols: string[];
-  data: TransactionRequestType[];
+  data: Array<any>;
 }

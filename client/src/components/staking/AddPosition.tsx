@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import CoinDropDown from "@/components/staking/CoinDropDown";
 import TimeDropDown from "@/components/staking/TimeDropDown";
 import { AddPositionProps } from "@/types/props";
 import { CurrencyType, TimeListType } from "@/types/components";
+import { OpenStakingRequestType } from "@/types/redux";
+import { addStakingPosition } from "@/store/actions/staking.action";
+import Swal from "sweetalert2";
 
 const timeList: TimeListType[] = [
   {
@@ -35,7 +38,8 @@ const timeList: TimeListType[] = [
 ];
 
 const AddPosition = (props: AddPositionProps) => {
-  const { isOpen } = props;
+  const { isOpen, setter } = props;
+  const dispatch = useDispatch();
   const { trading } = useSelector(({ currency }) => currency);
 
   const [currency, setCurrency] = useState<CurrencyType>({
@@ -59,6 +63,44 @@ const AddPosition = (props: AddPositionProps) => {
     setTime(value);
     setRate(value.rate);
     setEarning(amount * value.rate);
+  }
+
+  const openPosition = () => {
+    const positionRequest: OpenStakingRequestType = {
+      coin: currency.unit,
+      deposit: amount,
+      rate,
+      earning,
+      time: time.time,
+      usd: amount * Number(currency.lastPrice)
+    }
+
+    dispatch(addStakingPosition(positionRequest))
+      .then((response: any) => {
+        if (response.valid) {
+          Swal.fire({
+            toast: true,
+            icon: response.success ? 'success' : 'warning',
+            position: 'top-right',
+            text: response.message,
+            timerProgressBar: true,
+            timer: 3000,
+            showConfirmButton: false
+          });
+
+          setter(false);
+        } else {
+          Swal.fire({
+            toast: true,
+            icon: "error",
+            position: 'top-right',
+            text: "The token has expired. Please refresh the page.",
+            timerProgressBar: true,
+            timer: 3000,
+            showConfirmButton: false
+          });
+        }
+      })
   }
 
   useEffect(() => {
@@ -106,7 +148,7 @@ const AddPosition = (props: AddPositionProps) => {
               <h1 className="text-sm md:text-2xl">Set time</h1>
               <TimeDropDown list={timeList} value={time} setter={handleTimeChange} />
             </div>
-            <button className="px-2 md:px-6 py-3 md:py-4 mt-8 mb-3 md:mb-0 rounded-xl bg-[#272727] text-white text-lg md:text-3xl transition-all hover:bg-black">+ Add Position</button>
+            <button onClick={openPosition} className="px-2 md:px-6 py-3 md:py-4 mt-8 mb-3 md:mb-0 rounded-xl bg-[#272727] text-white text-lg md:text-3xl transition-all hover:bg-black">+ Add Position</button>
           </div>
         </div>
       </div>

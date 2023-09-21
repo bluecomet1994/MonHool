@@ -20,12 +20,13 @@ export interface TradingCryptoType {
 export interface EarningsType {
   id: number;
   title: string;
-  amount: number;
-  increase: number;
+  // amount: number;
+  // increase: number;
+  data: number[];
 }
 
 export interface InputEleType {
-  value: string;
+  value: number;
   setter: any;
 }
 
@@ -47,12 +48,30 @@ export interface CoinHistoryType {
 }
 
 export interface StakingType {
-  id: number;
+  _id: string;
+  username: string;
+  email: string;
   coin: string;
-  amount: number;
+  deposit: number;
   rate: number;
   earning: number;
-  time: number;
+  usd: number;
+  endDate: number;
+  status: number;
+  date: string;
+  __v: number;
+}
+
+export interface TradingPositionType {
+  _id: string;
+  username: string;
+  email: string;
+  amount: number;
+  hit: number;
+  endDate: number;
+  status: number;
+  date: string;
+  __v: number
 }
 
 export interface TransactionHistoryType {
@@ -65,8 +84,9 @@ export interface TransactionHistoryType {
 }
 
 export interface HistoryListType {
+  isLoading: boolean;
   title: string;
-  data: TransactionHistoryType[];
+  data: Array<any>;
 }
 
 export interface TransactionRequestType {

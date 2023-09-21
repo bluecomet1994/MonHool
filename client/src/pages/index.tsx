@@ -105,7 +105,7 @@ export default function Home() {
                     <h1 className="font-bold text-3xl">25 USD Bonus</h1>
                     <p className="text-base text-[#909090]">Sign In and deposit more than 100 USD to get a 25 USD bonus.</p>
 
-                    <button className="absolute bottom-0 right-0 m-4">
+                    <button onClick={() => router.push('/wallet/deposit')} className="absolute bottom-0 right-0 m-4">
                       <Image alt="safety-icon" src={'/assets/icons/arrow-circle-dark.svg'} width={48} height={48} className="-rotate-45" />
                     </button>
                   </motion.div>

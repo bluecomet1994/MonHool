@@ -1,15 +1,24 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
+import Swal from 'sweetalert2';
 
 import ExchangeDropDown from "@/components/landing/ExchangeDropDown";
 import { expandVariant } from '@/utils/animations';
 import { CurrencyType } from '@/types/components';
+import { calculateBalance } from '@/utils/functions';
+import { ExchangeRequestType } from '@/types/redux';
+import { exchangeCoin } from '@/store/actions/transaction.action';
+import { logoutUser } from '@/store/actions/user.action';
 
 const ExchangeCard = () => {
+  const dispatch = useDispatch();
+  const router = useRouter();
   const { trading } = useSelector(({ currency }) => currency);
-  
+  const { isLogin, userInfo } = useSelector(({ user }) => user);
+
   const [sendCurrency, setSendCurrency] = useState<CurrencyType>({
     id: 0,
     coin: '',
@@ -17,7 +26,7 @@ const ExchangeCard = () => {
     image: '',
     lastPrice: '0'
   });
-  
+
   const [getCurrency, setGetCurrency] = useState<CurrencyType>({
     id: 0,
     coin: '',
@@ -39,9 +48,49 @@ const ExchangeCard = () => {
     setGetAmount((sendAmount * Number(sendCurrency.lastPrice)) / Number(value.lastPrice));
   }
 
-  const handleSendAmountChange = ({target:{value}}: any) => {
+  const handleSendAmountChange = ({ target: { value } }: any) => {
     setSendAmount(Number(value));
     setGetAmount((sendAmount * Number(sendCurrency.lastPrice)) / Number(getCurrency.lastPrice));
+  }
+
+  const exchange = () => {
+    const requestData: ExchangeRequestType = {
+      sendCoin: sendCurrency.unit,
+      sendAmount,
+      getCoin: getCurrency.unit,
+      getAmount
+    }
+
+    dispatch(exchangeCoin(requestData))
+      .then((response: any) => {
+        if (response.valid) {
+          Swal.fire({
+            toast: true,
+            icon: response.success ? 'success' : 'warning',
+            position: 'top-right',
+            text: response.message,
+            timerProgressBar: true,
+            timer: 3000,
+            showConfirmButton: false
+          });
+        } else {
+          if (isLogin) {
+            Swal.fire({
+              toast: true,
+              icon: 'error',
+              position: 'top-right',
+              text: 'The token has expired. Please login again.',
+              timerProgressBar: true,
+              timer: 3000,
+              showConfirmButton: false
+            });
+
+            dispatch(logoutUser());
+          } else {
+            router.push('/auth/login');
+          }
+        }
+      });
   }
 
   useEffect(() => {
@@ -56,7 +105,7 @@ const ExchangeCard = () => {
     >
       <div className="flex justify-between items-center mb-2">
         <h1 className="font-bold text-2xl md:text-3xl">Exchange</h1>
-        <div className="flex justify-center items-center text-sm w-44 h-10 rounded-full bg-[#A9A9A9]">Balance $24 066.09</div>
+        <div className="flex justify-center items-center text-sm w-44 h-10 rounded-full bg-[#A9A9A9]">Balance ${trading && calculateBalance(trading, userInfo.wallet)}</div>
       </div>
 
       <div className="w-full my-2 rounded-2xl bg-[#777777]">
@@ -99,7 +148,10 @@ const ExchangeCard = () => {
         <span>NO fees</span> will be applied in the process. Read <span className='cursor-pointer hover:underline'>Terms & Conditions</span>
       </p>
 
-      <button className="w-full min-h-[40px] h-full rounded-full mt-2 text-black text-xl bg-primary transition-all hover:bg-green-500">Change</button>
+      <button
+        onClick={exchange}
+        className="w-full min-h-[40px] h-full rounded-full mt-2 text-black text-xl bg-primary transition-all hover:bg-green-500"
+      >Change</button>
     </motion.div>
   )
 }

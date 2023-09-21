@@ -1,31 +1,31 @@
+import { TradingBotAction } from "@/types/redux";
 import * as Actions from '@/store/actions/constants';
-import { StakingAction } from "@/types/redux";
+import { TRADING_STATUS } from "@/enums/status";
 
 const initialState = {
   isLoading: false,
-  positions: [],
+  position: null,
   error: null
 }
 
-const staking = (state = initialState, action: StakingAction) => {
+const trading = (state = initialState, action: TradingBotAction) => {
   switch (action.type) {
-    case Actions.GET_STAKING_REQUEST: {
+    case Actions.GET_TRADING_POSITION_REQUEST: {
       return {
         ...state,
         isLoading: true
       }
     }
-    case Actions.GET_STAKING_SUCCESS: {
+    case Actions.GET_TRADING_POSITION_SUCCESS: {
       return {
         ...state,
         isLoading: false,
-        positions: action.payload
+        position: action.payload
       }
     }
-    case Actions.GET_STAKING_FAILURE: {
+    case Actions.GET_TRADING_POSITION_FAILURE: {
       return {
         ...state,
-        isLoading: false,
         error: action.error
       }
     }
@@ -35,4 +35,4 @@ const staking = (state = initialState, action: StakingAction) => {
   }
 }
 
-export default staking;
+export default trading;

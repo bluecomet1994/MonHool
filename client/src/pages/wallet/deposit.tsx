@@ -1,47 +1,24 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { motion } from 'framer-motion';
 
 import Navbar from "@/layouts/Navbar";
 import TransactionInput from "@/components/wallet/TransactionInput";
 import HistoryList from "@/components/wallet/HistoryList";
 import LongArrowIcon from "@/components/shared/icons/LongArrowIcon";
-import { fadeSmallDownVariant, fadeSmallLeftVariant, fadeSmallRightVariant, fadeSmallUpVariant } from "@/utils/animations";
-import { CurrencyType, TransactionHistoryType } from "@/types/components";
+import { fadeSmallDownVariant, fadeSmallLeftVariant, fadeSmallRightVariant } from "@/utils/animations";
+import { CurrencyType } from "@/types/components";
 import CoinSelection from "@/components/wallet/CoinSelection";
 import ClipboardIcon from "@/components/shared/icons/ClipboardIcon";
 import ShortArrowIcon from "@/components/shared/icons/ShortArrowIcon";
 import CopiedIcon from "@/components/shared/icons/CopiedIcon";
+import { depositCoin, getDepositHistory } from "@/store/actions/transaction.action";
+import { DepositRequestType } from "@/types/redux";
+import Swal from "sweetalert2";
 
 export default function Deposit() {
-  const depositHistory: TransactionHistoryType[] = [
-    {
-      id: 1,
-      coin: 'btc',
-      crypto: 'Bitcoin',
-      date: new Date(),
-      currency: 0.083,
-      status: 'Pending'
-    },
-    {
-      id: 2,
-      coin: 'btc',
-      crypto: 'Bitcoin',
-      date: new Date(),
-      currency: 0.022,
-      status: 'Success'
-    },
-    {
-      id: 3,
-      coin: 'sol',
-      crypto: 'Solana',
-      date: new Date(),
-      currency: 100.6,
-      status: 'Declined'
-    }
-  ];
-
   const cryptoAddress: any = {
     BTC: {
       address: "bc1qkndg8vue39fhusfgzrzruh25x5c6n6zchwnffz",
@@ -65,6 +42,10 @@ export default function Deposit() {
     },
   };
 
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const { isLogin } = useSelector(({ user }) => user);
+  const { isLoading, deposit } = useSelector(({ transaction }) => transaction);
   const { trading } = useSelector(({ currency }) => currency);
 
   const [currency, setCurrency] = useState<CurrencyType>({
@@ -74,10 +55,11 @@ export default function Deposit() {
     image: '',
     lastPrice: '0'
   });
-  const [usdAmount, setUsdAmount] = useState(356);
+  const [usdAmount, setUsdAmount] = useState(0);
   const [coinAmount, setCoinAmount] = useState(0);
   const [cryptoInfo, setCryptoInfo] = useState(cryptoAddress.BTC);
   const [isCopied, setIsCopied] = useState(false);
+  const [transactionHash, setTransactionHash] = useState('');
 
   const handleCurrencyChange = (currency: CurrencyType) => {
     setCurrency(currency);
@@ -95,6 +77,54 @@ export default function Deposit() {
     setIsCopied(true);
   }
 
+  const confirmDeposit = () => {
+    const requestData: DepositRequestType = {
+      coin: currency.unit,
+      amount: coinAmount,
+      hash: transactionHash,
+      usd: usdAmount
+    }
+
+    if (transactionHash) {
+      dispatch(depositCoin(requestData))
+        .then((response: any) => {
+          if (response.valid) {
+            Swal.fire({
+              toast: true,
+              icon: response.success ? 'success' : 'warning',
+              position: 'top-right',
+              text: response.message,
+              timerProgressBar: true,
+              timer: 3000,
+              showConfirmButton: false
+            });
+
+            setTransactionHash('');
+          } else {
+            Swal.fire({
+              toast: true,
+              icon: "error",
+              position: 'top-right',
+              text: "The token has expired. Please refresh the page.",
+              timerProgressBar: true,
+              timer: 3000,
+              showConfirmButton: false
+            });
+          }
+        })
+    } else {
+      Swal.fire({
+        toast: true,
+        icon: 'warning',
+        position: 'top-right',
+        text: 'Please enter the transaction hash.',
+        timerProgressBar: true,
+        timer: 3000,
+        showConfirmButton: false
+      });
+    }
+  }
+
   useEffect(() => {
     setCurrency(trading && trading[0]);
   }, [trading]);
@@ -102,6 +132,14 @@ export default function Deposit() {
   useEffect(() => {
     setIsCopied(false);
   }, [cryptoInfo]);
+
+  useEffect(() => {
+    dispatch(getDepositHistory());
+
+    if (!isLogin) {
+      router.push('/');
+    }
+  }, []);
 
   return (
     <main className="flex justify-center">
@@ -118,7 +156,7 @@ export default function Deposit() {
 
           <div className="flex flex-col md:flex-row w-full">
             <motion.div
-              initial="hide" whileInView="show" viewport={{ once: true }} variants={fadeSmallLeftVariant(0.5,0.5)}
+              initial="hide" whileInView="show" viewport={{ once: true }} variants={fadeSmallLeftVariant(0.5, 0.5)}
               className="flex flex-col w-full"
             >
               <h1 className="text-[#B3B3B3]">Amount (USD)</h1>
@@ -187,7 +225,7 @@ export default function Deposit() {
             </motion.div>
 
             <motion.div
-              initial="hide" whileInView="show" viewport={{ once: true }} variants={fadeSmallRightVariant(0.5,0.5)}
+              initial="hide" whileInView="show" viewport={{ once: true }} variants={fadeSmallRightVariant(0.5, 0.5)}
               className="flex flex-col items-end w-full md:py-10"
             >
               <div className="flex flex-col w-full md:w-[480px] p-1 md:p-0">
@@ -201,8 +239,8 @@ export default function Deposit() {
                   </div>
                 </div>
 
-                <TransactionInput type="text" placeholder="Transaction Hash" editable={true} />
-                <button className="w-full px-4 py-2 rounded-lg text-black bg-primary transition-all hover:bg-green-500">Confirm</button>
+                <TransactionInput type="text" placeholder="Transaction Hash" editable={true} value={transactionHash} onChange={setTransactionHash} />
+                <button onClick={confirmDeposit} className="w-full px-4 py-2 rounded-lg text-black bg-primary transition-all hover:bg-green-500">Confirm</button>
 
                 <p className="mt-8 mb-12 text-[#807C7C] [&>span]:text-green-400 text-xs md:text-base">
                   * After you click on <span>confirm</span> your request will appear in the section below. Make use you send the money to the address indicated above and enter the <span>transaction hash</span> one it is validated on the blockchain.
@@ -213,7 +251,7 @@ export default function Deposit() {
         </section>
 
         <section className="py-4 px-2 md:pb-20">
-          <HistoryList title="Last Deposits" data={depositHistory} />
+          <HistoryList isLoading={isLoading} title="Last Deposits" data={deposit} />
         </section>
       </div>
     </main>

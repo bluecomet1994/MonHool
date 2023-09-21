@@ -52,26 +52,26 @@ export const venderImages: string[] = [
   '/assets/images/venders/google.png',
 ];
 
-export const earnings: EarningsType[] = [
-  {
-    id: 1,
-    title: "All earnings",
-    amount: 8656.09,
-    increase: 0.1
-  },
-  {
-    id: 2,
-    title: "Staking earnings",
-    amount: 1998.09,
-    increase: 0.03
-  },
-  {
-    id: 3,
-    title: "Trading bot earnings",
-    amount: 6658,
-    increase: 0.03
-  },
-];
+// export const earnings: EarningsType[] = [
+//   {
+//     id: 1,
+//     title: "All earnings",
+//     amount: 8656.09,
+//     increase: 0.1
+//   },
+//   {
+//     id: 2,
+//     title: "Staking earnings",
+//     amount: 1998.09,
+//     increase: 0.03
+//   },
+//   {
+//     id: 3,
+//     title: "Trading bot earnings",
+//     amount: 6658,
+//     increase: 0.03
+//   },
+// ];
 
 export const userBalance: UserBalanceType[] = [
   {
@@ -163,21 +163,21 @@ export const coinHistory: CoinHistoryType[] = [
   },
 ];
 
-export const stakings: StakingType[] = [
-  {
-    id: 1,
-    coin: "BTC",
-    amount: 1.12,
-    earning: 0.24,
-    rate: 0.2,
-    time: 2456
-  },
-  {
-    id: 2,
-    coin: "SOL",
-    amount: 520.1,
-    earning: 93.3,
-    rate: 0.18,
-    time: 0
-  },
-];
+// export const stakings: StakingType[] = [
+//   {
+//     id: 1,
+//     coin: "BTC",
+//     amount: 1.12,
+//     earning: 0.24,
+//     rate: 0.2,
+//     time: 2456
+//   },
+//   {
+//     id: 2,
+//     coin: "SOL",
+//     amount: 520.1,
+//     earning: 93.3,
+//     rate: 0.18,
+//     time: 0
+//   },
+// ];

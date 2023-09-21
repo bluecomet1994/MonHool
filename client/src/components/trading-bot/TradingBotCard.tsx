@@ -1,19 +1,28 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { motion } from 'framer-motion';
+import Swal from "sweetalert2";
 
 import ArrowDownIcon from "@/components/shared/icons/ArrowDownIcon";
 import ExternalIcon from "@/components/shared/icons/ExternalIcon";
 import { fadeSmallLeftVariant } from "@/utils/animations";
 import { TradingProps } from "@/types/props";
+import { getTradeEarning, getTradingPosition, openTradingPosition } from "@/store/actions/trading.action";
+import { TRADING_STATUS } from "@/enums/status";
+import { convertTime, formatNumber } from "@/utils/functions";
+import { OpenTradingRequestType } from "@/types/redux";
 
 const TradingBotCard = (props: TradingProps) => {
   const { list, value, setter } = props;
 
-  const [isPositionOpen, setIsPositionOpen] = useState(false);
+  const dispatch = useDispatch();
+  const { position } = useSelector(({ trading }) => trading);
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [amount, setAmount] = useState(0);
   const [rate, setRate] = useState(0);
   const [time, setTime] = useState(0);
+  const [remainTime, setRemainTime] = useState(0);
 
   const handleChange = (coin: string[]) => {
     setter(coin);
@@ -25,13 +34,100 @@ const TradingBotCard = (props: TradingProps) => {
   }
 
   const openPosition = () => {
-    setIsPositionOpen(true);
+    const positionRequest: OpenTradingRequestType = {
+      amount,
+      hit: rate,
+      time
+    }
+
+    dispatch(openTradingPosition(positionRequest))
+      .then((response: any) => {
+        if (response.valid) {
+          Swal.fire({
+            toast: true,
+            icon: response.success ? 'success' : 'warning',
+            position: 'top-right',
+            text: response.message,
+            timerProgressBar: true,
+            timer: 3000,
+            showConfirmButton: false
+          });
+
+          setter(false);
+        } else {
+          Swal.fire({
+            toast: true,
+            icon: "error",
+            position: 'top-right',
+            text: "The token has expired. Please refresh the page.",
+            timerProgressBar: true,
+            timer: 3000,
+            showConfirmButton: false
+          });
+        }
+      })
+  }
+
+  const getMoney = () => {
+    dispatch(getTradeEarning(position._id))
+      .then((response: any) => {
+        if (response.valid) {
+          Swal.fire({
+            toast: true,
+            icon: response.success ? 'success' : 'warning',
+            position: 'top-right',
+            text: response.message,
+            timerProgressBar: true,
+            timer: 3000,
+            showConfirmButton: false
+          });
+        } else {
+          Swal.fire({
+            toast: true,
+            icon: "error",
+            position: 'top-right',
+            text: "The token has expired. Please refresh the page.",
+            timerProgressBar: true,
+            timer: 3000,
+            showConfirmButton: false
+          });
+        }
+      })
   }
 
   useEffect(() => {
-    setRate(Math.floor(Math.random() * (62 - 55 + 1) + 55));
+    dispatch(getTradingPosition());
+  }, []);
+
+  useEffect(() => {
+    if (position && position.status === TRADING_STATUS.OPENED) {
+      setAmount(position.amount);
+      setRate(position.hit);
+      setTime(position.time);
+    } else {
+      setAmount(0);
+      setRemainTime(0);
+    }
+  }, [position]);
+
+  useEffect(() => {
+    setRate(Number((Math.floor(Math.random() * (62 - 55 + 1) + 55) / 100).toFixed(2)));
     setTime(Math.floor(Math.random() * (25 - 20 + 1) + 20));
   }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (position) {
+        setRemainTime(position.endDate - new Date().getTime());
+      }
+
+      if (position && position.endDate - new Date().getTime() < 0) {
+        clearInterval(interval);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [position]);
 
   return (
     <motion.div
@@ -73,47 +169,97 @@ const TradingBotCard = (props: TradingProps) => {
         </div>
       </div>
 
-      <div className='flex flex-col md:flex-row w-full my-12'>
-        <div className='flex w-full md:w-2/3'>
-          <div className='flex flex-col w-full'>
-            <h1 className='text-sm md:text-xl text-[#BBBBBB]'>Amount</h1>
-            <p className='flex items-center font-bold text-3xl md:text-[40px] my-4'>
-              $<span className="relative text-[#252525]">
-                {amount.toFixed(2)}
-                <input type="number" className="absolute top-0 left-0 w-[calc(100%+24px)] h-full font-bold bg-[#252525] text-white text-3xl md:text-[40px] outline-none border-none" value={amount.toFixed(2)} min={0} onChange={handleAmountChange} />
-              </span>
-            </p>
-          </div>
+      {
+        remainTime < 0 ? (
+          <div className='flex flex-wrap flex-col md:flex-row w-full my-12'>
+            <div className={`flex w-full md:w-full`}>
+              <div className='flex flex-col w-full'>
+                <h1 className='text-sm md:text-xl text-[#BBBBBB]'>Amount</h1>
+                <p className='flex items-center font-bold text-3xl md:text-[40px] my-4'>
+                  $<span className="relative text-[#252525]">
+                    {amount.toFixed(2)}
+                    <input type="number" className="absolute top-0 left-0 w-[calc(100%+24px)] h-full font-bold bg-[#252525] text-white text-3xl md:text-[40px] outline-none border-none" value={amount.toFixed(2)} min={0} onChange={handleAmountChange} disabled={position && position.status === TRADING_STATUS.OPENED} />
+                  </span>
+                </p>
+              </div>
 
-          <div className='flex flex-col items-end md:items-start w-full'>
-            <h1 className='text-sm md:text-xl text-[#BBBBBB]'>Earning possibility</h1>
-            <p className='font-bold text-3xl md:text-[40px] my-4'>{rate}%</p>
-          </div>
-        </div>
+              <div className='flex flex-col items-end md:items-start w-full'>
+                <h1 className='text-sm md:text-xl text-[#BBBBBB]'>Time needed</h1>
+                <p className='font-bold text-3xl md:text-[40px] my-4'>{time} hours</p>
+              </div>
+            </div>
 
-        <div className='w-full md:w-1/3'>
-          <div className='flex flex-col items-center md:items-start w-full'>
-            <h1 className='text-sm md:text-xl text-[#BBBBBB]'>Time needed</h1>
-            <p className='font-bold text-3xl md:text-[40px] my-4'>{time} hours</p>
+            <div className={`flex w-full md:justify-between`}>
+              <div className='flex flex-col items-start w-full'>
+                <h1 className='text-sm md:text-xl text-[#BBBBBB]'>Earned</h1>
+                <p className='font-bold text-3xl md:text-[40px] my-4'>${formatNumber(amount * rate)}</p>
+              </div>
+
+              <div className='flex flex-col items-end md:items-start w-full'>
+                <h1 className='text-sm md:text-xl text-[#BBBBBB]'>Hit</h1>
+                <p className='font-bold text-3xl md:text-[40px] my-4'>{Math.floor(rate * 100)}%</p>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        ) : (
+          <div className='flex flex-col md:flex-row w-full my-12'>
+            <div className={`flex w-full md:w-2/3'`}>
+              <div className='flex flex-col w-full'>
+                <h1 className='text-sm md:text-xl text-[#BBBBBB]'>Amount</h1>
+                <p className='flex items-center font-bold text-3xl md:text-[40px] my-4'>
+                  $<span className="relative text-[#252525]">
+                    {amount.toFixed(2)}
+                    <input type="number" className="absolute top-0 left-0 w-[calc(100%+24px)] h-full font-bold bg-[#252525] text-white text-3xl md:text-[40px] outline-none border-none" value={amount.toFixed(2)} min={0} onChange={handleAmountChange} disabled={position && position.status === TRADING_STATUS.OPENED} />
+                  </span>
+                </p>
+              </div>
+
+              <div className='flex flex-col items-end md:items-start w-full'>
+                <h1 className='text-sm md:text-xl text-[#BBBBBB]'>Earning possibility</h1>
+                <p className='font-bold text-3xl md:text-[40px] my-4'>{Math.floor(rate * 100)}%</p>
+              </div>
+            </div>
+
+            <div className={`flex w-full md:w-1/3`}>
+              <div className='flex flex-col items-start w-full'>
+                <h1 className='text-sm md:text-xl text-[#BBBBBB]'>Time needed</h1>
+                <p className='font-bold text-3xl md:text-[40px] my-4'>{time} hours</p>
+              </div>
+            </div>
+          </div>
+        )
+      }
 
       <div className='flex flex-col md:flex-row items-center my-4'>
-        <button className={`${isPositionOpen ? 'hidden' : 'flex'} justify-center items-center w-full md:w-auto font-bold px-4 py-3 rounded-lg bg-primary text-xl text-black transition-all hover:bg-green-500`} onClick={openPosition}>
-          Open position&nbsp;<ExternalIcon />
-        </button>
+        {
+          !position && (
+            <button className='flex justify-center items-center w-full md:w-auto font-bold px-4 py-3 rounded-lg bg-primary text-xl text-black transition-all hover:bg-green-500' onClick={openPosition}>
+              Open position&nbsp;<ExternalIcon />
+            </button>
+          )
+        }
 
-        <div className={`${isPositionOpen ? 'flex' : 'hidden'} justify-start w-full my-2`}>
-          <h1 className='text-xl'>Time left</h1>
-          <p className='text-xl text-primary mx-4'>23h 22m 5s</p>
-        </div>
+        {
+          position && position.status === TRADING_STATUS.OPENED && (
+            <div className="flex flex-col md:flex-row items-center w-full">
+              <div className='flex justify-start w-full my-2'>
+                <h1 className='text-xl'>Time left</h1>
+                <p className='text-xl text-primary mx-4'>{position && remainTime < 0 ? 'Done' : convertTime(remainTime)}</p>
+              </div>
 
-        <div className={`${isPositionOpen ? 'flex' : 'hidden'} justify-end w-full my-2`}>
-          <button className='font-bold px-4 py-2 rounded-lg bg-primary text-black transition-all hover:bg-green-500'>
-            Get earning
-          </button>
-        </div>
+              {
+                position && remainTime < 0 && (
+                  <div className='flex justify-end w-full my-2'>
+                    <button onClick={getMoney} className='font-bold px-4 py-2 rounded-lg bg-primary text-black transition-all hover:bg-green-500'>
+                      Get earning
+                    </button>
+                  </div>
+                )
+              }
+            </div>
+          )
+        }
+
       </div>
     </motion.div>
   );

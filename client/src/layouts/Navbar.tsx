@@ -11,7 +11,7 @@ import { logoutUser } from "@/store/actions/user.action";
 export default function Navbar() {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { isLogin } = useSelector(({ user }) => user);
+  const { isLogin, userInfo } = useSelector(({ user }) => user);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -57,12 +57,25 @@ export default function Navbar() {
                 </button>
               </div>
             ) : (
-              <button
-                onClick={logout}
-                className="bg-transparent text-white w-28 h-10 text-xl rounded-xl mx-2 transition-all hover:bg-white hover:text-black"
-              >
-                Logout
-              </button>
+              <div className="flex">
+                {
+                  userInfo.isAdmin && (
+                    <button
+                      onClick={() => router.push('/admin')}
+                      className="bg-white text-black w-28 h-10 text-xl rounded-xl mx-2 transition-all hover:bg-transparent hover:text-white"
+                    >
+                      Admin
+                    </button>
+                  )
+                }
+
+                <button
+                  onClick={logout}
+                  className="bg-transparent text-white w-28 h-10 text-xl rounded-xl mx-2 transition-all hover:bg-white hover:text-black"
+                >
+                  Logout
+                </button>
+              </div>
             )
           }
         </div>

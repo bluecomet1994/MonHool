@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { motion } from 'framer-motion';
 
 import Navbar from "@/layouts/Navbar";
@@ -10,24 +10,49 @@ import CoinList from "@/components/wallet/CoinList";
 import WalletTable from "@/components/wallet/WalletTable";
 import GreetingTitle from "@/components/shared/GreetingTitle";
 import ExchangeCard from "@/components/shared/ExchangeCard";
-import { coinHistory, earnings, userBalance } from "@/utils/mockData";
-import { EarningsType, UserBalanceType } from "@/types/components";
+import { userBalance } from "@/utils/mockData";
+import { UserBalanceType } from "@/types/components";
 import { expandVariant, fadeVariant } from "@/utils/animations";
 import { calculateBalance } from "@/utils/functions";
+import { getTransactionHistory } from "@/store/actions/transaction.action";
+import { fetchDashboard } from "@/store/actions/user.action";
+import Swal from "sweetalert2";
 
 export default function Wallet() {
   const router = useRouter();
-  const { isLogin, userInfo } = useSelector(({ user }) => user);
+  const dispatch = useDispatch();
+  const { isLogin, userInfo, dashboard } = useSelector(({ user }) => user);
+  const { isLoading, history } = useSelector(({ transaction }) => transaction);
   const { trading } = useSelector(({ currency }) => currency);
+
   const tableHeader = ['Status', 'Date', 'Coin', '', '', 'Coin Amount'];
 
-  const [timeRange, setTimeRange] = useState('24h');
+  const [timeRange, setTimeRange] = useState(1);
 
   useEffect(() => {
+    dispatch(getTransactionHistory());
+
     if (!isLogin) {
       router.push('/');
     }
   }, []);
+
+  useEffect(() => {
+    dispatch(fetchDashboard(timeRange))
+      .then((response: any) => {
+        if (!response.valid) {
+          Swal.fire({
+            toast: true,
+            icon: "error",
+            position: 'top-right',
+            text: "The token has expired. Please refresh the page.",
+            timerProgressBar: true,
+            timer: 3000,
+            showConfirmButton: false
+          });
+        }
+      });
+  }, [timeRange]);
 
   return (
     <main className="flex justify-center">
@@ -46,11 +71,9 @@ export default function Wallet() {
           </motion.h1>
 
           <div className="flex flex-col md:flex-row my-4">
-            {
-              earnings.map((earning: EarningsType) => (
-                <EarningCard key={earning.id} {...earning} />
-              ))
-            }
+            <EarningCard id={1} title="All earnings" data={dashboard.allEarning} />
+            <EarningCard id={2} title="Staking earnings" data={dashboard.staking} />
+            <EarningCard id={3} title="Trading bot earnings" data={dashboard.trading} />
           </div>
         </section>
 
@@ -106,7 +129,7 @@ export default function Wallet() {
             className="flex items-center text-2xl"
           >History</motion.h1>
 
-          <WalletTable headCols={tableHeader} bodyCols={coinHistory} />
+          <WalletTable isLoading={isLoading} headCols={tableHeader} bodyCols={history} />
         </section>
       </div>
     </main>

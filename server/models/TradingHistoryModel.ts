@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
-import { STAKING_STATUS } from '../enums/status';
+import { TRADING_STATUS } from '../enums/status';
 
-const StakingHistorySchema = new mongoose.Schema({
+const TradingHistorySchema = new mongoose.Schema({
   username: {
     type: String,
     required: true
@@ -10,23 +10,15 @@ const StakingHistorySchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  coin: {
-    type: String,
-    required: true
-  },
-  deposit: {
+  amount: {
     type: Number,
     required: true
   },
-  rate: {
+  hit: {
     type: Number,
     required: true
   },
-  earning: {
-    type: Number,
-    required: true
-  },
-  usd: {
+  time: {
     type: Number,
     required: true
   },
@@ -36,7 +28,7 @@ const StakingHistorySchema = new mongoose.Schema({
   },
   status: {
     type: Number,
-    default: STAKING_STATUS.PROGRESS
+    default: TRADING_STATUS.OPENED
   },
   date: {
     type: Date,
@@ -44,4 +36,4 @@ const StakingHistorySchema = new mongoose.Schema({
   }
 });
 
-export default mongoose.model('stakinghistories', StakingHistorySchema);
+export default mongoose.model('tradinghistories', TradingHistorySchema);

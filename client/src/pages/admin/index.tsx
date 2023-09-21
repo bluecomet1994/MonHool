@@ -5,16 +5,25 @@ import Navbar from "@/layouts/Navbar";
 import { fadeSmallUpVariant, fadeVariant } from '@/utils/animations';
 import GreetingTitle from '@/components/shared/GreetingTitle';
 import ManageIcon from '@/components/shared/icons/ManageIcon';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 export default function AdminHome() {
   const router = useRouter();
+  const { isLogin, userInfo } = useSelector(({ user }) => user);
+
+  useEffect(() => {
+    if (!isLogin || !userInfo.isAdmin) {
+      router.push('/');
+    }
+  })
 
   return (
     <main className="flex justify-center">
       <div className="container">
         <Navbar />
 
-        <GreetingTitle />
+        <GreetingTitle name={userInfo.username} />
 
         <section>
           <motion.h1

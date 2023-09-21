@@ -38,7 +38,7 @@ let cryptoCurrency = [
 ]
 
 export const getCurrencyTrading = (): any => (dispatch: Dispatch) => {
-  const currencyApi: string = 'https://data.binance.com/api/v3/ticker?symbols=["BTCUSDT","ETHUSDT","BUSDUSDT","XRPUSDT","SOLUSDT"]';
+  const currencyApi: string = 'http://data.binance.com/api/v3/ticker?symbols=["BTCUSDT","ETHUSDT","BUSDUSDT","XRPUSDT","SOLUSDT"]';
 
   dispatch({ type: ActionTypes.GET_CURRENCY_TRADING_REQUEST });
 

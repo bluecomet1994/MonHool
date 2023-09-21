@@ -1,19 +1,53 @@
+import { useDispatch } from 'react-redux';
 import { motion } from 'framer-motion';
+import Swal from 'sweetalert2';
 
 import ConfirmIcon from "@/components/shared/icons/ConfirmIcon";
 import DeclineIcon from "@/components/shared/icons/DeclineIcon";
-import { TransactionRequestType } from "@/types/components";
 import { AdminTableProps } from "@/types/props"
 import { fadeSmallUpVariant } from '@/utils/animations';
+import { formatDate, formatNumber } from '@/utils/functions';
+import { TRANSACTION_STATUS } from '@/enums/status';
+import { accessRequest } from '@/store/actions/admin.action';
 
 const AdminTable = (props: AdminTableProps) => {
   const { headCols, data: tableData } = props;
+  const dispatch = useDispatch();
+
+  const determine = (id: string, type: number, status: number) => {
+    dispatch(accessRequest(id, type, status))
+      .then((response: any) => {
+        if (response.valid) {
+          Swal.fire({
+            toast: true,
+            icon: response.success ? 'success' : 'warning',
+            position: 'top-right',
+            text: response.message,
+            timerProgressBar: true,
+            timer: 3000,
+            showConfirmButton: false
+          });
+        } else {
+          Swal.fire({
+            toast: true,
+            icon: "error",
+            position: 'top-right',
+            text: "The token has expired. Please refresh the page.",
+            timerProgressBar: true,
+            timer: 3000,
+            showConfirmButton: false
+          });
+        }
+      });
+  }
 
   return (
     <motion.div
       initial="hide" whileInView="show" viewport={{ once: true }} variants={fadeSmallUpVariant(0.5)}
       className="w-full overflow-auto my-16 text-xl"
     >
+      {
+        tableData.length > 0 ? (
       <table>
         <tbody>
           <tr>
@@ -25,22 +59,28 @@ const AdminTable = (props: AdminTableProps) => {
           </tr>
 
           {
-            tableData.map((row: TransactionRequestType) => (
-              <tr key={row.id}>
+            tableData.map((row: any) => (
+              <tr key={row._id}>
                 <td>{row.username}</td>
-                <td>{row.date.toDateString()}</td>
+                <td>{formatDate(row.date)}</td>
                 <td>{row.coin}</td>
-                <td>{row.amount} {row.coin}</td>
+                <td>{formatNumber(row.amount)} {row.coin}</td>
                 <td><p className='w-36 truncate'>{row.address}</p></td>
                 <td className="flex">
-                  <button className="flex justify-center items-center w-10 h-10 mx-2 rounded-full bg-green-400 transition-all hover:bg-green-500"><ConfirmIcon /></button>
-                  <button className="flex justify-center items-center w-10 h-10 mx-2 rounded-full bg-red-400 transition-all hover:bg-red-500"><DeclineIcon /></button>
+                  <button onClick={() => determine(row._id, row.type, TRANSACTION_STATUS.SUCCESS)} className="flex justify-center items-center w-10 h-10 mx-2 rounded-full bg-green-400 transition-all hover:bg-green-500"><ConfirmIcon /></button>
+                  <button onClick={() => determine(row._id, row.type, TRANSACTION_STATUS.DECLINED)} className="flex justify-center items-center w-10 h-10 mx-2 rounded-full bg-red-400 transition-all hover:bg-red-500"><DeclineIcon /></button>
                 </td>
               </tr>
             ))
           }
         </tbody>
       </table>
+        ) : (
+          <div className='flex justify-center items-center w-full'>
+            <h1 className='text-gray-500'>No pending requests</h1>
+          </div>
+        )
+      }
 
       <style jsx>{`
         table {

@@ -24,6 +24,8 @@ const TransactionInput = (props: TransactionInputProp) => {
         ) : (
           <input
             type={type}
+            value={value}
+            onChange={({target:{value}}) => onChange(value)}
             className="w-full p-2 text-sm md:text-xl border-none outline-none bg-[#181818] [&~span]:focus:bg-white"
             disabled={!editable}
             required

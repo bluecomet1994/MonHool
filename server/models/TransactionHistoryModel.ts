@@ -36,6 +36,10 @@ const TransactionHistorySchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+  usd: {
+    type: Number,
+    default: 0
+  },
   total: {
     type: Number
   },

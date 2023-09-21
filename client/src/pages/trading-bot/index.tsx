@@ -1,11 +1,13 @@
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 
 import Navbar from "@/layouts/Navbar";
 import TradingBotCard from '@/components/trading-bot/TradingBotCard';
 import TradingDashboard from '@/components/trading-bot/TradingDashboard';
 import { fadeSmallRightVariant, fadeVariant } from '@/utils/animations';
-import { useState } from 'react';
+import { calculateBalance, formatNumber } from '@/utils/functions';
 
 const dropDownData: string[][] = [
   ["USDT/ETH", "BINANCE:ETHUSDT"],
@@ -16,7 +18,16 @@ const dropDownData: string[][] = [
 
 export default function TradingBot() {
   const router = useRouter();
+  const { isLogin, userInfo, dashboard } = useSelector(({user}) => user);
+  const { trading } = useSelector(({ currency }) => currency);
+
   const [selectedCurrency, setSelectedCurrency] = useState(dropDownData[0]);
+
+  useEffect(() => {
+    if (!isLogin) {
+      router.push('/');
+    }
+  }, []);
 
   return (
     <main className="flex justify-center">
@@ -35,10 +46,10 @@ export default function TradingBot() {
                 initial="hide" whileInView="show" viewport={{ once: true }} variants={fadeSmallRightVariant(0.5)}
                 className='flex flex-col justify-center items-center w-full md:w-1/3 p-4 my-1 md:m-1 rounded-lg bg-[#545454]'>
                 <h1 className='text-3xl text-[#A5A5A5] my-8'>Wallet</h1>
-                <p className='font-bold text-[50px]'>$21,809.08</p>
+                <p className='font-bold text-[50px]'>${trading && calculateBalance(trading, userInfo.wallet)}</p>
 
                 <div className='flex items-end mt-4'>
-                  <h1 className='text-2xl text-[#DEDEDE]'>+3,987.02</h1>
+                  <h1 className='text-2xl text-[#DEDEDE]'>{dashboard.trading[0] > 0 ? '+' : '-'} {formatNumber(dashboard.trading[0])}</h1>
                   <span className='text-xl text-[#9B9B9B] mx-2'>Last week</span>
                 </div>
 

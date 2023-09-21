@@ -57,3 +57,23 @@ export const logoutUser: any = () => (dispatch: Dispatch) => {
 
   dispatch({ type: ActionType.LOGOUT_USER });
 }
+
+export const fetchDashboard: any = (range: number) => (dispatch: Dispatch) => {
+  dispatch({ type: ActionType.FETCH_DASHBOARD_REQUEST });
+
+  return axios.post(`${process.env.ROOT_API}/transaction/dashboard`, { range })
+    .then(response => {
+      dispatch({
+        type: ActionType.FETCH_DASHBOARD_SUCCESS,
+        payload: response.data.result
+      });
+
+      return response.data;
+    })
+    .catch(error => {
+      dispatch({
+        type: ActionType.FETCH_DASHBOARD_FAILURE,
+        error
+      });
+    })
+}

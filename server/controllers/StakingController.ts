@@ -8,16 +8,18 @@ export default class StakingController {
   static async getPositions(req: Request, res: Response) {
     const { email }: any = req.user;
 
-    await StakingHistoryModel.find({ email })
+    await StakingHistoryModel.find({ email, status: STAKING_STATUS.PROGRESS })
       .then(histories => {
         if (histories) {
           res.status(200).json({
             success: true,
+            valid: true,
             histories
           });
         } else {
           res.status(200).json({
             success: false,
+            valid: true,
             message: "No open positions"
           });
         }
@@ -26,7 +28,7 @@ export default class StakingController {
 
   static async addPosition(req: Request, res: Response) {
     const { username, email }: any = req.user;
-    const { coin, deposit, rate, earning, time } = req.body;
+    const { coin, deposit, rate, earning, usd, time } = req.body;
 
     await UserModel.findOne({ email })
       .then(user => {
@@ -38,12 +40,14 @@ export default class StakingController {
             deposit,
             rate,
             earning,
+            usd,
             endDate: calculateEndDate(time)
           });
 
           newHistory.save().then((history: any) => {
             res.status(200).json({
               success: true,
+              valid: true,
               message: "The position was added successfully.",
               history
             });
@@ -52,6 +56,7 @@ export default class StakingController {
         } else {
           res.status(404).json({
             success: false,
+            valid: true,
             message: "Cannot find the wallet for the user."
           });
         }
@@ -68,6 +73,7 @@ export default class StakingController {
             .then(() => {
               res.status(200).json({
                 success: true,
+                valid: true,
                 message: "The position is finished."
               });
             })
@@ -75,6 +81,7 @@ export default class StakingController {
         } else {
           res.status(404).json({
             success: false,
+            valid: true,
             message: "Cannot find the history with that ID."
           });
         }
@@ -93,27 +100,40 @@ export default class StakingController {
                 if (history.status === STAKING_STATUS.EARNED) {
                   res.status(200).json({
                     success: false,
+                    valid: true,
                     message: "You've already got the money."
                   });
                 } else {
-                  user.wallet[history.coin.toLowerCase()] = user.wallet[history.coin.toLowerCase()] + history.earning;
-                  history.status = STAKING_STATUS.EARNED
-  
-                  user.save()
-                    .then((savedUser: any) => {
-                      history.save().then(() => {
-                        res.status(200).json({
-                          success: true,
-                          message: "Great! You've earned the money.",
-                          user: savedUser
-                        });
-                      }).catch((error: Error) => console.log(error));
-                    })
-                    .catch((error: Error) => console.log(error));
+                  const remainTime = history.endDate - new Date().getTime();
+
+                  if (remainTime > 0) {
+                    res.status(200).json({
+                      success: false,
+                      valid: true,
+                      message: "The position is not ready yet."
+                    });
+                  } else {
+                    user.wallet[history.coin.toLowerCase()] = user.wallet[history.coin.toLowerCase()] + history.earning;
+                    history.status = STAKING_STATUS.EARNED
+    
+                    user.save()
+                      .then((savedUser: any) => {
+                        history.save().then(() => {
+                          res.status(200).json({
+                            success: true,
+                            valid: true,
+                            message: "Great! You've earned the money.",
+                            user: savedUser
+                          });
+                        }).catch((error: Error) => console.log(error));
+                      })
+                      .catch((error: Error) => console.log(error));
+                  }
                 }
               } else {
                 res.status(404).json({
                   success: false,
+                  valid: true,
                   message: "Cannot find the history with that ID."
                 });
               }
@@ -121,6 +141,7 @@ export default class StakingController {
         } else {
           res.status(404).json({
             success: false,
+            valid: true,
             message: "Cannot find the wallet for the user."
           });
         }
