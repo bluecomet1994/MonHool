@@ -24,7 +24,6 @@ app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();
 });
-app.get('/', (req, res) => res.json({ deploy: "success" }));
 app.use('/api', routes_1.default);
 app.listen(process.env.PORT, () => console.log(`Server is running on port ${process.env.PORT}`));
 //# sourceMappingURL=index.js.map
