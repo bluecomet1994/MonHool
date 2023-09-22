@@ -6,7 +6,9 @@
   "scripts": {
     "watch": "tsc -w -p ./",
     "build": "rimraf ./dist && tsc",
-    "start": "nodemon dist/index.js"
+    "ts-check": "tsc --project tsconfig.json",
+    "add-build": "git add dist",
+    "start": "nodemon index.ts"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +26,8 @@
     "morgan": "^1.10.0",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
+    "pre-commit": "^1.2.2",
+    "rimraf": "^5.0.1",
     "typescript": "^5.0.4",
     "validator": "^13.9.0"
   },
@@ -41,5 +45,10 @@
     "@types/passport-jwt": "^3.0.8",
     "@types/validator": "^13.7.15",
     "nodemon": "^2.0.22"
-  }
+  },
+  "pre-commit": [
+    "ts.check",
+    "build",
+    "add-build"
+  ]
 }
