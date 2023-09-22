@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 (0, passport_1.default)(passport);
 app.use(function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.header('Access-Control-Allow-Origin', 'https://mon-hool.vercel.app');
     res.header('Access-Control-Allow-Methods', 'GET');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();
