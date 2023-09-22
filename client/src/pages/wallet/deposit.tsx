@@ -45,7 +45,7 @@ export default function Deposit() {
   const router = useRouter();
   const dispatch = useDispatch();
   const { isLogin } = useSelector(({ user }) => user);
-  const { isLoading, deposit } = useSelector(({ transaction }) => transaction);
+  const { isLoading, isDeposit, deposit } = useSelector(({ transaction }) => transaction);
   const { trading } = useSelector(({ currency }) => currency);
 
   const [currency, setCurrency] = useState<CurrencyType>({
@@ -240,7 +240,8 @@ export default function Deposit() {
                 </div>
 
                 <TransactionInput type="text" placeholder="Transaction Hash" editable={true} value={transactionHash} onChange={setTransactionHash} />
-                <button onClick={confirmDeposit} className="w-full px-4 py-2 rounded-lg text-black bg-primary transition-all hover:bg-green-500">Confirm</button>
+                <button onClick={confirmDeposit} disabled={isDeposit} className="w-full px-4 py-2 rounded-lg text-black bg-primary transition-all hover:bg-green-500">{
+                isDeposit ? 'Please wait...' : 'Confirm'}</button>
 
                 <p className="mt-8 mb-12 text-[#807C7C] [&>span]:text-green-400 text-xs md:text-base">
                   * After you click on <span>confirm</span> your request will appear in the section below. Make use you send the money to the address indicated above and enter the <span>transaction hash</span> one it is validated on the blockchain.

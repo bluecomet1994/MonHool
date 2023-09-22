@@ -19,7 +19,7 @@ export default function Deposit() {
   const router = useRouter();
   const dispatch = useDispatch();
   const { isLogin } = useSelector(({ user }) => user);
-  const { isLoading, withdrawal } = useSelector(({ transaction }) => transaction);
+  const { isWithdrawal, isLoading, withdrawal } = useSelector(({ transaction }) => transaction);
   const { trading } = useSelector(({ currency }) => currency);
 
   const [currency, setCurrency] = useState<CurrencyType>({
@@ -192,7 +192,7 @@ export default function Deposit() {
                 <h1 className="text-3xl my-8">Your informations</h1>
 
                 <TransactionInput type="text" placeholder="Wallet Address" editable={true} value={address} onChange={setAddress} />
-                <button onClick={confirmWithdrawal} className="w-full px-4 py-2 rounded-lg text-black bg-primary transition-all hover:bg-green-500">Confirm</button>
+                <button onClick={confirmWithdrawal} disabled={isWithdrawal} className="w-full px-4 py-2 rounded-lg text-black bg-primary transition-all hover:bg-green-500">{ isWithdrawal ? 'Please wait...' : 'Confirm'}</button>
 
                 <p className="mt-8 mb-12 text-[#807C7C] [&>span]:text-green-400 text-xs md:text-base">
                   * After you click on <span>confirm</span> your request will appear in the section below

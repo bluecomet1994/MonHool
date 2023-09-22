@@ -4,6 +4,8 @@ import * as Actions from '@/store/actions/constants';
 const initialState = {
   isLoading: false,
   isExchange: false,
+  isDeposit: false,
+  isWithdrawal: false,
   history: [],
   deposit: [],
   withdrawal: [],
@@ -85,6 +87,32 @@ const transaction = (state = initialState, action: TransactionAction) => {
         ...state,
         isLoading: false,
         error: action.error
+      }
+    }
+
+    case Actions.DEPOSIT_COIN_REQUEST: {
+      return {
+        ...state,
+        isDeposit: true
+      }
+    }
+    case Actions.DEPOSIT_COIN_DONE: {
+      return {
+        ...state,
+        isDeposit: false
+      }
+    }
+
+    case Actions.WITHDRAWAL_COIN_REQUEST: {
+      return {
+        ...state,
+        isWithdrawal: true
+      }
+    }
+    case Actions.WITHDRAWAL_COIN_DONE: {
+      return {
+        ...state,
+        isWithdrawal: false
       }
     }
     default: {

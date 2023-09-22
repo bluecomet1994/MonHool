@@ -153,7 +153,7 @@ const ExchangeCard = () => {
         onClick={exchange}
         className="w-full min-h-[40px] h-full rounded-full mt-2 text-black text-xl bg-primary transition-all hover:bg-green-500"
         disabled={isExchange}
-      >Change</button>
+      >{isExchange ? 'Please wait...' : 'Change'}</button>
     </motion.div>
   )
 }

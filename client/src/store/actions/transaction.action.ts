@@ -103,17 +103,14 @@ export const depositCoin: any = (data: DepositRequestType) => (dispatch: Dispatc
   return axios.post(`${process.env.ROOT_API}/transaction/deposit`, data)
     .then(response => {
       if (response.data.success) {
-        dispatch({ type: Actions.DEPOSIT_COIN_SUCCESS });
+        dispatch({ type: Actions.DEPOSIT_COIN_DONE });
         dispatch(getDepositHistory());
       }
 
       return response.data;
     })
     .catch(error => {
-      dispatch({
-        type: Actions.DEPOSIT_COIN_FAILURE,
-        error
-      });
+      dispatch({ type: Actions.DEPOSIT_COIN_DONE });
 
       return error;
     });
@@ -125,18 +122,14 @@ export const withdrawalCoin: any = (data: DepositRequestType) => (dispatch: Disp
   return axios.post(`${process.env.ROOT_API}/transaction/withdrawal`, data)
     .then(response => {
       if (response.data.success) {
-        dispatch({ type: Actions.WITHDRAWAL_COIN_SUCCESS });
+        dispatch({ type: Actions.WITHDRAWAL_COIN_DONE });
         dispatch(getWithdrawalHistory());
       }
 
       return response.data;
     })
     .catch(error => {
-      dispatch({
-        type: Actions.WITHDRAWAL_COIN_FAILURE,
-        error
-      });
-
+      dispatch({ type: Actions.WITHDRAWAL_COIN_DONE });
       return error;
     });
 }
