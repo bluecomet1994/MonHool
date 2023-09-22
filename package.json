@@ -8,7 +8,9 @@
     "client:build": "cd client && npm run build",
     "client:start": "cd client && npm start",
     "server:watch": "cd server && npm run watch",
-    "server:start": "cd server && npm start"
+    "server:start": "cd server && npm start",
+    "install": "cd client && npm install && cd ../server && npm install",
+    "start": "concurrently \"npm run client:dev\" \"npm run server:start\""
   },
   "repository": {
     "type": "git",
@@ -20,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/bluecomet1994/MonHool/issues"
   },
-  "homepage": "https://github.com/bluecomet1994/MonHool#readme"
+  "homepage": "https://github.com/bluecomet1994/MonHool#readme",
+  "dependencies": {
+    "concurrently": "^8.2.1"
+  }
 }
