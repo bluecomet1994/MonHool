@@ -35,19 +35,17 @@ let cryptoCurrency = [
     unit: "SOL",
     image: "/assets/images/badges/sol.png",
   },
-]
+];
 
 export const getCurrencyTrading = (): any => (dispatch: Dispatch) => {
-  // const currencyApi: string = 'https://data.binance.com/api/v3/ticker?symbols=["BTCUSDT","ETHUSDT","BUSDUSDT","XRPUSDT","SOLUSDT"]';
-
   dispatch({ type: ActionTypes.GET_CURRENCY_TRADING_REQUEST });
 
-  return axios.get(`${process.env.ROOT_API}/trading-bot/crypto-currency`)
+  return axios.get(`${process.env.ROOT_API}/trading/crypto-currency`)
     .then(response => {
       let mergedData: CurrencyType[] = [];
 
       for(let i = 0; i < cryptoCurrency.length; i++) {
-        mergedData.push(concatObjects(cryptoCurrency[i], response.data[i]));
+        mergedData.push(concatObjects(cryptoCurrency[i], response.data.data[i]));
       }
 
       dispatch({

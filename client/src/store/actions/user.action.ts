@@ -2,6 +2,7 @@ import axios from "axios";
 import { Dispatch } from "redux";
 import * as Actions from '@/store/actions/constants';
 import { LoginUserType, RegisterUserType } from "@/types/components";
+import { getCurrencyTrading } from "./currency.action";
 
 export const registerUser: any = (data: RegisterUserType) => (dispatch: Dispatch) => {
   dispatch({ type: Actions.REGISTER_USER_REQUEST });
@@ -45,7 +46,8 @@ export const loginWithJWTToken: any = (token: string) => (dispatch: Dispatch) =>
     .then((response: any) => {
       if (response.response) {
         localStorage.removeItem('access-token');
-        
+        dispatch(getCurrencyTrading());
+
         return {
           success: false,
           message: "The token has expired."
@@ -55,6 +57,7 @@ export const loginWithJWTToken: any = (token: string) => (dispatch: Dispatch) =>
           type: Actions.SET_USER_INFO_SUCCESS,
           payload: response.data.user
         });
+        dispatch(getCurrencyTrading());
 
         return response.data;
       }

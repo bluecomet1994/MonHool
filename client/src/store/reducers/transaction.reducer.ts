@@ -3,6 +3,7 @@ import * as Actions from '@/store/actions/constants';
 
 const initialState = {
   isLoading: false,
+  isExchange: false,
   history: [],
   deposit: [],
   withdrawal: [],
@@ -11,6 +12,19 @@ const initialState = {
 
 const transaction = (state = initialState, action: TransactionAction) => {
   switch (action.type) {
+    case Actions.EXCHANGE_REQUEST: {
+      return {
+        ...state,
+        isExchange: true
+      }
+    }
+    case Actions.EXCHANGE_DONE: {
+      return {
+        ...state,
+        isExchange: false
+      }
+    }
+
     case Actions.GET_TRANSACTION_HISTORY_REQUEST: {
       return {
         ...state,

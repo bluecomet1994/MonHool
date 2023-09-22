@@ -35,7 +35,7 @@ export default function Wallet() {
     if (!isLogin) {
       router.push('/');
     }
-  }, [dispatch, isLogin, router]);
+  }, []);
 
   useEffect(() => {
     dispatch(fetchDashboard(timeRange))

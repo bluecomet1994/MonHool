@@ -19,7 +19,7 @@ import Spinner from "@/components/shared/Spinner";
 export default function Register() {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { isLoading } = useSelector(({user}) => user);
+  const { isSign } = useSelector(({user}) => user);
   const formOptions = { resolver: yupResolver(registerValidationSchema) };
   const { register, handleSubmit, reset, formState } = useForm(formOptions);
   const { errors } = formState;
@@ -100,7 +100,7 @@ export default function Register() {
                     className="w-3/4 p-3 rounded-full bg-black text-white text-2xl transition-all duration-300 border-[2px] border-black hover:bg-white hover:text-black"
                   >
                     {
-                      isLoading ? (
+                      isSign ? (
                     <div className="flex justify-center w-full">
                       <Spinner />
                     </div>

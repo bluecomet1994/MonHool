@@ -30,8 +30,6 @@ app.use(function(req: express.Request, res: express.Response, next: express.Next
   next();
 });
 
-app.get('/', (req: express.Request, res: express.Response) => res.json({ deploy: "success" }));
-
 // routes
 app.use('/api', api);
 

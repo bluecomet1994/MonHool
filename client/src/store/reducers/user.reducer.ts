@@ -2,7 +2,8 @@ import * as Actions from '@/store/actions/constants';
 import { UserAction } from "@/types/redux";
 
 const initialState = {
-  isLoading: false,
+  isLoading: true,
+  isSign: false,
   error: null,
   isLogin: false,
   userInfo: {
@@ -22,7 +23,8 @@ const initialState = {
     allEarning: [0, 0],
     staking: [0, 0],
     trading: [0, 0],
-  }
+  },
+  trading: []
 }
 
 const user = (state = initialState, action: UserAction) => {
@@ -30,25 +32,25 @@ const user = (state = initialState, action: UserAction) => {
     case Actions.REGISTER_USER_REQUEST: {
       return {
         ...state,
-        isLoading: true
+        isSign: true
       }
     }
     case Actions.REGISTER_USER_DONE: {
       return {
         ...state,
-        isLoading: false
+        isSign: false
       }
     }
     case Actions.LOGIN_USER_REQUEST: {
       return {
         ...state,
-        isLoading: true
+        isSign: true
       }
     }
     case Actions.LOGIN_USER_DONE: {
       return {
         ...state,
-        isLoading: false
+        isSign: false
       }
     }
 
@@ -62,35 +64,54 @@ const user = (state = initialState, action: UserAction) => {
       return {
         ...state,
         isLogin: true,
-        isLoading: false,
+        isLoading: true,
         userInfo: action.payload
       }
     }
     case Actions.SET_USER_INFO_FAILURE: {
       return {
         ...state,
-        isLoading: false,
+        isLoading: true,
         error: action.error
       }
     }
     case Actions.LOGOUT_USER: {
-      return initialState;
+      return {
+        ...initialState,
+        isLoading: false
+      }
     }
 
     case Actions.FETCH_DASHBOARD_REQUEST: {
+      return state;
+    }
+    case Actions.FETCH_DASHBOARD_SUCCESS: {
+      return {
+        ...state,
+        dashboard: action.payload
+      }
+    }
+    case Actions.FETCH_DASHBOARD_FAILURE: {
+      return {
+        ...state,
+        error: action.error
+      }
+    }
+
+    case Actions.GET_CURRENCY_TRADING_REQUEST: {
       return {
         ...state,
         isLoading: true
       }
     }
-    case Actions.FETCH_DASHBOARD_SUCCESS: {
+    case Actions.GET_CURRENCY_TRADING_SUCCESS: {
       return {
         ...state,
         isLoading: false,
-        dashboard: action.payload
+        trading: action.payload
       }
     }
-    case Actions.FETCH_DASHBOARD_FAILURE: {
+    case Actions.GET_CURRENCY_TRADING_FAILURE: {
       return {
         ...state,
         isLoading: false,

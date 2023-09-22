@@ -1,31 +1,18 @@
 import axios from "axios";
 import { Dispatch } from "redux";
 import { DepositRequestType, ExchangeRequestType } from "@/types/redux";
-import {
-  DEPOSIT_COIN_FAILURE,
-  DEPOSIT_COIN_REQUEST,
-  DEPOSIT_COIN_SUCCESS,
-  GET_DEPOSIT_HISTORY_FAILURE,
-  GET_DEPOSIT_HISTORY_REQUEST,
-  GET_DEPOSIT_HISTORY_SUCCESS,
-  GET_TRANSACTION_HISTORY_FAILURE,
-  GET_TRANSACTION_HISTORY_REQUEST,
-  GET_TRANSACTION_HISTORY_SUCCESS,
-  GET_WITHDRAWAL_HISTORY_FAILURE,
-  GET_WITHDRAWAL_HISTORY_REQUEST,
-  GET_WITHDRAWAL_HISTORY_SUCCESS,
-  SET_USER_INFO_SUCCESS,
-  WITHDRAWAL_COIN_FAILURE,
-  WITHDRAWAL_COIN_REQUEST,
-  WITHDRAWAL_COIN_SUCCESS
-} from "./constants";
+import * as Actions from "./constants";
 
 export const exchangeCoin: any = (data: ExchangeRequestType) => (dispatch: Dispatch) => {
+  dispatch({ type: Actions.EXCHANGE_REQUEST });
+
   return axios.post(`${process.env.ROOT_API}/transaction/exchange`, data)
     .then(response => {
+      dispatch({ type: Actions.EXCHANGE_DONE });
+
       if (response.data.success) {
         dispatch({
-          type: SET_USER_INFO_SUCCESS,
+          type: Actions.SET_USER_INFO_SUCCESS,
           payload: response.data.user
         })
       }
@@ -33,18 +20,19 @@ export const exchangeCoin: any = (data: ExchangeRequestType) => (dispatch: Dispa
       return response.data;
     })
     .catch(error => {
+      dispatch({ type: Actions.EXCHANGE_DONE });
       return error;
     });
 }
 
 export const getTransactionHistory: any = () => (dispatch: Dispatch) => {
-  dispatch({ type: GET_TRANSACTION_HISTORY_REQUEST });
-
+  dispatch({ type: Actions.GET_TRANSACTION_HISTORY_REQUEST });
+  
   return axios.get(`${process.env.ROOT_API}/transaction/history`)
     .then(response => {
       if (response.data.success) {
         dispatch({
-          type: GET_TRANSACTION_HISTORY_SUCCESS,
+          type: Actions.GET_TRANSACTION_HISTORY_SUCCESS,
           payload: response.data.history
         });
       }
@@ -53,7 +41,7 @@ export const getTransactionHistory: any = () => (dispatch: Dispatch) => {
     })
     .catch(error => {
       dispatch({
-        type: GET_TRANSACTION_HISTORY_FAILURE,
+        type: Actions.GET_TRANSACTION_HISTORY_FAILURE,
         error
       });
 
@@ -62,13 +50,13 @@ export const getTransactionHistory: any = () => (dispatch: Dispatch) => {
 }
 
 export const getDepositHistory: any = () => (dispatch: Dispatch) => {
-  dispatch({ type: GET_DEPOSIT_HISTORY_REQUEST });
+  dispatch({ type: Actions.GET_DEPOSIT_HISTORY_REQUEST });
 
   return axios.get(`${process.env.ROOT_API}/transaction/history/deposit`)
     .then(response => {
       if (response.data.success) {
         dispatch({
-          type: GET_DEPOSIT_HISTORY_SUCCESS,
+          type: Actions.GET_DEPOSIT_HISTORY_SUCCESS,
           payload: response.data.history
         });
       }
@@ -77,7 +65,7 @@ export const getDepositHistory: any = () => (dispatch: Dispatch) => {
     })
     .catch(error => {
       dispatch({
-        type: GET_DEPOSIT_HISTORY_FAILURE,
+        type: Actions.GET_DEPOSIT_HISTORY_FAILURE,
         error
       });
 
@@ -86,13 +74,13 @@ export const getDepositHistory: any = () => (dispatch: Dispatch) => {
 }
 
 export const getWithdrawalHistory: any = () => (dispatch: Dispatch) => {
-  dispatch({ type: GET_WITHDRAWAL_HISTORY_REQUEST });
+  dispatch({ type: Actions.GET_WITHDRAWAL_HISTORY_REQUEST });
 
   return axios.get(`${process.env.ROOT_API}/transaction/history/withdrawal`)
     .then(response => {
       if (response.data.success) {
         dispatch({
-          type: GET_WITHDRAWAL_HISTORY_SUCCESS,
+          type: Actions.GET_WITHDRAWAL_HISTORY_SUCCESS,
           payload: response.data.history
         });
       }
@@ -101,7 +89,7 @@ export const getWithdrawalHistory: any = () => (dispatch: Dispatch) => {
     })
     .catch(error => {
       dispatch({
-        type: GET_WITHDRAWAL_HISTORY_FAILURE,
+        type: Actions.GET_WITHDRAWAL_HISTORY_FAILURE,
         error
       });
 
@@ -110,12 +98,12 @@ export const getWithdrawalHistory: any = () => (dispatch: Dispatch) => {
 }
 
 export const depositCoin: any = (data: DepositRequestType) => (dispatch: Dispatch) => {
-  dispatch({ type: DEPOSIT_COIN_REQUEST });
+  dispatch({ type: Actions.DEPOSIT_COIN_REQUEST });
 
   return axios.post(`${process.env.ROOT_API}/transaction/deposit`, data)
     .then(response => {
       if (response.data.success) {
-        dispatch({ type: DEPOSIT_COIN_SUCCESS });
+        dispatch({ type: Actions.DEPOSIT_COIN_SUCCESS });
         dispatch(getDepositHistory());
       }
 
@@ -123,7 +111,7 @@ export const depositCoin: any = (data: DepositRequestType) => (dispatch: Dispatc
     })
     .catch(error => {
       dispatch({
-        type: DEPOSIT_COIN_FAILURE,
+        type: Actions.DEPOSIT_COIN_FAILURE,
         error
       });
 
@@ -132,12 +120,12 @@ export const depositCoin: any = (data: DepositRequestType) => (dispatch: Dispatc
 }
 
 export const withdrawalCoin: any = (data: DepositRequestType) => (dispatch: Dispatch) => {
-  dispatch({ type: WITHDRAWAL_COIN_REQUEST });
+  dispatch({ type: Actions.WITHDRAWAL_COIN_REQUEST });
 
   return axios.post(`${process.env.ROOT_API}/transaction/withdrawal`, data)
     .then(response => {
       if (response.data.success) {
-        dispatch({ type: WITHDRAWAL_COIN_SUCCESS });
+        dispatch({ type: Actions.WITHDRAWAL_COIN_SUCCESS });
         dispatch(getWithdrawalHistory());
       }
 
@@ -145,7 +133,7 @@ export const withdrawalCoin: any = (data: DepositRequestType) => (dispatch: Disp
     })
     .catch(error => {
       dispatch({
-        type: WITHDRAWAL_COIN_FAILURE,
+        type: Actions.WITHDRAWAL_COIN_FAILURE,
         error
       });
 

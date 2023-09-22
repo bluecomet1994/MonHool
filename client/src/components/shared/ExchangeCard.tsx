@@ -16,8 +16,9 @@ import { logoutUser } from '@/store/actions/user.action';
 const ExchangeCard = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { trading } = useSelector(({ currency }) => currency);
   const { isLogin, userInfo } = useSelector(({ user }) => user);
+  const { trading } = useSelector(({ currency }) => currency);
+  const { isExchange } = useSelector(({ transaction }) => transaction);
 
   const [sendCurrency, setSendCurrency] = useState<CurrencyType>({
     id: 0,
@@ -151,6 +152,7 @@ const ExchangeCard = () => {
       <button
         onClick={exchange}
         className="w-full min-h-[40px] h-full rounded-full mt-2 text-black text-xl bg-primary transition-all hover:bg-green-500"
+        disabled={isExchange}
       >Change</button>
     </motion.div>
   )

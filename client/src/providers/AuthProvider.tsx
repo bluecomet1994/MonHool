@@ -1,12 +1,12 @@
-import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { loginWithJWTToken, logoutUser } from "@/store/actions/user.action";
 import LoadingSplash from "@/components/shared/LoadingSplash";
+import { getCurrencyTrading } from "@/store/actions/currency.action";
+import axios from "axios";
 
 export default function AuthProvider(props: any) {
-  const router = useRouter();
   const dispatch = useDispatch();
   const { isLoading } = useSelector(({user}) => user);
 
@@ -29,10 +29,10 @@ export default function AuthProvider(props: any) {
           dispatch(logoutUser());
         }
       });
+    } else {
+      dispatch(getCurrencyTrading());
     }
   }, []);
 
-  return (
-    <div>{props.children}</div>
-  );
+  return isLoading ? <LoadingSplash /> : <div>{props.children}</div>
 }
