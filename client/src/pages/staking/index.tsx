@@ -24,7 +24,7 @@ export default function Staking() {
     if (!isLogin) {
       router.push('/');
     }
-  }, [])
+  }, [dispatch, isLogin, router])
 
   return (
     <main className="flex justify-center">

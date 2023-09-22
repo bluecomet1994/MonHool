@@ -41,7 +41,7 @@ const timeList: TimeListType[] = [
 const AddPosition = (props: AddPositionProps) => {
   const { isOpen, setter } = props;
   const dispatch = useDispatch();
-  const { isLoading } = useSelector(({staking}) => staking);
+  const { isOpening } = useSelector(({staking}) => staking);
   const { trading } = useSelector(({ currency }) => currency);
 
   const [currency, setCurrency] = useState<CurrencyType>({
@@ -152,17 +152,10 @@ const AddPosition = (props: AddPositionProps) => {
               <h1 className="text-sm md:text-2xl">Set time</h1>
               <TimeDropDown list={timeList} value={time} setter={handleTimeChange} />
             </div>
-            <button onClick={openPosition} className="px-2 md:px-6 py-3 md:py-4 mt-8 mb-3 md:mb-0 rounded-xl bg-[#272727] text-white text-lg md:text-3xl transition-all hover:bg-black">
-              {
-                isLoading ? (
-                  <div className="flex justify-center w-full">
-                    <Spinner />
-                  </div>
-                ) : (
-                  <p>+ Add Position</p>
-                )
-              }
-              
+            <button onClick={openPosition} className="px-2 md:px-6 py-3 md:py-4 mt-8 mb-3 md:mb-0 rounded-xl bg-[#272727] text-white text-lg md:text-3xl transition-all hover:bg-black" disabled={isOpening}>
+              <div className="flex items-center">
+                {isOpening ? <Spinner /> : '+'}&nbsp;Add Position
+              </div>
             </button>
           </div>
         </div>

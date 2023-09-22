@@ -72,6 +72,7 @@ export interface TransactionInputProp {
 }
 
 export interface AdminTableProps {
+  isLoading: boolean;
   headCols: string[];
   data: Array<any>;
 }

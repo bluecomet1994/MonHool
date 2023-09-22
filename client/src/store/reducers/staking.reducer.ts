@@ -3,6 +3,7 @@ import { StakingAction } from "@/types/redux";
 
 const initialState = {
   isLoading: false,
+  isOpening: false,
   positions: [],
   error: null
 }
@@ -27,6 +28,24 @@ const staking = (state = initialState, action: StakingAction) => {
         ...state,
         isLoading: false,
         error: action.error
+      }
+    }
+    case Actions.OPEN_STAKING_POSITION_REQUEST: {
+      return {
+        ...state,
+        isOpening: true
+      }
+    }
+    case Actions.OPEN_STAKING_POSITION_SUCCESS: {
+      return {
+        ...state,
+        isOpening: false
+      }
+    }
+    case Actions.OPEN_STAKING_POSITION_FAILURE: {
+      return {
+        ...state,
+        isOpening: false
       }
     }
     default: {

@@ -38,8 +38,8 @@ export const openTradingPosition: any = (data: OpenTradingRequestType) => (dispa
 
   return axios.post(`${process.env.ROOT_API}/trading/position`, data)
     .then(response => {
+      dispatch({ type: Actions.ADD_TRADING_POSITION_SUCCESS });
       if (response.data.success) {
-        dispatch({ type: Actions.ADD_TRADING_POSITION_SUCCESS });
         dispatch(getTradingPosition());
         dispatch({
           type: Actions.SET_USER_INFO_BY_TOKEN,

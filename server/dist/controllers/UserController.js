@@ -105,7 +105,6 @@ class UserController {
         }
     }
     static async accessToken(req, res) {
-        const currencyApi = 'http://data.binance.com/api/v3/ticker?symbols=["BTCUSDT","ETHUSDT","BUSDUSDT","XRPUSDT","SOLUSDT"]';
         res.status(200).json({
             success: true,
             user: _.pick(req.user, ['username', 'email', 'wallet', 'isAdmin', 'date'])

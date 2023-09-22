@@ -10,7 +10,7 @@ import { getDepositRequests } from '@/store/actions/admin.action';
 export default function Deposits() {
   const tableHeadCols: string[] = ['User', 'Date', 'Coin', 'Amount', 'Transaction Hash', ''];
   const dispatch = useDispatch();
-  const { deposit } = useSelector(({ admin }) => admin);
+  const { deposit, isLoading } = useSelector(({ admin }) => admin);
 
   useEffect(() => {
     dispatch(getDepositRequests());
@@ -24,7 +24,7 @@ export default function Deposits() {
         <section>
           <motion.h1 initial="hide" whileInView="show" viewport={{ once: true }} variants={fadeSmallDownVariant(0.5)} className="text-[40px] my-12">Deposits</motion.h1>
 
-          <AdminTable headCols={tableHeadCols} data={deposit} />
+          <AdminTable isLoading={isLoading} headCols={tableHeadCols} data={deposit} />
         </section>
       </div>
     </main>

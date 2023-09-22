@@ -12,9 +12,10 @@ import { accessRequest } from '@/store/actions/admin.action';
 import ClipboardIcon from './icons/ClipboardIcon';
 import { useState } from 'react';
 import CopiedIcon from './icons/CopiedIcon';
+import Spinner from './Spinner';
 
 const AdminTable = (props: AdminTableProps) => {
-  const { headCols, data: tableData } = props;
+  const { headCols, data: tableData, isLoading } = props;
   const dispatch = useDispatch();
 
   const [isCopied, setIsCopied] = useState(0);
@@ -96,7 +97,13 @@ const AdminTable = (props: AdminTableProps) => {
           </table>
         ) : (
           <div className='flex justify-center items-center w-full'>
-            <h1 className='text-gray-500'>No pending requests</h1>
+            {
+              isLoading ? (
+                <Spinner />
+              ) : (
+                <h1 className='text-gray-500'>No pending requests</h1>
+              )
+            }
           </div>
         )
       }

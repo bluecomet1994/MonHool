@@ -14,7 +14,7 @@ const GreetingTitle = (props: any) => {
     } else {
       setTimeStamp('Evening');
     }
-  }, []);
+  }, [currentHour]);
 
   return (
     <motion.h1

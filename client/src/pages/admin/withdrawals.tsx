@@ -10,7 +10,7 @@ import { getWithdrawalRequests } from '@/store/actions/admin.action';
 export default function Withdrawals() {
   const tableHeadCols: string[] = ['User', 'Date', 'Coin', 'Amount', 'Address', ''];
   const dispatch = useDispatch();
-  const { withdrawal } = useSelector(({ admin }) => admin);
+  const { withdrawal, isLoading } = useSelector(({ admin }) => admin);
 
   useEffect(() => {
     dispatch(getWithdrawalRequests());
@@ -24,7 +24,7 @@ export default function Withdrawals() {
         <section>
           <motion.h1 initial="hide" whileInView="show" viewport={{ once: true }} variants={fadeSmallDownVariant(0.5)} className="text-[40px] my-12">Withdrawals</motion.h1>
 
-          <AdminTable headCols={tableHeadCols} data={withdrawal} />
+          <AdminTable isLoading={isLoading} headCols={tableHeadCols} data={withdrawal} />
         </section>
       </div>
     </main>
