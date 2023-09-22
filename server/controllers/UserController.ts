@@ -7,6 +7,13 @@ import * as _ from 'lodash';
 import UserModel from "../models/UserModel";
 
 export default class UserController {
+    static async test(req: Request, res: Response) {
+        res.status(200).json({
+            success: true,
+            message: "Currently working"
+        });
+    }
+
     static async register(req: Request, res: Response) {
         const { errors }: any = validationResult(req);
 
