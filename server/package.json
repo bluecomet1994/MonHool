@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "watch": "tsc -w -p ./",
+    "build": "rimraf ./dist && tsc",
     "start": "nodemon dist/index.js"
   },
   "keywords": [],
