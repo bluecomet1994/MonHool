@@ -69,7 +69,7 @@ const StakingPosition = (props: StakingType) => {
 
           <div className="w-1/3">
             <p className="text-sm md:text-2xl">Earning</p>
-            <h1 className="font-bold text-2xl md:text-5xl my-2 md:my-4">{earning} {coin}</h1>
+            <h1 className="font-bold text-2xl md:text-5xl my-2 md:my-4">{formatNumber(earning)} {coin}</h1>
             <span className="text-xs md:text-xl text-[#878787]">${formatNumber(earning * cryptoCurrency[coin])}</span>
           </div>
         </div>
