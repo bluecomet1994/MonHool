@@ -41,7 +41,7 @@ const timeList: TimeListType[] = [
 const AddPosition = (props: AddPositionProps) => {
   const { isOpen, setter } = props;
   const dispatch = useDispatch();
-  const { isOpening } = useSelector(({staking}) => staking);
+  const { isOpening } = useSelector(({ staking }) => staking);
   const { trading } = useSelector(({ currency }) => currency);
 
   const [currency, setCurrency] = useState<CurrencyType>({
@@ -68,43 +68,55 @@ const AddPosition = (props: AddPositionProps) => {
   }
 
   const openPosition = () => {
-    const positionRequest: OpenStakingRequestType = {
-      coin: currency.unit,
-      deposit: amount,
-      rate,
-      earning,
-      time: time.time,
-      usd: amount * Number(currency.lastPrice)
-    }
+    if (amount === 0) {
+      Swal.fire({
+        toast: true,
+        icon: 'warning',
+        position: 'top-right',
+        text: "The amount should be greater than 0.",
+        timerProgressBar: true,
+        timer: 3000,
+        showConfirmButton: false
+      });
+    } else {
+      const positionRequest: OpenStakingRequestType = {
+        coin: currency.unit,
+        deposit: amount,
+        rate,
+        earning,
+        time: time.time,
+        usd: amount * Number(currency.lastPrice)
+      }
 
-    dispatch(addStakingPosition(positionRequest))
-      .then((response: any) => {
-        if (response && response.valid) {
-          Swal.fire({
-            toast: true,
-            icon: response.success ? 'success' : 'warning',
-            position: 'top-right',
-            text: response.message,
-            timerProgressBar: true,
-            timer: 3000,
-            showConfirmButton: false
-          });
+      dispatch(addStakingPosition(positionRequest))
+        .then((response: any) => {
+          if (response && response.valid) {
+            Swal.fire({
+              toast: true,
+              icon: response.success ? 'success' : 'warning',
+              position: 'top-right',
+              text: response.message,
+              timerProgressBar: true,
+              timer: 3000,
+              showConfirmButton: false
+            });
 
-          if (response && response.success) {
-            setter(false);
+            if (response && response.success) {
+              setter(false);
+            }
+          } else {
+            Swal.fire({
+              toast: true,
+              icon: "error",
+              position: 'top-right',
+              text: "The token has expired. Please refresh the page.",
+              timerProgressBar: true,
+              timer: 3000,
+              showConfirmButton: false
+            });
           }
-        } else {
-          Swal.fire({
-            toast: true,
-            icon: "error",
-            position: 'top-right',
-            text: "The token has expired. Please refresh the page.",
-            timerProgressBar: true,
-            timer: 3000,
-            showConfirmButton: false
-          });
-        }
-      })
+        });
+    }
   }
 
   useEffect(() => {

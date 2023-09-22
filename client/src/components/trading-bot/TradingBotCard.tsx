@@ -11,12 +11,13 @@ import { getTradeEarning, getTradingPosition, openTradingPosition } from "@/stor
 import { TRADING_STATUS } from "@/enums/status";
 import { calculateCoinBalance, convertTime, formatNumber } from "@/utils/functions";
 import { OpenTradingRequestType } from "@/types/redux";
+import Spinner from "../shared/Spinner";
 
 const TradingBotCard = (props: TradingProps) => {
   const { list, value, setter, trading, wallet } = props;
 
   const dispatch = useDispatch();
-  const { position } = useSelector(({ trading }) => trading);
+  const { isOpening, isEarning, isLoading, position } = useSelector(({ trading }) => trading);
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [amount, setAmount] = useState(0);
@@ -34,39 +35,51 @@ const TradingBotCard = (props: TradingProps) => {
   }
 
   const openPosition = () => {
-    const positionRequest: OpenTradingRequestType = {
-      amount,
-      hit: rate,
-      time,
-      balance: calculateCoinBalance(trading, wallet, amount)
+    if (amount === 0) {
+      Swal.fire({
+        toast: true,
+        icon: 'warning',
+        position: 'top-right',
+        text: "The amount should be greater than 0.",
+        timerProgressBar: true,
+        timer: 3000,
+        showConfirmButton: false
+      });
+    } else {
+      const positionRequest: OpenTradingRequestType = {
+        amount,
+        hit: rate,
+        time,
+        balance: calculateCoinBalance(trading, wallet, amount)
+      }
+  
+      dispatch(openTradingPosition(positionRequest))
+        .then((response: any) => {
+          if (response && response.valid) {
+            Swal.fire({
+              toast: true,
+              icon: response.success ? 'success' : 'warning',
+              position: 'top-right',
+              text: response.message,
+              timerProgressBar: true,
+              timer: 3000,
+              showConfirmButton: false
+            });
+  
+            setter(false);
+          } else {
+            Swal.fire({
+              toast: true,
+              icon: "error",
+              position: 'top-right',
+              text: "The token has expired. Please refresh the page.",
+              timerProgressBar: true,
+              timer: 3000,
+              showConfirmButton: false
+            });
+          }
+        });
     }
-
-    dispatch(openTradingPosition(positionRequest))
-      .then((response: any) => {
-        if (response && response.valid) {
-          Swal.fire({
-            toast: true,
-            icon: response.success ? 'success' : 'warning',
-            position: 'top-right',
-            text: response.message,
-            timerProgressBar: true,
-            timer: 3000,
-            showConfirmButton: false
-          });
-
-          setter(false);
-        } else {
-          Swal.fire({
-            toast: true,
-            icon: "error",
-            position: 'top-right',
-            text: "The token has expired. Please refresh the page.",
-            timerProgressBar: true,
-            timer: 3000,
-            showConfirmButton: false
-          });
-        }
-      })
   }
 
   const getMoney = () => {
@@ -171,7 +184,11 @@ const TradingBotCard = (props: TradingProps) => {
       </div>
 
       {
-        remainTime < 0 ? (
+        isLoading ? (
+          <div className="flex justify-center items-center w-full h-full">
+            <Spinner />
+          </div>
+        ) : remainTime < 0 ? (
           <div className='flex flex-wrap flex-col md:flex-row w-full my-12'>
             <div className={`flex w-full md:w-full`}>
               <div className='flex flex-col w-full'>
@@ -234,8 +251,8 @@ const TradingBotCard = (props: TradingProps) => {
       <div className='flex flex-col md:flex-row items-center my-4'>
         {
           !position && (
-            <button className='flex justify-center items-center w-full md:w-auto font-bold px-4 py-3 rounded-lg bg-primary text-xl text-black transition-all hover:bg-green-500' onClick={openPosition}>
-              Open position&nbsp;<ExternalIcon />
+            <button className='flex justify-center items-center w-full md:w-auto font-bold px-4 py-3 rounded-lg bg-primary text-xl text-black transition-all hover:bg-green-500' onClick={openPosition} disabled={isOpening}>
+              { isOpening ? 'Please wait...' : 'Open position' }&nbsp;<ExternalIcon />
             </button>
           )
         }
@@ -251,8 +268,8 @@ const TradingBotCard = (props: TradingProps) => {
               {
                 position && remainTime < 0 && (
                   <div className='flex justify-end w-full my-2'>
-                    <button onClick={getMoney} className='font-bold px-4 py-2 rounded-lg bg-primary text-black transition-all hover:bg-green-500'>
-                      Get earning
+                    <button onClick={getMoney} className='font-bold px-4 py-2 rounded-lg bg-primary text-black transition-all hover:bg-green-500' disabled={isEarning}>
+                      { isEarning ? 'Please wait' : 'Get earning' }
                     </button>
                   </div>
                 )

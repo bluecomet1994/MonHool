@@ -38,7 +38,7 @@ export const openTradingPosition: any = (data: OpenTradingRequestType) => (dispa
 
   return axios.post(`${process.env.ROOT_API}/trading/position`, data)
     .then(response => {
-      dispatch({ type: Actions.ADD_TRADING_POSITION_SUCCESS });
+      dispatch({ type: Actions.ADD_TRADING_POSITION_DONE });
       if (response.data.success) {
         dispatch(getTradingPosition());
         dispatch({
@@ -50,10 +50,7 @@ export const openTradingPosition: any = (data: OpenTradingRequestType) => (dispa
       return response.data;
     })
     .catch(error => {
-      dispatch({
-        type: Actions.ADD_TRADING_POSITION_FAILURE,
-        error
-      });
+      dispatch({ type: Actions.ADD_TRADING_POSITION_DONE });
 
       return error;
     });
@@ -65,7 +62,7 @@ export const getTradeEarning: any = (id: number) => (dispatch: Dispatch) => {
   return axios.put(`${process.env.ROOT_API}/trading/earn`, { id })
     .then(response => {
       if (response.data.success) {
-        dispatch({ type: Actions.GET_TRADING_MONEY_SUCCESS });
+        dispatch({ type: Actions.GET_TRADING_MONEY_DONE });
         dispatch({
           type: Actions.SET_USER_INFO_SUCCESS,
           payload: response.data.user
@@ -76,11 +73,7 @@ export const getTradeEarning: any = (id: number) => (dispatch: Dispatch) => {
       return response.data;
     })
     .catch(error => {
-      dispatch({
-        type: Actions.GET_TRADING_MONEY_FAILURE,
-        error
-      });
-
+      dispatch({ type: Actions.GET_TRADING_MONEY_DONE });
       return error;
     });
 }

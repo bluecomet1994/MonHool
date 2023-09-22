@@ -3,6 +3,7 @@ import { StakingAction } from "@/types/redux";
 
 const initialState = {
   isLoading: false,
+  isEarning: null,
   isOpening: false,
   positions: [],
   error: null
@@ -46,6 +47,19 @@ const staking = (state = initialState, action: StakingAction) => {
       return {
         ...state,
         isOpening: false
+      }
+    }
+
+    case Actions.GET_STAKING_MONEY_REQUEST: {
+      return {
+        ...state,
+        isEarning: action.payload
+      }
+    }
+    case Actions.GET_STAKING_MONEY_DONE: {
+      return {
+        ...state,
+        isEarning: null
       }
     }
     default: {

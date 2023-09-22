@@ -1,9 +1,10 @@
 import { TradingBotAction } from "@/types/redux";
 import * as Actions from '@/store/actions/constants';
-import { TRADING_STATUS } from "@/enums/status";
 
 const initialState = {
   isLoading: false,
+  isOpening: false,
+  isEarning: false,
   position: null,
   error: null
 }
@@ -27,6 +28,32 @@ const trading = (state = initialState, action: TradingBotAction) => {
       return {
         ...state,
         error: action.error
+      }
+    }
+
+    case Actions.ADD_TRADING_POSITION_REQUEST: {
+      return {
+        ...state,
+        isOpening: true
+      }
+    }
+    case Actions.ADD_TRADING_POSITION_DONE: {
+      return {
+        ...state,
+        isOpening: false
+      }
+    }
+
+    case Actions.GET_TRADING_MONEY_REQUEST: {
+      return {
+        ...state,
+        isEarning: true
+      }
+    }
+    case Actions.GET_TRADING_MONEY_DONE: {
+      return {
+        ...state,
+        isEarning: false
       }
     }
     default: {

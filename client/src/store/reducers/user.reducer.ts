@@ -64,7 +64,6 @@ const user = (state = initialState, action: UserAction) => {
       return {
         ...state,
         isLogin: true,
-        isLoading: true,
         userInfo: action.payload
       }
     }

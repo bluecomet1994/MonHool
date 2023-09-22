@@ -54,12 +54,12 @@ export const addStakingPosition: any = (data: OpenStakingRequestType) => (dispat
 }
 
 export const getStakingMoney: any = (id: number) => (dispatch: Dispatch) => {
-  dispatch({ type: Actions.GET_STAKING_MONEY_REQUEST });
+  dispatch({ type: Actions.GET_STAKING_MONEY_REQUEST, payload: id });
 
   return axios.put(`${process.env.ROOT_API}/staking/earn`, { id })
     .then(response => {
       if (response.data.success) {
-        dispatch({ type: Actions.GET_STAKING_MONEY_SUCCESS });
+        dispatch({ type: Actions.GET_STAKING_MONEY_DONE });
         dispatch({
           type: Actions.SET_USER_INFO_SUCCESS,
           payload: response.data.user
@@ -70,11 +70,7 @@ export const getStakingMoney: any = (id: number) => (dispatch: Dispatch) => {
       return response.data;
     })
     .catch(error => {
-      dispatch({
-        type: Actions.GET_STAKING_MONEY_FAILURE,
-        error
-      });
-
+      dispatch({ type: Actions.GET_STAKING_MONEY_DONE });
       return error;
     });
 }

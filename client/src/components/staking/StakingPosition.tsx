@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 
 import { getStakingMoney } from "@/store/actions/staking.action";
@@ -10,6 +10,7 @@ import { cryptoCurrency } from "@/utils/mockData";
 const StakingPosition = (props: StakingType) => {
   const { _id, coin, deposit, rate, earning, usd, endDate } = props;
   const dispatch = useDispatch();
+  const { isEarning } = useSelector(({ staking }) => staking);
   const [remainTime, setRemainTime] = useState(endDate - new Date().getTime());
 
   const getMoney = () => {
@@ -82,7 +83,9 @@ const StakingPosition = (props: StakingType) => {
               </div>
             ) : (
               <div className="flex justify-center items-center w-full h-full my-4 md:my-0">
-                <button onClick={getMoney} className="gradient-btn w-full md:w-[164px]">Get money</button>
+                <button onClick={getMoney} className="gradient-btn w-full md:w-[164px]" disabled={isEarning===_id}>
+                  { isEarning===_id ? 'Please wait' : 'Get money' }
+                </button>
               </div>
             )
           }
