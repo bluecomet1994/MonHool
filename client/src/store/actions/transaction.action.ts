@@ -14,7 +14,7 @@ import {
   GET_WITHDRAWAL_HISTORY_FAILURE,
   GET_WITHDRAWAL_HISTORY_REQUEST,
   GET_WITHDRAWAL_HISTORY_SUCCESS,
-  SET_USER_INFO_BY_TOKEN,
+  SET_USER_INFO_SUCCESS,
   WITHDRAWAL_COIN_FAILURE,
   WITHDRAWAL_COIN_REQUEST,
   WITHDRAWAL_COIN_SUCCESS
@@ -25,7 +25,7 @@ export const exchangeCoin: any = (data: ExchangeRequestType) => (dispatch: Dispa
     .then(response => {
       if (response.data.success) {
         dispatch({
-          type: SET_USER_INFO_BY_TOKEN,
+          type: SET_USER_INFO_SUCCESS,
           payload: response.data.user
         })
       }

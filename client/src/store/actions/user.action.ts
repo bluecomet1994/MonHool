@@ -39,6 +39,7 @@ export const loginUser: any = (data: LoginUserType) => (dispatch: Dispatch) => {
 
 export const loginWithJWTToken: any = (token: string) => (dispatch: Dispatch) => {
   axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+  dispatch({ type: Actions.SET_USER_INFO_REQUEST });
 
   return axios.get(`${process.env.ROOT_API}/user/access-token`)
     .then((response: any) => {
@@ -51,14 +52,20 @@ export const loginWithJWTToken: any = (token: string) => (dispatch: Dispatch) =>
         }
       } else {
         dispatch({
-          type: Actions.SET_USER_INFO_BY_TOKEN,
+          type: Actions.SET_USER_INFO_SUCCESS,
           payload: response.data.user
         });
 
         return response.data;
       }
     })
-    .catch(error => error);
+    .catch(error => {
+      dispatch({
+        type: Actions.SET_USER_INFO_FAILURE,
+        error
+      });
+      return error;
+    });
 }
 
 export const logoutUser: any = () => (dispatch: Dispatch) => {

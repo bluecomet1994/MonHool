@@ -1,10 +1,23 @@
 import { Request, Response } from "express";
+import axios from 'axios';
 import TradingHistoryModel from "../models/TradingHistoryModel";
 import { TRADING_STATUS } from "../enums/status";
 import { calculateEndDate } from "../utils/functions";
 import UserModel from "../models/UserModel";
 
 export default class TradingBotController {
+  static async getCryptoCurrency(req: Request, res: Response) {
+    const currencyApi: string = 'https://data.binance.com/api/v3/ticker?symbols=["BTCUSDT","ETHUSDT","BUSDUSDT","XRPUSDT","SOLUSDT"]';
+    
+    axios.get(currencyApi)
+      .then(response => {
+        res.status(200).json({
+          success: true,
+          data: response.data
+        });
+      });
+  }
+
   static async getPosition(req: Request, res: Response) {
     const { email }: any = req.user;
 
@@ -55,7 +68,7 @@ export default class TradingBotController {
                 Object.keys(balance).map(key => {
                   user.wallet[key.toLowerCase()] -= balance[key];
                 });
-    
+
                 const newTradingHistory: any = new TradingHistoryModel({
                   username,
                   email,
@@ -64,7 +77,7 @@ export default class TradingBotController {
                   time,
                   endDate: calculateEndDate(time)
                 });
-    
+
                 user.save().then((user: any) => {
                   newTradingHistory.save()
                     .then((history: any) => {

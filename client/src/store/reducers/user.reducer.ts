@@ -52,11 +52,25 @@ const user = (state = initialState, action: UserAction) => {
       }
     }
 
-    case Actions.SET_USER_INFO_BY_TOKEN: {
+    case Actions.SET_USER_INFO_REQUEST: {
+      return {
+        ...state,
+        isLoading: true
+      }
+    }
+    case Actions.SET_USER_INFO_SUCCESS: {
       return {
         ...state,
         isLogin: true,
+        isLoading: false,
         userInfo: action.payload
+      }
+    }
+    case Actions.SET_USER_INFO_FAILURE: {
+      return {
+        ...state,
+        isLoading: false,
+        error: action.error
       }
     }
     case Actions.LOGOUT_USER: {

@@ -1,10 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const axios_1 = require("axios");
 const TradingHistoryModel_1 = require("../models/TradingHistoryModel");
 const status_1 = require("../enums/status");
 const functions_1 = require("../utils/functions");
 const UserModel_1 = require("../models/UserModel");
 class TradingBotController {
+    static async getCryptoCurrency(req, res) {
+        const currencyApi = 'https://data.binance.com/api/v3/ticker?symbols=["BTCUSDT","ETHUSDT","BUSDUSDT","XRPUSDT","SOLUSDT"]';
+        axios_1.default.get(currencyApi)
+            .then(response => {
+            res.status(200).json({
+                success: true,
+                data: response.data
+            });
+        });
+    }
     static async getPosition(req, res) {
         const { email } = req.user;
         await TradingHistoryModel_1.default.findOne({ email, status: status_1.TRADING_STATUS.OPENED })

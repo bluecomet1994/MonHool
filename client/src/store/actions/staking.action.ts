@@ -36,7 +36,7 @@ export const addStakingPosition: any = (data: OpenStakingRequestType) => (dispat
       if (response.data.success) {
         dispatch(getStakingList());
         dispatch({
-          type: Actions.SET_USER_INFO_BY_TOKEN,
+          type: Actions.SET_USER_INFO_SUCCESS,
           payload: response.data.user
         })
       }
@@ -61,7 +61,7 @@ export const getStakingMoney: any = (id: number) => (dispatch: Dispatch) => {
       if (response.data.success) {
         dispatch({ type: Actions.GET_STAKING_MONEY_SUCCESS });
         dispatch({
-          type: Actions.SET_USER_INFO_BY_TOKEN,
+          type: Actions.SET_USER_INFO_SUCCESS,
           payload: response.data.user
         });
         dispatch(getStakingList());

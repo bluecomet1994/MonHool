@@ -42,7 +42,7 @@ export const openTradingPosition: any = (data: OpenTradingRequestType) => (dispa
       if (response.data.success) {
         dispatch(getTradingPosition());
         dispatch({
-          type: Actions.SET_USER_INFO_BY_TOKEN,
+          type: Actions.SET_USER_INFO_SUCCESS,
           payload: response.data.user
         })
       }
@@ -67,7 +67,7 @@ export const getTradeEarning: any = (id: number) => (dispatch: Dispatch) => {
       if (response.data.success) {
         dispatch({ type: Actions.GET_TRADING_MONEY_SUCCESS });
         dispatch({
-          type: Actions.SET_USER_INFO_BY_TOKEN,
+          type: Actions.SET_USER_INFO_SUCCESS,
           payload: response.data.user
         });
         dispatch(getTradingPosition());
