@@ -10,7 +10,7 @@ export default class UserController {
     static async test(req: Request, res: Response) {
         res.status(200).json({
             success: true,
-            message: "Currently working"
+            message: process.env.MONGO_URI
         });
     }
 

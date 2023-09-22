@@ -9,7 +9,7 @@ class UserController {
     static async test(req, res) {
         res.status(200).json({
             success: true,
-            message: "Currently working"
+            message: process.env.MONGO_URI
         });
     }
     static async register(req, res) {
