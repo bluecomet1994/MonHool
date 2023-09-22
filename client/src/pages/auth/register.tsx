@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { motion } from 'framer-motion';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -14,10 +14,12 @@ import { registerValidationSchema } from "@/validations/authValidationSchema";
 import { fadeSmallLeftVariant, fadeSmallRightVariant } from "@/utils/animations";
 import { registerUser } from "@/store/actions/user.action";
 import { RegisterUserType } from "@/types/components";
+import Spinner from "@/components/shared/Spinner";
 
 export default function Register() {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { isLoading } = useSelector(({user}) => user);
   const formOptions = { resolver: yupResolver(registerValidationSchema) };
   const { register, handleSubmit, reset, formState } = useForm(formOptions);
   const { errors } = formState;
@@ -97,7 +99,15 @@ export default function Register() {
                     type="submit"
                     className="w-3/4 p-3 rounded-full bg-black text-white text-2xl transition-all duration-300 border-[2px] border-black hover:bg-white hover:text-black"
                   >
-                    Sign Up
+                    {
+                      isLoading ? (
+                    <div className="flex justify-center w-full">
+                      <Spinner />
+                    </div>
+                      ) : (
+                        <p>Sign Up</p>
+                      )
+                    }
                   </button>
                 </div>
               </form>

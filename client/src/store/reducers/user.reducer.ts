@@ -1,4 +1,4 @@
-import * as ActionType from '@/store/actions/constants';
+import * as Actions from '@/store/actions/constants';
 import { UserAction } from "@/types/redux";
 
 const initialState = {
@@ -27,31 +27,56 @@ const initialState = {
 
 const user = (state = initialState, action: UserAction) => {
   switch (action.type) {
-    case ActionType.SET_USER_INFO_BY_TOKEN: {
+    case Actions.REGISTER_USER_REQUEST: {
+      return {
+        ...state,
+        isLoading: true
+      }
+    }
+    case Actions.REGISTER_USER_DONE: {
+      return {
+        ...state,
+        isLoading: false
+      }
+    }
+    case Actions.LOGIN_USER_REQUEST: {
+      return {
+        ...state,
+        isLoading: true
+      }
+    }
+    case Actions.LOGIN_USER_DONE: {
+      return {
+        ...state,
+        isLoading: false
+      }
+    }
+
+    case Actions.SET_USER_INFO_BY_TOKEN: {
       return {
         ...state,
         isLogin: true,
         userInfo: action.payload
       }
     }
-    case ActionType.LOGOUT_USER: {
+    case Actions.LOGOUT_USER: {
       return initialState;
     }
 
-    case ActionType.FETCH_DASHBOARD_REQUEST: {
+    case Actions.FETCH_DASHBOARD_REQUEST: {
       return {
         ...state,
         isLoading: true
       }
     }
-    case ActionType.FETCH_DASHBOARD_SUCCESS: {
+    case Actions.FETCH_DASHBOARD_SUCCESS: {
       return {
         ...state,
         isLoading: false,
         dashboard: action.payload
       }
     }
-    case ActionType.FETCH_DASHBOARD_FAILURE: {
+    case Actions.FETCH_DASHBOARD_FAILURE: {
       return {
         ...state,
         isLoading: false,

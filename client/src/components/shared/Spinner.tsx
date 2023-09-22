@@ -1,6 +1,8 @@
-const Spinner = () => {
+const Spinner = (props: any) => {
+  const { white } = props;
+
   return (
-    <div className="loader"></div>
+    <div className={`loader ${white && 'white'}`}></div>
   );
 }
 

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { motion } from 'framer-motion';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import Navbar from "@/layouts/Navbar";
 import Input from "@/components/shared/Input";
 import ChipIcon from "@/components/shared/icons/ChipIcon";
+import Spinner from "@/components/shared/Spinner";
 import { loginValidationSchema } from "@/validations/authValidationSchema";
 import { fadeSmallLeftVariant, fadeSmallRightVariant } from "@/utils/animations";
 import { loginUser } from "@/store/actions/user.action";
@@ -18,6 +19,7 @@ import { LoginUserType } from "@/types/components";
 export default function Login() {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { isLoading } = useSelector(({user}) => user);
   const formOptions = { resolver: yupResolver(loginValidationSchema) };
   const { register, handleSubmit, reset, formState } = useForm(formOptions);
   const { errors } = formState;
@@ -35,7 +37,7 @@ export default function Login() {
           showConfirmButton: false
         });
 
-        if(response.success) {
+        if (response.success) {
           reset();
           router.push('/wallet');
         }
@@ -90,7 +92,15 @@ export default function Login() {
                     type="submit"
                     className="w-3/4 p-3 rounded-full bg-black text-white text-2xl transition-all duration-300 border-[2px] border-black hover:bg-white hover:text-black"
                   >
-                    Log In
+                    {
+                      isLoading ? (
+                    <div className="flex justify-center w-full">
+                      <Spinner />
+                    </div>
+                      ) : (
+                        <p>Sign In</p>
+                      )
+                    }
                   </button>
                 </div>
               </form>
