@@ -6,6 +6,12 @@ const jwt = require("jsonwebtoken");
 const _ = require("lodash");
 const UserModel_1 = require("../models/UserModel");
 class UserController {
+    static async test(req, res) {
+        res.status(200).json({
+            success: true,
+            message: "Currently working"
+        });
+    }
     static async register(req, res) {
         const { errors } = (0, express_validator_1.validationResult)(req);
         if (errors.length > 0) {

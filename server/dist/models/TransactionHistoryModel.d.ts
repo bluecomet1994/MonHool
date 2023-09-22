@@ -25,7 +25,7 @@ declare const _default: mongoose.Model<{
     address?: string | undefined;
     exchangeCoin?: string | undefined;
     total?: number | undefined;
-}> & {
+}> & Omit<{
     type: number;
     date: Date;
     status: number;
@@ -40,7 +40,7 @@ declare const _default: mongoose.Model<{
     total?: number | undefined;
 } & {
     _id: mongoose.Types.ObjectId;
-}, mongoose.Schema<any, mongoose.Model<any, any, any, any, any, any>, {}, {}, {}, {}, mongoose.DefaultSchemaOptions, {
+}, never>, mongoose.Schema<any, mongoose.Model<any, any, any, any, any, any>, {}, {}, {}, {}, mongoose.DefaultSchemaOptions, {
     type: number;
     date: Date;
     status: number;
@@ -53,7 +53,20 @@ declare const _default: mongoose.Model<{
     address?: string | undefined;
     exchangeCoin?: string | undefined;
     total?: number | undefined;
-}, mongoose.Document<unknown, {}, {
+}, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
+    type: number;
+    date: Date;
+    status: number;
+    username: string;
+    email: string;
+    coin: string;
+    isExchange: boolean;
+    amount: number;
+    usd: number;
+    address?: string | undefined;
+    exchangeCoin?: string | undefined;
+    total?: number | undefined;
+}>> & Omit<mongoose.FlatRecord<{
     type: number;
     date: Date;
     status: number;
@@ -67,19 +80,6 @@ declare const _default: mongoose.Model<{
     exchangeCoin?: string | undefined;
     total?: number | undefined;
 }> & {
-    type: number;
-    date: Date;
-    status: number;
-    username: string;
-    email: string;
-    coin: string;
-    isExchange: boolean;
-    amount: number;
-    usd: number;
-    address?: string | undefined;
-    exchangeCoin?: string | undefined;
-    total?: number | undefined;
-} & {
     _id: mongoose.Types.ObjectId;
-}>>;
+}, never>>>;
 export default _default;

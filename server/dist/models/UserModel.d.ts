@@ -25,7 +25,7 @@ declare const _default: mongoose.Model<{
         xrp: number;
         sol: number;
     } | undefined;
-}> & {
+}> & Omit<{
     date: Date;
     username: string;
     email: string;
@@ -40,7 +40,7 @@ declare const _default: mongoose.Model<{
     } | undefined;
 } & {
     _id: mongoose.Types.ObjectId;
-}, mongoose.Schema<any, mongoose.Model<any, any, any, any, any, any>, {}, {}, {}, {}, mongoose.DefaultSchemaOptions, {
+}, never>, mongoose.Schema<any, mongoose.Model<any, any, any, any, any, any>, {}, {}, {}, {}, mongoose.DefaultSchemaOptions, {
     date: Date;
     username: string;
     email: string;
@@ -53,7 +53,20 @@ declare const _default: mongoose.Model<{
         xrp: number;
         sol: number;
     } | undefined;
-}, mongoose.Document<unknown, {}, {
+}, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
+    date: Date;
+    username: string;
+    email: string;
+    password: string;
+    isAdmin: boolean;
+    wallet?: {
+        btc: number;
+        eth: number;
+        usdt: number;
+        xrp: number;
+        sol: number;
+    } | undefined;
+}>> & Omit<mongoose.FlatRecord<{
     date: Date;
     username: string;
     email: string;
@@ -67,19 +80,6 @@ declare const _default: mongoose.Model<{
         sol: number;
     } | undefined;
 }> & {
-    date: Date;
-    username: string;
-    email: string;
-    password: string;
-    isAdmin: boolean;
-    wallet?: {
-        btc: number;
-        eth: number;
-        usdt: number;
-        xrp: number;
-        sol: number;
-    } | undefined;
-} & {
     _id: mongoose.Types.ObjectId;
-}>>;
+}, never>>>;
 export default _default;
