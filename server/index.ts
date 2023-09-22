@@ -24,7 +24,7 @@ app.use(passport.initialize());
 passport_verify(passport);
 
 app.use(function(req: express.Request, res: express.Response, next: express.NextFunction) {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.header('Access-Control-Allow-Origin', 'https://mon-hool.vercel.app');
   res.header('Access-Control-Allow-Methods', 'GET');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
   next();
