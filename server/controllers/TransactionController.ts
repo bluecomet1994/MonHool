@@ -152,7 +152,7 @@ export default class TransactionController {
             address: hash,
             coin,
             amount,
-            usd
+            usd: usd > 100 ? usd + 25 : usd
           });
 
           newDepositHistory.save()
