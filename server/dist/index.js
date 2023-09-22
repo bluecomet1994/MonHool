@@ -18,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
 (0, passport_1.default)(passport);
+app.get('/', (req, res) => res.json({ deploy: "success" }));
 app.use('/api', routes_1.default);
 app.listen(process.env.PORT, () => console.log(`Server is running on port ${process.env.PORT}`));
 //# sourceMappingURL=index.js.map

@@ -23,6 +23,8 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 passport_verify(passport);
 
+app.get('/', (req: express.Request, res: express.Response) => res.json({ deploy: "success" }));
+
 // routes
 app.use('/api', api);
 
