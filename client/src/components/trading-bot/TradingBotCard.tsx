@@ -35,12 +35,12 @@ const TradingBotCard = (props: TradingProps) => {
   }
 
   const openPosition = () => {
-    if (amount === 0) {
+    if (amount < 150) {
       Swal.fire({
         toast: true,
         icon: 'warning',
         position: 'top-right',
-        text: "The amount should be greater than 0.",
+        text: "The amount should be at least $150.",
         timerProgressBar: true,
         timer: 3000,
         showConfirmButton: false

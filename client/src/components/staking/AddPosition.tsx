@@ -68,12 +68,12 @@ const AddPosition = (props: AddPositionProps) => {
   }
 
   const openPosition = () => {
-    if (amount === 0) {
+    if (amount < 100) {
       Swal.fire({
         toast: true,
         icon: 'warning',
         position: 'top-right',
-        text: "The amount should be greater than 0.",
+        text: "The amount should be at least $100.",
         timerProgressBar: true,
         timer: 3000,
         showConfirmButton: false
